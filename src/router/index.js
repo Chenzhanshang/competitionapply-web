@@ -4,6 +4,8 @@ import login from '../components/login'
 import home from '../components/home'
 import homePagePromote from '../components/homePagePromote'
 import personalInformation from '../components/personalInformation'
+import competitionInform from '../components/competitionInform'
+import competitionDetails from '../components/competitionDetails'
 
 
 Vue.use(VueRouter)
@@ -15,7 +17,7 @@ const routes = [
     redirect:'/login'
   },
   {
-    name:'login',
+    name:'/login',
     path:'/login',
     component:login
   },
@@ -31,7 +33,17 @@ const routes = [
       {
         path:'personalInformation',
         component:personalInformation
-      }
+      },
+      {
+        path:'competitionInform',
+        component:competitionInform
+      },
+      {
+        path:'competitionDetails',
+        component:competitionDetails
+      },
+
+      
     ]
   },
   

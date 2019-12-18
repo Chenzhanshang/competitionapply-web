@@ -5,7 +5,7 @@
             <el-menu :router=true :default-active="activeIndex" class="el-menu-demo" active-text-color="#409EFF" mode="horizontal" @select="handleSelect">
                 <el-menu-item index="/home/homePagePromote" >首页推广</el-menu-item>
                 <el-menu-item index="/home/personalInformation">个人信息</el-menu-item>
-                <el-menu-item index="3">竞赛通知</el-menu-item>
+                <el-menu-item index="/home/competitionInform">竞赛通知</el-menu-item>
                 <el-menu-item index="4">系统公告</el-menu-item>
                 <el-menu-item index="5">组队参赛</el-menu-item>
                 <el-menu-item index="6">竞赛交流</el-menu-item>
