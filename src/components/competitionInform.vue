@@ -50,7 +50,7 @@
 </template>
 <script>
 export default {
-    //计算函数，处理查询到的通知数据
+    //计算属性，处理查询到的通知数据
     computed:{
         tableData:function(){
             return this.notificationList.filter((item)=>{

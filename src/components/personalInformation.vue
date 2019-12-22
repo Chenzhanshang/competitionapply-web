@@ -3,8 +3,8 @@
         <el-main>
             <el-table
             :data="tableData"
-           style="width: 100%"
-      height="530">
+            style="width: 100%"
+            height="530">
             <el-table-column
                 prop="key"
                 label=""

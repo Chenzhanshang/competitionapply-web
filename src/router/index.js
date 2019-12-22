@@ -2,10 +2,18 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '../components/login'
 import home from '../components/home'
+
 import homePagePromote from '../components/homePagePromote'
+import adminHomePagePromote from '../adminPage/homePagePromote'
 import personalInformation from '../components/personalInformation'
+
 import competitionInform from '../components/competitionInform'
+import adminCompetitionInform from '../adminPage/competitionInform'
+
 import competitionDetails from '../components/competitionDetails'
+import adminCompetitionDetails from '../adminPage/competitionDetails'
+
+import systemNotice from '../components/systemNotice'
 
 
 Vue.use(VueRouter)
@@ -31,6 +39,10 @@ const routes = [
         component:homePagePromote
       },
       {
+        path:'adminHomePagePromote',
+        component:adminHomePagePromote
+      },
+      {
         path:'personalInformation',
         component:personalInformation
       },
@@ -39,8 +51,20 @@ const routes = [
         component:competitionInform
       },
       {
+        path:'adminCompetitionInform',
+        component:adminCompetitionInform
+      },
+      {
         path:'competitionDetails',
         component:competitionDetails
+      },
+      {
+        path:'adminCompetitionDetails',
+        component:adminCompetitionDetails
+      },
+      {
+        path:'systemNotice',
+        component:systemNotice
       },
 
       
