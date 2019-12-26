@@ -52,6 +52,11 @@
               key: '年级',
               value: ''
             },
+
+            {
+              key: '班级',
+              value: ''
+            },
             
             {
               key: '身份',
@@ -81,16 +86,17 @@
             this.tableData[3].value = res.data.college.university.universityName
             this.tableData[4].value = res.data.college.collegeName
             this.tableData[5].value = res.data.period
+            this.tableData[6].value = res.data.userClassName
             //获取所有角色，逗号分隔
             res.data.roles.forEach(role => {
-               this.tableData[6].value += role.roleName
-               this.tableData[6].value += '，'
+               this.tableData[7].value += role.roleName
+               this.tableData[7].value += '，'
             });
 
           //去除最后一个字符（，）
-           this.tableData[6].value = this.tableData[6].value.substr(0,this.tableData[6].value.length - 1)
+           this.tableData[7].value = this.tableData[7].value.substr(0,this.tableData[7].value.length - 1)
             
-          this.tableData[7].value = res.data.email
+          this.tableData[8].value = res.data.email
         })
         .catch((res)=>{
             console.log(res);

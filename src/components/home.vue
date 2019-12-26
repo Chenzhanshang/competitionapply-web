@@ -7,11 +7,13 @@
               <el-menu-item v-if="admin" index="/home/adminHomePagePromote" >首页推广</el-menu-item>
               <el-menu-item index="/home/personalInformation">个人信息</el-menu-item>
               <el-menu-item v-if="student" index="/home/competitionInform">竞赛通知</el-menu-item>
-              <el-menu-item v-if="admin" index="/home/adminCompetitionInform">竞赛通知</el-menu-item>
-              <el-menu-item index="/home/systemNotice">系统公告</el-menu-item>
+              <el-menu-item v-if="admin" index="/home/adminCompetitionInform">竞赛通知管理</el-menu-item>
+              <el-menu-item v-if="student" index="/home/systemNotice">系统公告</el-menu-item>
+              <el-menu-item v-if="admin" index="/home/adminSystemNotice">系统公告管理</el-menu-item>
               <el-menu-item index="5">组队参赛</el-menu-item>
               <el-menu-item index="6">竞赛交流</el-menu-item>
-              <el-menu-item index="7">获奖通告</el-menu-item>
+              <el-menu-item index="/home/winningNotification" v-if="student">获奖通告</el-menu-item>
+              <el-menu-item index="/home/adminWinningNotification" v-if="admin">获奖通告管理</el-menu-item>
               <el-submenu index="8" style="position:absolute;right:10px">
                 <template slot="title">{{user.userName}}</template>
                 <el-menu-item index="8-1">修改密码</el-menu-item>

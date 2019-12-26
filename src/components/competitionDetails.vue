@@ -10,21 +10,20 @@
             竞赛地点：{{this.competition.competitionSite}}
         </div>
         <div class="comp">
-            竞赛时间：{{this.competition.competitionName}}
+            竞赛时间：{{this.competition.competitionTime}}
         </div>
         <div class="comp">
             竞赛状态：{{this.competition.competitionState==1  ?'进行中':'已结束'}}
         </div>
-        <div class="comp">
-            竞赛时间：{{this.competition.competitionTime}}
-        </div>
-        <!-- <el-divider>文件列表</el-divider>
-            <el-card class="box-card">
-                <div v-for="(item,index) in applyInfo.files" :key="item.fileId" class="text item">
-                    文件{{index}}:<el-link  target="_blank">{{item.fileName}} </el-link><el-button @click="downloadFile(item.fileId,item.fileName)" size="mini" >下载</el-button>
-                </div>
-            </el-card>
-            -->
+        <div class="comp">竞赛文件列表：</div>
+        <el-card class="box-card">
+            <div v-for="(file,index) in this.competition.files" :key="file.fileId" class="text file">
+                文件{{index+1}}:
+                <el-link  target="_blank">{{file.fileName}}</el-link>
+                <el-button @click="downloadFile(file.fileId,file.fileName)" size="mini" >下载</el-button>
+            </div>
+        </el-card>
+        
         <div class="comp">
             <el-button
                 size="small"
@@ -94,7 +93,43 @@ export default {
             .catch((res)=>{
                 this.cancelLoding = false
             })
-        }
+        },
+
+        //下载文件
+        downloadFile(fileId,fileName){
+            console.log(fileId)
+            this.axios.post('/file/downloadFile/',{fileId:fileId},{
+                responseType: 'blob'
+            })
+            .then((res)=>{
+                console.log(res)
+                 if (window.navigator.msSaveBlob) {
+                    try {
+                    const blobObject = new Blob([res.data]);
+                    window.navigator.msSaveBlob(blobObject, fileName);
+                    } catch (e) {
+                    console.log(e);
+                    }
+                } else {
+                    const blob = res.data;
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onload = (e) => {
+                    const a = document.createElement('a');
+                    a.download = fileName;
+                    a.href = e.target.result;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    }
+                }
+
+            })
+            .catch((res)=>{
+                console.log(res)
+            })
+
+        },
     },
 
     created(){
@@ -112,6 +147,7 @@ export default {
     //页面加载调用方法,查询个人信息封装至res
     this.axios.get("/competition/findCompetitionById",{params:{competitionId:this.$route.query.competitionId}})
     .then((res)=>{
+        console.log(res)
         //将res中的比赛信息解析放入this.competition
         this.competition = res.data.data.competition
         console.log(this.competition)
@@ -128,12 +164,16 @@ export default {
         margin-top: 30px;
         
     }
-    
-      .item {
-    padding: 8px 0;
-  }
 
-  .box-card {
+    .text {
+    font-size: 14px;
+    }
+    
+    .file {
+    padding: 8px 0;
+    }
+
+    .box-card {
     width: 100%;
-  }
+    }
 </style>

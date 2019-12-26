@@ -92,15 +92,11 @@ export default {
     },
     created(){
         //查询竞赛通知数据列表
-        this.axios.get("/notification/findNotificationByType",{params:{notificationType: 0}})
+        this.axios.get("/notification/findNotificationByType")
         .then((res)=>{
             console.log(res)
             this.notificationList = res.data.data.notifications
             console.log(this.notificationList)
-            this.$message({
-                type: 'success',
-                message:res.data.msg
-              });
         })
         .catch((res)=>{
             this.$message({

@@ -14,6 +14,10 @@ import competitionDetails from '../components/competitionDetails'
 import adminCompetitionDetails from '../adminPage/competitionDetails'
 
 import systemNotice from '../components/systemNotice'
+import adminSystemNotice from '../adminPage/systemNotice'
+
+import winningNotification from '../components/winningNotification'
+import adminWinningNotification from '../adminPage/winningNotification'
 
 
 Vue.use(VueRouter)
@@ -66,6 +70,20 @@ const routes = [
         path:'systemNotice',
         component:systemNotice
       },
+      {
+        path:'adminSystemNotice',
+        component:adminSystemNotice
+      },
+      {
+        path:'winningNotification',
+        component:winningNotification
+      },
+      {
+        path:'adminWinningNotification',
+        component:adminWinningNotification
+      },
+
+      
 
       
     ]

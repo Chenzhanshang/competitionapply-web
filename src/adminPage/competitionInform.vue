@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-main>
-      <el-dialog title="比赛信息" :visible.sync="dialogFormVisible" width="60%">
+      <el-dialog title="比赛-通知信息" :visible.sync="dialogFormVisible" width="60%">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="通知标题：" prop="notificationTitle">
             <el-input v-model="ruleForm.notificationTitle"></el-input>
@@ -180,19 +180,19 @@ export default {
         return false;
 
       },
-        tableData:function(){
-            return this.notificationList.filter((item)=>{
-              //解析比赛级别
-              item.competition.competitionLevel = this.analysisLevel(item.competition.competitionLevel)
-              //解析通知状态
-              item.notificationState = this.analysisNotificationState(item.notificationState)
-              if(item.notificationTitle.includes(this.search)||item.notificationState.includes(this.search)||
-                item.competition.competitionType.includes(this.search) || item.competition.competitionLevel.includes(this.search)||
-                item.competition.competitionSite.includes(this.search)){
-                  return item;
-              }
-            })
-        }
+      tableData:function(){
+        return this.notificationList.filter((item)=>{
+          //解析比赛级别
+          item.competition.competitionLevel = this.analysisLevel(item.competition.competitionLevel)
+          //解析通知状态
+          item.notificationState = this.analysisNotificationState(item.notificationState)
+          if(item.notificationTitle.includes(this.search)||item.notificationState.includes(this.search)||
+            item.competition.competitionType.includes(this.search) || item.competition.competitionLevel.includes(this.search)||
+            item.competition.competitionSite.includes(this.search)){
+              return item;
+          }
+        })
+      }
     },
     data() {
       return {
@@ -223,8 +223,7 @@ export default {
           competitionId:'',
           notificationId: '',
           notificationState: '',
-          //搜索框内容
-          search: ''
+
           
         },
         competition: '',
@@ -325,8 +324,6 @@ export default {
             collegeId: this.ruleForm.collegeId
             })
             .then((res)=>{
-              //设置文件引用的比赛外键
-              this.competitionId = res.data.data.competitionId
               //保存上传文件
               this.$refs.upload.submit()
               this.dialogFormVisible = false
@@ -432,7 +429,7 @@ export default {
               type: 'success',
               message:res.data.msg
               
-            });
+              });
               });
             })
             .catch((res)=>{
@@ -486,6 +483,7 @@ export default {
         this.dialogFormVisible = false
       },
 
+      //上传文件相关方法
       handleRemove(file, fileList) {
         
         this.axios.get("/file/deleteFile", {params:{fileId:file.fileId}})
@@ -521,11 +519,7 @@ export default {
       this.axios.get("/notification/findNotificationByType",{params:{notificationType: 0}})
       .then((res)=>{
           this.notificationList = res.data.data.notifications
-          this.$message({
-              type: 'success',
-              message:res.data.msg
-              
-            });
+        
       })
       .catch((res)=>{
           this.$message({
