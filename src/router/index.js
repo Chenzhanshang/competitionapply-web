@@ -19,6 +19,10 @@ import adminSystemNotice from '../adminPage/systemNotice'
 import winningNotification from '../components/winningNotification'
 import adminWinningNotification from '../adminPage/winningNotification'
 
+import myCompetitionAndTeam from '../components/myCompetitionAndTeam'
+
+import recruit from '../components/recruit'
+
 
 Vue.use(VueRouter)
 
@@ -82,9 +86,14 @@ const routes = [
         path:'adminWinningNotification',
         component:adminWinningNotification
       },
-
-      
-
+      {
+        path:'myCompetitionAndTeam',
+        component:myCompetitionAndTeam
+      },
+      {
+        path:'recruit',
+        component:recruit
+      },
       
     ]
   },

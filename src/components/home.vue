@@ -10,14 +10,14 @@
               <el-menu-item v-if="admin" index="/home/adminCompetitionInform">竞赛通知管理</el-menu-item>
               <el-menu-item v-if="student" index="/home/systemNotice">系统公告</el-menu-item>
               <el-menu-item v-if="admin" index="/home/adminSystemNotice">系统公告管理</el-menu-item>
-              <el-menu-item index="5">组队参赛</el-menu-item>
-              <el-menu-item index="6">竞赛交流</el-menu-item>
+              <el-menu-item index="/home/myCompetitionAndTeam">我的比赛·队伍</el-menu-item>
+              <el-menu-item index="/home/recruit">组队·招募(原竞赛交流)</el-menu-item>
               <el-menu-item index="/home/winningNotification" v-if="student">获奖通告</el-menu-item>
               <el-menu-item index="/home/adminWinningNotification" v-if="admin">获奖通告管理</el-menu-item>
               <el-submenu index="8" style="position:absolute;right:10px">
                 <template slot="title">{{user.userName}}</template>
-                <el-menu-item index="8-1">修改密码</el-menu-item>
-                <el-menu-item index="8-2">注销登录</el-menu-item>
+                <el-menu-item @click="updatePassword">修改密码</el-menu-item>
+                <el-menu-item @click="logout">注销登录</el-menu-item>
               </el-submenu>
 
               <el-submenu :router=false index="9" style="position:absolute;right:150px">
@@ -72,7 +72,51 @@
         }else{
           this.$router.push("/home/homePagePromote")
         }
-      }
+      },
+      updatePassword(){
+        this.$prompt('请输入您的新密码', '注意', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          closeOnClickModal:false,
+          inputPlaceholder:'密码'
+          }).then(({ value }) => {
+            console.log(value)
+            this.axios.post("/user/updatePassword",{password: value})
+          .then((res)=>{
+            this.$message({
+              type:'success',
+              message:res.data.msg
+            })
+          })
+          .catch((res)=>{
+            this.$message({
+              type:'warning',
+              message:"修改密码失败"
+            })
+          })
+        })
+        .catch(() => {
+         });
+      },
+      logout(){
+            this.axios.get('/user/logout')
+            .then((res)=>{
+                console.log(res)
+                if(res.data.status == 1){
+                    this.$message({
+                        type:'success',
+                        message:res.data.msg
+                    })
+                }
+                this.$router.push({path:'/'})
+            })
+            .catch((res)=>[
+                this.$message({
+                        type:'warning',
+                        message:"安全退出失败"
+                    })
+            ])
+        },
     },
     created(){
         //页面加载调用方法,查询个人信息封装至res

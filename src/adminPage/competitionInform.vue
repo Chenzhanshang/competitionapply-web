@@ -12,6 +12,9 @@
           <el-form-item label="竞赛内容：" prop="competitionContent">
             <el-input type="textarea" v-model="ruleForm.competitionContent"></el-input>
           </el-form-item>
+          <el-form-item  label="参赛人数：" prop="competitionPeopleSum">
+            <el-input-number v-model="ruleForm.competitionPeopleSum" :min="1" label="参赛人数："></el-input-number>
+          </el-form-item>
           <el-form-item label="竞赛地点：" prop="competitionSite">
             <el-input v-model="ruleForm.competitionSite"></el-input>
           </el-form-item>
@@ -98,6 +101,12 @@
         <el-table-column
         property="competition.competitionType"
         label="竞赛类型"
+        align="center">
+        </el-table-column>
+        <el-table-column
+        property="competition.competitionPeopleSum"
+        label="个人赛·组队赛"
+        width="90"
         align="center">
         </el-table-column>
         <el-table-column
@@ -188,7 +197,9 @@ export default {
           item.notificationState = this.analysisNotificationState(item.notificationState)
           if(item.notificationTitle.includes(this.search)||item.notificationState.includes(this.search)||
             item.competition.competitionType.includes(this.search) || item.competition.competitionLevel.includes(this.search)||
-            item.competition.competitionSite.includes(this.search)){
+            item.competition.competitionSite.includes(this.search) || item.competition.competitionPeopleSum.includes(this.search)){
+              item.competition.competitionPeopleSum == 1 || item.competition.competitionPeopleSum == "个人赛" ? 
+              item.competition.competitionPeopleSum = "个人赛" :item.competition.competitionPeopleSum = "组队赛"
               return item;
           }
         })
@@ -223,8 +234,7 @@ export default {
           competitionId:'',
           notificationId: '',
           notificationState: '',
-
-          
+          competitionPeopleSum: 1,         
         },
         competition: '',
         loading: false,
@@ -255,6 +265,10 @@ export default {
             { required: true, message: '请输入竞赛地点', trigger: 'blur' },
             { max: 64, message: '长度最多为64个字符', trigger: 'blur' }
           ],
+          competitionType: {required: true, message: "请选择比赛类型", trigger: "blur"
+          },
+          competitionLevel: {required: true, message: "请选择比赛级别", trigger: "blur"
+          },
 
         }
     };
@@ -277,11 +291,11 @@ export default {
         this.ruleForm.competitionName = res.data.data.notification.competition.competitionName
         this.ruleForm.competitionContent = res.data.data.notification.competition.competitionContent
         this.ruleForm.competitionSite = res.data.data.notification.competition.competitionSite
+        this.ruleForm.competitionPeopleSum = res.data.data.notification.competition.competitionPeopleSum
         if(res.data.data.notification.competition.competitionTime != "待定"){
           this.ruleForm.competitionTime = res.data.data.notification.competition.competitionTime
         }
-        
-        this.ruleForm.competitionLevel = this.analysisLevel(res.data.data.notification.competition.competitionLevel)
+        this.ruleForm.competitionLevel = res.data.data.notification.competition.competitionLevel
         this.ruleForm.competitionType = res.data.data.notification.competition.competitionType
         this.ruleForm.competitionState = res.data.data.notification.competition.competitionState
         this.ruleForm.notificationState = res.data.data.notification.notificationState
@@ -321,7 +335,8 @@ export default {
             competitionType: this.ruleForm.competitionType,
             competitionLevel: this.ruleForm.competitionLevel,
             competitionTime: this.ruleForm.competitionTime,
-            collegeId: this.ruleForm.collegeId
+            collegeId: this.ruleForm.collegeId,
+            competitionPeopleSum: this.ruleForm.competitionPeopleSum
             })
             .then((res)=>{
               //保存上传文件
@@ -365,7 +380,8 @@ export default {
             competitionTime: this.ruleForm.competitionTime,
             collegeId: this.ruleForm.collegeId,
             notificationState: this.ruleForm.notificationState,
-            competitionId: this.ruleForm.competitionId
+            competitionId: this.ruleForm.competitionId,
+            competitionPeopleSum: this.ruleForm.competitionPeopleSum
             })
             .then((res)=>{
               //保存上传文件
@@ -406,6 +422,7 @@ export default {
         this.ruleForm.competitionLevel = ''
         this.ruleForm.competitionType = ''
         this.ruleForm.competitionState = ''
+        this.ruleForm.competitionPeopleSum = 1
         this.fileList = []
       },
 

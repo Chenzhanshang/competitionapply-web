@@ -50,7 +50,10 @@
         </div>
         <p>日期：</p>
         <div>
-          {{notification.notificationTime}}
+          <template>
+            <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
+            {{notification.notificationTime==null?new Date():notification.notificationTime | dateFormart}}
+          </template>
         </div>
         <div class="comp">附件：</div>
         <el-card class="box-card">
@@ -120,6 +123,11 @@ export default {
       }
       catch{
       }
+    },
+
+    //取消按钮
+    closeForm(){
+      this.dialogFormVisible = false
     },
 
     //新增公告表单回显控制

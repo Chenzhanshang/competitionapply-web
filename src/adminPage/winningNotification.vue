@@ -7,13 +7,13 @@
         </el-form-item>
         <el-form-item label="竞赛名：" prop="competitionId">
           <el-select v-model="ruleForm.competitionId" placeholder="请选择比赛" @change="selectCompetition">
-              <el-option v-for="competition in competitionList" :key="competition.competitionId" :label="competition.competitionName" :value="competition.competitionId"></el-option>
+            <el-option v-for="competition in competitionList" :key="competition.competitionId" :label="competition.competitionName" :value="competition.competitionId"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="通知方式：" prop="type">
           <el-select v-model="ruleForm.type" placeholder="填写获奖信息或上传文件" >
             <el-option label="上传获奖文件" value="file"></el-option>
-            <el-option label="填写获奖信息" value="message"></el-option>
+            <el-option label="填写获奖信息" value="message" :disabled="isTeam"></el-option>
           </el-select>
         </el-form-item>
         <div v-if="ruleForm.type == 'file'?false:true">
@@ -74,6 +74,10 @@
       property="notificationTime"
       label="发布时间"
       align="center">
+        <template slot-scope="scope">
+          <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
+          {{scope.row.notificationTime==null?new Date():scope.row.notificationTime | dateFormart}}
+        </template>
       </el-table-column>
       <el-table-column align="center">
         <template slot="header" slot-scope="scope">
@@ -142,6 +146,8 @@
         isFile: false,
         winList: [],
         userList:[],
+        //是否为组队赛
+        isTeam: false,
         //表单校验
         rules: {
           notificationTitle: [
@@ -336,6 +342,24 @@
       },
 
       selectCompetition(){
+        try{
+          this.competitionList.forEach(item=>{
+            if(item.competitionId == this.ruleForm.competitionId){
+              if(item.competitionPeopleSum > 1){
+                this.isTeam = true
+              }
+              else{
+                this.isTeam = false
+              }
+              //抛异常跳出循环
+              throw new Error("找到相应数据")
+            }
+          })
+          
+        }
+        catch{
+
+        }
         this.axios.get("/competition/findUserByCompetitionId",{params:{competitionId:this.ruleForm.competitionId}})
         .then((res)=>{
           console.log(res)
