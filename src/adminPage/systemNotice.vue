@@ -10,7 +10,7 @@
       </el-menu>
     </el-aside>
     <el-container>  
-      <el-main width:150px>
+      <el-main width:150px v-if="notification != ''">
         <el-dialog title="公告信息" :visible.sync="dialogFormVisible" width="60%">
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
             <el-form-item label="公告标题：" prop="notificationTitle">
@@ -44,24 +44,26 @@
         <div style="text-align:right">
           <el-button type="success" plain @click="add()">新增公告</el-button>
         </div>
-        <p>公告详情：</p>
-        <div>
-          {{this.notification.notificationContent}}
-        </div>
-        <p>日期：</p>
-        <div>
+        <h3 style="text-align:center">{{notification.notificationTitle}}</h3>
+        <div style="text-align:center">
+          发布时间：
           <template>
             <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
             {{notification.notificationTime==null?new Date():notification.notificationTime | dateFormart}}
           </template>
         </div>
-        <div class="comp">附件：</div>
-        <el-card class="box-card">
-          <div v-for="(file,index) in this.notification.files" :key="file.fileId" class="text file">
+        <el-divider></el-divider>
+        <div>
+          {{this.notification.notificationContent}}
+        </div>
+        <el-divider v-if="notification.files.length != 0"></el-divider>
+        <div class="comp" v-if="notification.files.length != 0">附件：</div>
+        <el-card class="box-card" v-if="notification.files.length != 0">
+            <div v-for="(file,index) in this.notification.files" :key="file.fileId" class="text file">
               文件{{index+1}}:
               <el-link  target="_blank">{{file.fileName}}</el-link>
               <el-button @click="downloadFile(file.fileId,file.fileName)" size="mini" >下载</el-button>
-          </div>
+            </div>
         </el-card>
         <div>
           <el-button type="success" plain @click="update()">修改该公告</el-button>
@@ -176,25 +178,30 @@ export default {
           //保存修改表单的比赛，通知，文件信息
           this.axios.post("/notice/updateNotice",{
           notificationTitle: this.ruleForm.notificationTitle,
-          notificationContext: this.ruleForm.notificationContext,
+          notificationContent: this.ruleForm.notificationContent,
           notificationId: this.notificationId
           })
           .then((res)=>{
-            //保存上传文件
-            this.$refs.upload.submit()
-            this.dialogFormVisible = false
-            this.$message({
-                  type: 'success',
-                  message:res.data.msg
-                  
-                });
-          })
-          .catch((res)=>{
-            this.dialogFormVisible = false
-            this.$message({
+            if(res.data.status == 1){
+              //保存上传文件
+              this.$refs.upload.submit()
+              this.dialogFormVisible = false
+              this.$message({
+                type: 'success',
+                message:res.data.msg
+                
+              });
+            }
+            else{
+              this.dialogFormVisible = false
+              this.$message({
               type: 'error',
               message:res.data.msg            
             });
+            }
+            
+          })
+          .catch((res)=>{
           })
         } else {
           return false;

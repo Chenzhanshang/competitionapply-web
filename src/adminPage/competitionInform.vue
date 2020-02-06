@@ -78,8 +78,8 @@
             <div slot="tip" class="el-upload__tip">已选文件列表：</div>
           </el-upload>    
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')" v-show="isAdd">提交</el-button>
-            <el-button type="primary" @click="submitUpdateForm('ruleForm')" v-show="!isAdd">提交修改</el-button>
+            <el-button type="primary" :loading="loading" @click="submitForm('ruleForm')" v-show="isAdd">提交</el-button>
+            <el-button type="primary" :loading="loading" @click="submitUpdateForm('ruleForm')" v-show="!isAdd">提交修改</el-button>
             <el-button @click="closeForm()">取消</el-button>
           </el-form-item>
         </el-form>
@@ -106,7 +106,7 @@
         <el-table-column
         property="competition.competitionPeopleSum"
         label="个人赛·组队赛"
-        width="90"
+        width="120"
         align="center">
         </el-table-column>
         <el-table-column
@@ -115,9 +115,13 @@
         align="center">
         </el-table-column>
         <el-table-column
-        property="competition.competitionSite"
-        label="比赛地点"
+        property="notificationTime"
+        label="发布时间"
         align="center">
+          <template slot-scope="scope">
+            <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
+            {{scope.row.notificationTime==null? new Date() : scope.row.notificationTime | dateFormart}}
+          </template>
         </el-table-column>
         <el-table-column
         property="notificationState"
@@ -197,7 +201,7 @@ export default {
           item.notificationState = this.analysisNotificationState(item.notificationState)
           if(item.notificationTitle.includes(this.search)||item.notificationState.includes(this.search)||
             item.competition.competitionType.includes(this.search) || item.competition.competitionLevel.includes(this.search)||
-            item.competition.competitionSite.includes(this.search) || item.competition.competitionPeopleSum.includes(this.search)){
+            item.competition.competitionPeopleSum.includes(this.search)){
               item.competition.competitionPeopleSum == 1 || item.competition.competitionPeopleSum == "个人赛" ? 
               item.competition.competitionPeopleSum = "个人赛" :item.competition.competitionPeopleSum = "组队赛"
               return item;
@@ -213,6 +217,7 @@ export default {
         pageSize: 5,
         //当前行
         currentRow: null,
+        loading: false,
         //通知列表
         notificationList: [],
         search: '',
@@ -324,6 +329,7 @@ export default {
       //提交添加新比赛通知的表单
       submitForm(ruleForm){
         console.log(this.ruleForm)
+        this.loading = true
         this.$refs[ruleForm].validate((valid) => {
           if (valid) {
             //保存表单的比赛，通知，文件信息
@@ -342,29 +348,33 @@ export default {
               //保存上传文件
               this.$refs.upload.submit()
               this.dialogFormVisible = false
-              this.$message({
-                    type: 'success',
-                    message:res.data.msg
-                    
-                  });
+              if(res.data.status == 1){
+                this.$message({
+                  type: 'success',
+                  message:res.data.msg
+                });
+              }
+              else{
+                this.$message({
+                  type: 'error',
+                  message:res.data.msg            
+                });
+              }
+              this.loading = false
             })
             .catch((res)=>{
-              this.dialogFormVisible = false
-              this.$message({
-                    type: 'error',
-                    message:res.data.msg            
-                  });
             })
           } else {
+            this.loading = false
             return false;
           }
         });
       },
 
-      //提交修改
-      //提交添加修改比赛通知的表单
+      //提交修改比赛通知的表单
       submitUpdateForm(ruleForm){
         console.log(this.ruleForm)
+        this.loading = true
         this.$refs[ruleForm].validate((valid) => {
           if (valid) {
             //保存修改表单的比赛，通知，文件信息
@@ -387,20 +397,24 @@ export default {
               //保存上传文件
               this.$refs.upload.submit()
               this.dialogFormVisible = false
-              this.$message({
-                    type: 'success',
-                    message:res.data.msg
-                    
-                  });
+              if(res.data.status == 1){
+                this.$message({
+                  type: 'success',
+                  message:res.data.msg
+                });
+              }
+              else{
+                this.$message({
+                  type: 'error',
+                  message:res.data.msg            
+                });
+              }
+              this.loading = false
             })
             .catch((res)=>{
-              this.dialogFormVisible = false
-              this.$message({
-                    type: 'error',
-                    message:res.data.msg            
-                  });
             })
           } else {
+            this.loading = false
             return false;
           }
         });
@@ -535,7 +549,8 @@ export default {
       //查询竞赛通知数据列表
       this.axios.get("/notification/findNotificationByType",{params:{notificationType: 0}})
       .then((res)=>{
-          this.notificationList = res.data.data.notifications
+        console.log(res)
+        this.notificationList = res.data.data.notifications
         
       })
       .catch((res)=>{

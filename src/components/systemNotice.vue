@@ -10,20 +10,22 @@
       </el-menu>
     </el-aside>
     <el-container>  
-      <el-main width:150px>
-        <p>公告详情：</p>
-        <div>
-          {{this.notification.notificationContent}}
-        </div>
-        <p>日期：</p>
-        <div>
+      <el-main width:150px v-if="notification != ''">
+        <h3 style="text-align:center">{{notification.notificationTitle}}</h3>
+        <div style="text-align:center">
+          发布时间：
           <template>
             <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
             {{notification.notificationTime==null?new Date():notification.notificationTime | dateFormart}}
           </template>
         </div>
-        <div class="comp">附件：</div>
-        <el-card class="box-card">
+        <el-divider></el-divider>
+        <div>
+          {{this.notification.notificationContent}}
+        </div>
+        <el-divider v-if="notification.files.length != 0"></el-divider>
+        <div class="comp" v-if="notification.files.length != 0">附件：</div>
+        <el-card class="box-card" v-if="notification.files.length != 0">
             <div v-for="(file,index) in this.notification.files" :key="file.fileId" class="text file">
               文件{{index+1}}:
               <el-link  target="_blank">{{file.fileName}}</el-link>

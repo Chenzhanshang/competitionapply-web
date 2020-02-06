@@ -86,7 +86,7 @@
           type="success"
           plain
           @click="addWinList()"
-          >新增比赛通知</el-button>  
+          >发布获奖通知</el-button>  
           <el-input
           v-model="search"
           size="mini"

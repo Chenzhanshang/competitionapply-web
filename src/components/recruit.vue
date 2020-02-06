@@ -3,8 +3,8 @@
 
         <el-dialog title="申请信息" :visible.sync="dialogFormVisible">
           <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="队伍名：" prop="teamName">
-              <el-input v-model="ruleForm.teamName"></el-input>
+            <el-form-item label="队伍名：" prop="teamName" >
+              <el-input v-model="ruleForm.teamName" disabled></el-input>
             </el-form-item>
             <el-form-item label="备注：" prop="applyContent">
               <el-input type="textarea" v-model="ruleForm.applyContent" placeholder="请输入个人介绍或加入原因等信息"></el-input>
@@ -83,6 +83,19 @@ export default {
             .then((res)=>{
                 console.log(res)
                 this.dialogFormVisible = false
+                if(res.data.status == 1){
+                  this.$message({
+                    type: "success",
+                    message: res.data.msg
+                  });
+                }
+                else{
+                  this.$message({
+                    type: "error",
+                    message: res.data.msg
+                  });
+                }
+                
             })
             .catch((res)=>{
                 console.log(res)

@@ -39,7 +39,7 @@
                 <el-input
                 v-model="search"
                 size="mini"
-                placeholder="输入关键字搜索" 
+                placeholder="输入竞赛名关键字搜索" 
                 width="50"/>   
                 </template>
                 <template slot-scope="scope">
@@ -69,7 +69,7 @@ export default {
     computed:{
         tableData:function(){
             return this.notificationList.filter((item)=>{
-                if(item.notificationTitle.includes(this.search)||item.notificationTime.includes(this.search)){
+                if(item.notificationTitle.includes(this.search)){
                     //判断是否存在文件，存在则为文件通知，否则信息通知，控制按钮显示
                    if(item.files == null || item.files.length ==0){
                        item["isFile"] = false

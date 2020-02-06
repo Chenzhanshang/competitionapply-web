@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '../components/login'
+
+
 import home from '../components/home'
+import adminHome from '../adminPage/home'
 
 import homePagePromote from '../components/homePagePromote'
 import adminHomePagePromote from '../adminPage/homePagePromote'
@@ -47,10 +50,6 @@ const routes = [
         component:homePagePromote
       },
       {
-        path:'adminHomePagePromote',
-        component:adminHomePagePromote
-      },
-      {
         path:'personalInformation',
         component:personalInformation
       },
@@ -59,32 +58,16 @@ const routes = [
         component:competitionInform
       },
       {
-        path:'adminCompetitionInform',
-        component:adminCompetitionInform
-      },
-      {
         path:'competitionDetails',
         component:competitionDetails
-      },
-      {
-        path:'adminCompetitionDetails',
-        component:adminCompetitionDetails
       },
       {
         path:'systemNotice',
         component:systemNotice
       },
       {
-        path:'adminSystemNotice',
-        component:adminSystemNotice
-      },
-      {
         path:'winningNotification',
         component:winningNotification
-      },
-      {
-        path:'adminWinningNotification',
-        component:adminWinningNotification
       },
       {
         path:'myCompetitionAndTeam',
@@ -93,6 +76,35 @@ const routes = [
       {
         path:'recruit',
         component:recruit
+      },
+      
+    ]
+  },
+
+  {
+    name:'adminHome',
+    path:'/adminHome',
+    component:adminHome,
+    children:[
+      {
+        path:'adminHomePagePromote',
+        component:adminHomePagePromote
+      },
+      {
+        path:'adminCompetitionInform',
+        component:adminCompetitionInform
+      },
+      {
+        path:'adminCompetitionDetails',
+        component:adminCompetitionDetails
+      },
+      {
+        path:'adminSystemNotice',
+        component:adminSystemNotice
+      },
+      {
+        path:'adminWinningNotification',
+        component:adminWinningNotification
       },
       
     ]

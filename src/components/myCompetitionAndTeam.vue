@@ -53,9 +53,10 @@
       </el-dialog>
       <el-tabs
         :tab-position="'left'"
+        @tab-click="handleClick"
         style="height: 600px;"
       >
-        <el-tab-pane label="我的比赛" name="first">
+        <el-tab-pane label="我的比赛" name="myCompetition" >
           <el-table :data="CompetitionList" height="600px" stripe style="width: 100%">
             <el-table-column type="index" label="序号" width="50"></el-table-column>
             <el-table-column prop="competition.competitionName" label="比赛名" width="350"></el-table-column>
@@ -77,13 +78,40 @@
                   size="mini"
                   type="primary"
                   plain
-                  @click="handle(scope.$index, scope.row)"
+                  @click="particulars(scope.row.competition)"
                 >比赛详情</el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="我加入的队伍" name="second">
+        <el-tab-pane label="我的申请" name="myApply">
+          <el-table :data="myJoinApplyList1" height="600px" stripe style="width: 100%">
+            <el-table-column type="index" label="序号" width="50"></el-table-column>
+            <el-table-column prop="team.teamName" label="队伍名"></el-table-column>
+            <el-table-column prop="team.competition.competitionName" label="所属比赛"></el-table-column>
+            <el-table-column prop="applyState" label="申请状态"></el-table-column>
+            <el-table-column prop="applyTime" label="申请时间">
+              <template slot-scope="scope">
+                <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
+                {{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
+              </template>
+            </el-table-column>
+            <el-table-column align="right">
+              <template slot="header">
+                <el-input v-model="search5" size="mini" placeholder="输入关键字搜索" />
+              </template>
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="primary"
+                  plain
+                  @click="cancelApply(scope.row)"
+                >撤销申请</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="我加入的队伍" name="myJoinTeam">
           <el-table :data="joinTeamList1" height="600px" stripe style="width: 100%">
             <el-table-column type="index" label="序号" width="50"></el-table-column>
             <el-table-column prop="teamName" label="队伍名"></el-table-column>
@@ -94,46 +122,39 @@
                 <el-input v-model="search2" size="mini" placeholder="输入关键字搜索" />
               </template>
               <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  type="primary"
-                  plain
-                  @click="openExitTeam(scope.row.teamId)"
-                >退出队伍</el-button>
+                <el-button size="mini" type="primary" plain @click="openExitTeam(scope.row.teamId)">退出队伍</el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-tab-pane>
 
-        <el-tab-pane label="我创建的队伍" name="third">
+        <el-tab-pane label="我创建的队伍" name="myCreateTeam">
           <el-table :data="myTeamList1" height="600px" stripe style="width: 100%">
             <el-table-column type="index" label="序号" width="50"></el-table-column>
             <el-table-column prop="teamName" label="队伍名"></el-table-column>
             <el-table-column prop="competition.competitionName" label="所属比赛"></el-table-column>
+            <el-table-column prop="teamHeadcount" label="当前人数"></el-table-column>
             <el-table-column prop="teamState" label="队伍状态"></el-table-column>
-            <el-table-column align="right">
-              <template slot="header" slot-scope="scope">
+            <el-table-column align="right" width="350">
+              <template slot="header">
                 <el-input v-model="search3" size="mini" placeholder="输入关键字搜索" />
               </template>
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" plain @click="updateMyTeam(scope.row)">管理</el-button>
-                <el-button
-                  size="mini"
-                  type="primary"
-                  plain
-                  @click="openDeleteTeam(scope.row.teamId)"
-                >解散队伍</el-button>
+                <el-button size="mini" type="primary" plain :disabled="isManchu(scope.row)" @click="recruitUser(scope.row)">招募</el-button>
+                <el-button size="mini" type="primary" plain :disabled="isRecruiting(scope.row)" @click="cancelRecruit(scope.row)">取消招募</el-button>
+                <el-button size="mini" type="primary" plain @click="openDeleteTeam(scope.row.teamId)">解散队伍</el-button>
               </template>
             </el-table-column>
             <el-table-column>
-              <template slot="header" slot-scope="scope">
+              <template slot="header">
                 <el-button size="mini" type="success" plain @click="createTeam()">创建队伍</el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-tab-pane>
 
-        <el-tab-pane label="加入我的申请" name="fourth">
+        <el-tab-pane label="加入我的申请" name="joinMyApply">
           <el-table :data="joinMyTeamList1" height="600px" stripe style="width: 100%">
             <el-table-column type="index" label="序号" width="50"></el-table-column>
             <el-table-column prop="team.teamName" label="队伍名"></el-table-column>
@@ -150,19 +171,14 @@
                 <el-input v-model="search4" size="mini" placeholder="输入关键字搜索" />
               </template>
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" plain @click="pass(scope.row.applyId)">通过</el-button>
-                <el-button
-                  size="mini"
-                  type="primary"
-                  plain
-                  @click="refuse(scope.row.applyId)"
-                >拒绝</el-button>
+                <el-button size="mini" type="primary" plain @click="pass(scope.row)">通过</el-button>
+                <el-button size="mini" type="primary" plain @click="refuse(scope.row)">拒绝</el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-tab-pane>
 
-        <el-tab-pane label="我的处理记录" name="seventh">
+        <el-tab-pane label="我的处理记录" name="myDispose">
           <el-table :data="myDisposeList1" height="600px" stripe style="width: 100%">
             <el-table-column type="index" label="序号" width="50"></el-table-column>
             <el-table-column prop="team.teamName" label="队伍名"></el-table-column>
@@ -176,51 +192,14 @@
             <el-table-column prop="user.name" label="申请人姓名"></el-table-column>
             <el-table-column prop="applyState" label="处理结果"></el-table-column>
             <el-table-column align="right">
-              <template slot="header" slot-scope="scope">
+              <template slot="header">
                 <el-input v-model="search4" size="mini" placeholder="输入关键字搜索" />
               </template>
-              <template slot-scope="scope">
-                <el-button size="mini" type="primary" plain @click="pass(scope.row.applyId)">通过</el-button>
-                <el-button
-                  size="mini"
-                  type="primary"
-                  plain
-                  @click="refuse(scope.row.applyId)"
-                >拒绝</el-button>
-              </template>
             </el-table-column>
           </el-table>
         </el-tab-pane>
 
-        <el-tab-pane label="我的申请" name="fifth">
-          <el-table :data="myJoinApplyList1" height="600px" stripe style="width: 100%">
-            <el-table-column type="index" label="序号" width="50"></el-table-column>
-            <el-table-column prop="team.teamName" label="队伍名"></el-table-column>
-            <el-table-column prop="team.competition.competitionName" label="所属比赛"></el-table-column>
-            <el-table-column prop="applyState" label="申请状态"></el-table-column>
-            <el-table-column prop="applyTime" label="申请时间">
-              <template slot-scope="scope">
-                <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-                {{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
-              </template>
-            </el-table-column>
-            <el-table-column align="right">
-              <template slot="header" slot-scope="scope">
-                <el-input v-model="search5" size="mini" placeholder="输入关键字搜索" />
-              </template>
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  type="primary"
-                  plain
-                  @click="openDeleteTeam(scope.row.teamId)"
-                >撤销申请</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-tab-pane>
-
-        <el-tab-pane label="我的申请历史" name="sixth">
+        <el-tab-pane label="我的申请历史" name="myApplyHistory">
           <el-table :data="historyJoinApplyList1" height="600px" stripe style="width: 100%">
             <el-table-column type="index" label="序号" width="50"></el-table-column>
             <el-table-column prop="team.teamName" label="队伍名"></el-table-column>
@@ -250,13 +229,14 @@
   </el-container>
 </template>
 <script>
+import { log } from 'util';
 export default {
   computed: {
     CompetitionList: function() {
       return this.userCompetitionList.filter(item => {
         if (
           item.competition.competitionName.includes(this.search1) ||
-          item.competition.competitionPeoplenum.includes(this.search1) ||
+          item.competition.competitionPeopleSum.includes(this.search1) ||
           item.competition.competitionState.includes(this.search1) ||
           item.competition.competitionType.includes(this.search1)
         ) {
@@ -290,28 +270,32 @@ export default {
     },
 
     joinMyTeamList1: function() {
-      return this.joinMyTeamList.filter(item => {
-        if (
-          item.team.competition.competitionName.includes(this.search4) ||
-          item.team.teamName.includes(this.search4) ||
-          item.user.name.includes(this.search4)
-        ) {
-          return item;
-        }
-      });
+      if(this.joinMyTeamList != null){
+        return this.joinMyTeamList.filter(item => {
+          if (
+            item.team.competition.competitionName.includes(this.search4) ||
+            item.team.teamName.includes(this.search4) ||
+            item.user.name.includes(this.search4)
+          ) {
+            return item;
+          }
+        });
+      }
     },
 
     myDisposeList1: function() {
-      return this.myDisposeList.filter(item => {
-        if (
-          item.team.competition.competitionName.includes(this.search7) ||
-          item.team.teamName.includes(this.search7) ||
-          item.user.name.includes(this.search7) ||
-          item.applyState.includes(this.search7)
-        ) {
-          return item;
-        }
-      });
+      if(this.myDisposeList != null){
+        return this.myDisposeList.filter(item => {
+          if (
+            item.team.competition.competitionName.includes(this.search7) ||
+            item.team.teamName.includes(this.search7) ||
+            item.user.name.includes(this.search7) ||
+            item.applyState.includes(this.search7)
+          ) {
+            return item;
+          }
+        });
+      }
     },
 
     myJoinApplyList1: function() {
@@ -395,6 +379,17 @@ export default {
       this.dialogFormVisible = false;
     },
 
+    //查看比赛详情，data为竞赛的id
+        particulars(data){
+          //更新路由，将竞赛id带入新路由
+          this.$router.push({
+            path: '/home/competitionDetails',
+            query: {
+            competition: data
+            }
+          })
+        },
+
     //唤出管理队伍表单
     updateMyTeam(data) {
       console.log(data);
@@ -412,6 +407,22 @@ export default {
       this.ruleForm.competitionId = data.competition.competitionId;
       this.ruleForm.teamContent = data.teamContent;
       this.ruleForm.teamId = data.teamId;
+    },
+
+    //判断队伍是否达到竞赛规定人数
+    isManchu(data){
+      if(data.teamState != 0 && data.teamState != '未招募'){
+        return true;
+      }
+      return false;
+    },
+
+    //判断队伍是否处于招募中
+    isRecruiting(data){
+      if(data.teamState == 1 || data.teamState == '招募中'){
+        return false;
+      }
+      return true;
     },
 
     //退出队伍对话框
@@ -440,6 +451,83 @@ export default {
         })
         .catch(() => {});
     },
+
+    //招募队员
+    recruitUser(data){
+      this.$confirm(
+        "确认发起招募？发起后其他用户可申请加入该队伍, 申请加入我的可查看所有用户申请",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      )
+        .then(() => {
+          if(data.teamHeadcount == data.competition.competitionPeopleSum){
+            this.$message({
+                type: "success",
+                message: '该队伍已达竞赛规定人数'
+              });
+          }
+          else{
+            this.axios
+            .get("/recruit/recruitUser", { params: { teamId: data.teamId } })
+            .then(res => {
+              if(res.data.status == 1){
+                this.$message({
+                  type: "success",
+                  message: res.data.msg
+                });
+              }
+              else{
+                this.$message({
+                  type: "error",
+                  message: res.data.msg
+                });
+              }
+              
+            })
+            .catch();
+          }
+          
+        })
+        .catch(() => {});
+    },
+
+    //取消招募
+    cancelRecruit(data){
+      this.$confirm(
+        "确认取消招募？取消后用户将无法在招募列表看到此队伍，且无法提交加入该队伍申请",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      )
+      .then(() => {
+        this.axios.get("/recruit/cancelRecruit", { params: { teamId: data.teamId } })
+        .then(res => {
+          if(res.data.status == 1){
+            this.$message({
+              type: "success",
+              message: res.data.msg
+            });
+          }
+          else{
+            this.$message({
+              type: "error",
+              message: res.data.msg
+            });
+          }
+          
+        })
+        .catch();  
+      })
+      .catch(() => {});
+    },
+
 
     //解散队伍对话框
     openDeleteTeam(data) {
@@ -534,7 +622,7 @@ export default {
 
     //提交更新队伍信息表单
     submitUpdateForm(ruleForm) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[ruleForm].validate(valid => {
         if (valid) {
           this.axios
             .post("/team/updateMyTeam", {
@@ -611,24 +699,81 @@ export default {
 
     //通过加入队伍申请
     pass(data){
-      this.axios.get("/apply/pass",{params:{applyId: data}})
+      console.log(data)
+      this.axios.post("/apply/pass",
+      {applyId: data.applyId,
+      user: {userId: data.user.userId}, 
+      team: {teamId: data.team.teamId, teamHeadcount: data.team.teamHeadcount, 
+            competition: {competitionPeopleSum: data.team.competition.competitionPeopleSum} },
+      })
       .then((res)=>{
-
+        if(res.data.status == 1){
+          this.$message({
+            type: "success",
+            message: res.data.msg
+          });
+        }
+        else{
+          this.$message({
+            type: "error",
+            message: res.data.msg
+          });
+        }
       })
       .catch((res)=>{
 
       })
     },
 
+    //撤销加入队伍申请
+    cancelApply(data){
+      this.$confirm("此操作将撤销该申请, 但是可以在“组队·招募”再次发起申请", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+      .then(() => {
+        this.axios.get("/apply/cancelMyTeamApply",{params:{applyId: data.applyId}})
+        .then((res)=>{
+          if(res.data.status == 1){
+            console.log(res)
+            this.$message({
+              type: "success",
+              message: res.data.msg
+            });
+          }
+          else{
+            this.$message({
+              type: "error",
+              message: res.data.msg
+            });
+          }
+        })
+        .catch()
+      })
+      .catch(() => {});
+      
+    },
+
     //拒绝加入队伍申请
     refuse(data){
-      this.axios.get("/apply/refuse",{params:{applyId: data}})
+      this.axios.get("/apply/refuse",{params:{applyId: data.applyId}})
       .then((res)=>{
-
+        if(res.data.status == 1){
+          console.log(res)
+          this.$message({
+            type: "success",
+            message: res.data.msg
+          });
+        }
+        else{
+          this.$message({
+            type: "error",
+            message: res.data.msg
+          });
+        }
       })
-      .catch((res)=>{
-
-      })
+      .catch()
     },
 
     //解析队伍状态
@@ -661,7 +806,6 @@ export default {
     getJoinTeamList() {
       this.axios.get("/team/findJoinTeam")
         .then(res => {
-          console.log(res);
           this.joinTeamList = res.data.data.teams;
           //解析队伍状态
           this.joinTeamList.forEach(item => {
@@ -677,6 +821,7 @@ export default {
     getJoinMyTeamList() {
       this.axios.get("/team/joinMyTeamList")
         .then(res => {
+          console.log(res)
          this.joinMyTeamList = res.data.data.applies
         })
         .catch(res => {
@@ -728,28 +873,42 @@ export default {
         .catch(res => {
           console.log(res);
         });
+    },
+
+    //选中标签触发
+    handleClick(tab, event) {
+      if(tab.name == 'myCompetition'){
+        //获取我的比赛列表
+        this.getMyCompetitionList();
+      }
+      else if(tab.name == 'myCreateTeam'){
+        //获取我创建的队伍列表
+        this.getMyTeamList();
+      }
+      else if(tab.name == 'myJoinTeam'){
+        //获取当前用户加入的队伍列表
+        this.getJoinTeamList();
+      }
+      else if(tab.name == 'joinMyApply'){
+        //获取加入我的队伍所有申请
+        this.getJoinMyTeamList()
+      }
+      else if(tab.name == 'myApply'){
+        //获取我申请加入队伍的列表
+        this.getMyJoinApplyList()
+      }
+      else if(tab.name == 'myDispose'){
+        //获取当前用户已处理的申请列表
+        this.getMyDisposeList()
+      }
+      else if(tab.name == 'myApplyHistory'){
+        //获取我已结束申请加入队伍的列表
+        this.getHistoryJoinApplyList()
+      }
     }
   },
 
   created() {
-    //获取我的比赛列表
-    this.getMyCompetitionList();
-    //获取我创建的队伍列表
-    this.getMyTeamList();
-    //获取当前用户加入的队伍列表
-    this.getJoinTeamList();
-
-    //获取加入我的队伍所有申请
-    this.getJoinMyTeamList()
-
-    //获取我申请加入队伍的列表
-    this.getMyJoinApplyList()
-
-    //获取当前用户已处理的申请列表
-    this.getMyDisposeList()
-
-    //获取我已结束申请加入队伍的列表
-    this.getHistoryJoinApplyList()
 
     //查询所有组队比赛
     this.axios
