@@ -1,115 +1,132 @@
 <template>
   <el-container>
-    <el-dialog title="获奖-通知信息" :visible.sync="dialogFormVisible" width="60%">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="通知标题：" prop="notificationTitle">
-          <el-input v-model="ruleForm.notificationTitle"></el-input>
-        </el-form-item>
-        <el-form-item label="竞赛名：" prop="competitionId">
-          <el-select v-model="ruleForm.competitionId" placeholder="请选择比赛" @change="selectCompetition">
-            <el-option v-for="competition in competitionList" :key="competition.competitionId" :label="competition.competitionName" :value="competition.competitionId"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="通知方式：" prop="type">
-          <el-select v-model="ruleForm.type" placeholder="填写获奖信息或上传文件" >
-            <el-option label="上传获奖文件" value="file"></el-option>
-            <el-option label="填写获奖信息" value="message" :disabled="isTeam"></el-option>
-          </el-select>
-        </el-form-item>
-        <div v-if="ruleForm.type == 'file'?false:true">
-          获奖名单：
-          <el-select
-          v-model="ruleForm.selectWin"
-          multiple
-          filterable
-          allow-create
-          default-first-option
-          placeholder="姓名顺序即为排名">
-            <el-option
-              v-for="item in userList"
-              :key="item.userId"
-              :label="item.name"
-              :value="item.userId">
-            </el-option>
-          </el-select>
-        </div>
-        <!-- name:后端接收时的参数名 -->
-        <el-upload
-        v-if="ruleForm.type == 'file'?true:false"
-        :action="'http://localhost:8999/competition/file/uploadNoticeFile/'"
-        name="multipartFiles" 
-        :auto-upload=false
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :before-remove="beforeRemove"
-        :limit="3"
-        ref="upload"
-        :on-exceed="handleExceed"
-        :file-list="fileList">
-          <el-button size="small" type="primary">选择文件</el-button>
-          <div slot="tip" class="el-upload__tip">已选文件列表：</div>
-        </el-upload>    
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')" v-show="isAdd">提交</el-button>
-          <el-button type="primary" @click="submitUpdateForm('ruleForm')" v-show="!isAdd">提交修改</el-button>
-          <el-button @click="closeForm()">取消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
-    <el-table
-    :data="tableData"
-    style="width: 100%">
-      <el-table-column
-      label="序号"
-      type="index"
-      width="70"
-      align="center">
-      </el-table-column>
-      <el-table-column
-      property="notificationTitle"
-      label="标题"
-      align="center">
-      </el-table-column>
-      <el-table-column
-      property="notificationTime"
-      label="发布时间"
-      align="center">
-        <template slot-scope="scope">
-          <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-          {{scope.row.notificationTime==null?new Date():scope.row.notificationTime | dateFormart}}
-        </template>
-      </el-table-column>
-      <el-table-column align="center">
-        <template slot="header" slot-scope="scope">
-          <el-button
-          size="mini"
-          type="success"
-          plain
-          @click="addWinList()"
-          >发布获奖通知</el-button>  
-          <el-input
-          v-model="search"
-          size="mini"
-          placeholder="输入通知关键字搜索" 
-          width="50"/>   
-        </template>
-        <template slot-scope="scope">
-          <el-button
-          size="small"
-          type="primary"
-          plain
-          @click="update(scope.row)"
-          >编辑</el-button>
+    <el-main>
+      <el-dialog title="获奖-通知信息" :visible.sync="dialogFormVisible" width="60%">
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="通知标题：" prop="notificationTitle">
+            <el-input v-model="ruleForm.notificationTitle"></el-input>
+          </el-form-item>
+          <el-form-item label="竞赛名：" prop="competitionId">
+            <el-select v-model="ruleForm.competitionId" placeholder="请选择比赛" @change="selectCompetition">
+              <el-option v-for="competition in competitionList" :key="competition.competitionId" :label="competition.competitionName" :value="competition.competitionId"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="通知方式：" prop="type">
+            <el-select v-model="ruleForm.type" placeholder="填写获奖信息或上传文件" >
+              <el-option label="上传获奖文件" value="file"></el-option>
+              <el-option label="填写获奖信息" value="message" :disabled="isTeam"></el-option>
+            </el-select>
+          </el-form-item>
+          <div v-if="ruleForm.type == 'file'?false:true">
+            获奖名单：
+            <el-select
+            v-model="ruleForm.selectWin"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            placeholder="姓名顺序即为排名">
+              <el-option
+                v-for="item in userList"
+                :key="item.userId"
+                :label="item.name"
+                :value="item.userId">
+              </el-option>
+            </el-select>
+          </div>
+          <!-- name:后端接收时的参数名 -->
+          <el-upload
+          v-if="ruleForm.type == 'file'?true:false"
+          :action="'http://localhost:8999/competition/file/uploadNoticeFile/'"
+          name="multipartFiles" 
+          :auto-upload=false
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :before-remove="beforeRemove"
+          :limit="3"
+          ref="upload"
+          :on-exceed="handleExceed"
+          :file-list="fileList">
+            获奖文件：<el-button size="small" type="primary">选择文件</el-button>
+            <div slot="tip">已选文件列表：</div>
+          </el-upload>    
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('ruleForm')" v-show="isAdd">提交</el-button>
+            <el-button type="primary" @click="submitUpdateForm('ruleForm')" v-show="!isAdd">提交修改</el-button>
+            <el-button @click="closeForm()">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+      <el-table
+      :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+      style="width: 100%">
+        <el-table-column
+        label="序号"
+        type="index"
+        width="70"
+        align="center">
+        </el-table-column>
+        <el-table-column
+        property="notificationTitle"
+        label="标题"
+        align="center">
+        </el-table-column>
+        <el-table-column
+        property="notificationTime"
+        label="发布时间"
+        align="center">
+          <template slot-scope="scope">
+            <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
+            {{scope.row.notificationTime==null?new Date():scope.row.notificationTime | dateFormart}}
+          </template>
+        </el-table-column>
+        <el-table-column align="center">
+          <template slot="header" slot-scope="scope">
+            <el-button
+            size="mini"
+            type="success"
+            plain
+            @click="addWinList()"
+            >发布获奖通知</el-button>  
+            <el-input
+            prefix-icon="el-icon-search"
+            v-model="search"
+            size="mini"
+            placeholder="输入通知关键字搜索" 
+            width="50"/>   
+          </template>
+          <template slot-scope="scope">
+            <el-button
+            size="small"
+            type="primary"
+            plain
+            @click="update(scope.row)"
+            >编辑</el-button>
 
-          <el-button
-          size="mini"
-          type="danger"
-          plain
-          @click="openDeleteWindow(scope.row)"
-          >删除</el-button>    
-        </template>
-      </el-table-column>
-    </el-table>
+            <el-button
+            size="mini"
+            type="danger"
+            plain
+            @click="openDeleteWindow(scope.row)"
+            >删除</el-button>    
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="notificationList.length"
+        prev-text="上一页"
+        next-text="下一页"
+        style="text-align:center;
+          letter-spacing:4px;
+          margin-top:30px">
+      </el-pagination>
+    </el-main>
   </el-container>
 </template>
 <script>
@@ -127,6 +144,12 @@
     },
     data() {
       return {
+        //当前页
+        currentPage: 1,
+        //每页条数
+        pageSize: 5,
+        //当前行
+        currentRow: null,
         //暂存通知Id供修改通知时使用
         notificationId: '',
         isAdd: true,
@@ -427,6 +450,16 @@
 
       beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？不可逆操作`);
+      },
+
+      //监听页数改变
+      handleSizeChange: function(size){
+        this.pageSize = size
+      },
+
+      //监听当前页码
+        handleCurrentChange: function(currentPage){
+        this.currentPage = currentPage
       },
     },
 

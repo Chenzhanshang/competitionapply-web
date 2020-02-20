@@ -85,6 +85,10 @@
             value: ""
           },
           {
+            key: "电话",
+            value: ""
+          },
+          {
             key: "邮箱",
             value: ""
           }
@@ -157,12 +161,11 @@
           });
           //去除最后一个字符（，）
           this.tableData[7].value = this.tableData[7].value.substr(0, this.tableData[7].value.length - 1);
-          this.tableData[8].value = res.data.email;
+          this.tableData[8].value = res.data.phone;
+          this.tableData[9].value = res.data.email;
           this.user = res.data
         })
-        .catch((res)=>{
-            console.log(res);
-        })
+        .catch()
     }
 
 

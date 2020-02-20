@@ -49,6 +49,7 @@
                 <el-table-column label="操作" align="center">
                     <template slot="header" slot-scope="scope">
                         <el-input
+                        prefix-icon="el-icon-search"
                         v-model="search"
                         size="mini"
                         placeholder="输入关键字搜索" 
@@ -74,7 +75,8 @@
             prev-text="上一页"
             next-text="下一页"
             style="text-align:center;
-                    letter-spacing:4px">
+                    letter-spacing:4px;
+                    margin-top:30px">
             </el-pagination>
         </el-main>
     </el-container>

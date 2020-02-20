@@ -26,6 +26,8 @@ import myCompetitionAndTeam from '../components/myCompetitionAndTeam'
 
 import recruit from '../components/recruit'
 
+import reportList from '../adminPage/reportList'
+
 
 Vue.use(VueRouter)
 
@@ -105,6 +107,10 @@ const routes = [
       {
         path:'adminWinningNotification',
         component:adminWinningNotification
+      },
+      {
+        path:'reportList',
+        component:reportList
       },
       
     ]

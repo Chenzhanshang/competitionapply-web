@@ -71,7 +71,7 @@
             </el-table-column>
             <el-table-column align="right">
               <template slot="header" slot-scope="scope">
-                <el-input v-model="search1" size="mini" placeholder="输入关键字搜索" />
+                <el-input prefix-icon="el-icon-search" v-model="search1" size="mini" placeholder="输入关键字搜索" />
               </template>
               <template slot-scope="scope">
                 <el-button
@@ -97,8 +97,8 @@
               </template>
             </el-table-column>
             <el-table-column align="right">
-              <template slot="header">
-                <el-input v-model="search5" size="mini" placeholder="输入关键字搜索" />
+              <template slot="header" slot-scope="scope">
+                <el-input prefix-icon="el-icon-search" v-model="search5" size="mini" placeholder="输入关键字搜索" />
               </template>
               <template slot-scope="scope">
                 <el-button
@@ -119,7 +119,7 @@
             <el-table-column prop="teamState" label="队伍状态"></el-table-column>
             <el-table-column align="right">
               <template slot="header" slot-scope="scope">
-                <el-input v-model="search2" size="mini" placeholder="输入关键字搜索" />
+                <el-input prefix-icon="el-icon-search" v-model="search2" size="mini" placeholder="输入关键字搜索" />
               </template>
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" plain @click="openExitTeam(scope.row.teamId)">退出队伍</el-button>
@@ -136,8 +136,8 @@
             <el-table-column prop="teamHeadcount" label="当前人数"></el-table-column>
             <el-table-column prop="teamState" label="队伍状态"></el-table-column>
             <el-table-column align="right" width="350">
-              <template slot="header">
-                <el-input v-model="search3" size="mini" placeholder="输入关键字搜索" />
+              <template slot="header" slot-scope="scope">
+                <el-input prefix-icon="el-icon-search" v-model="search3" size="mini" placeholder="输入关键字搜索" />
               </template>
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" plain @click="updateMyTeam(scope.row)">管理</el-button>
@@ -168,7 +168,7 @@
             <el-table-column prop="user.name" label="申请人姓名"></el-table-column>
             <el-table-column align="right">
               <template slot="header" slot-scope="scope">
-                <el-input v-model="search4" size="mini" placeholder="输入关键字搜索" />
+                <el-input prefix-icon="el-icon-search" v-model="search4" size="mini" placeholder="输入关键字搜索" />
               </template>
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" plain @click="pass(scope.row)">通过</el-button>
@@ -192,8 +192,8 @@
             <el-table-column prop="user.name" label="申请人姓名"></el-table-column>
             <el-table-column prop="applyState" label="处理结果"></el-table-column>
             <el-table-column align="right">
-              <template slot="header">
-                <el-input v-model="search4" size="mini" placeholder="输入关键字搜索" />
+              <template slot="header" slot-scope="scope">
+                <el-input prefix-icon="el-icon-search" v-model="search4" size="mini" placeholder="输入关键字搜索" />
               </template>
             </el-table-column>
           </el-table>
@@ -219,7 +219,7 @@
             </el-table-column>
             <el-table-column align="right">
               <template slot="header" slot-scope="scope">
-                <el-input v-model="search6" size="mini" placeholder="输入关键字搜索" />
+                <el-input prefix-icon="el-icon-search" v-model="search6" size="mini" placeholder="输入关键字搜索" />
               </template>
             </el-table-column>
           </el-table>

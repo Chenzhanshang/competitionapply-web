@@ -95,7 +95,7 @@ export default {
                     });
                 }
                 else{
-                    if(this.team.state == 2){
+                    if(this.team.teamState == 2){
                         this.loading = true
                         this.axios.get("/apply/doApplyByTeam", {params:{teamId: this.team.teamId}})
                         .then((res)=>{
@@ -112,6 +112,7 @@ export default {
                         })
                     }
                     else{
+                        console.log(this.team)
                         this.$message({
                             type: 'error',
                             message: '比赛规定人数:' + this.competition.competitionPeopleSum + ',当前队伍人数' + this.team.teamHeadcount

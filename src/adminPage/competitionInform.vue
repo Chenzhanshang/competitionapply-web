@@ -74,10 +74,10 @@
           ref="upload"
           :on-exceed="handleExceed"
           :file-list="fileList">
-            <el-button size="small" type="primary">选择文件</el-button>
-            <div slot="tip" class="el-upload__tip">已选文件列表：</div>
+            比赛文件：<el-button size="small" type="primary">选择文件</el-button>
+            <div slot="tip">已选文件列表：</div>
           </el-upload>    
-          <el-form-item>
+          <el-form-item style="margin-top:20px">
             <el-button type="primary" :loading="loading" @click="submitForm('ruleForm')" v-show="isAdd">提交</el-button>
             <el-button type="primary" :loading="loading" @click="submitUpdateForm('ruleForm')" v-show="!isAdd">提交修改</el-button>
             <el-button @click="closeForm()">取消</el-button>
@@ -132,8 +132,8 @@
         <el-table-column
         align="center">
           <template slot="header" slot-scope="scope">
-            
             <el-input
+              prefix-icon="el-icon-search"
               v-model="search"
               size="mini"
               placeholder="输入关键字搜索" 
@@ -155,13 +155,21 @@
           </template>
         </el-table-column>
         <el-table-column >
-          <template slot="header" slot-scope="scope">
+          <template slot="header">
             <el-button
               size="mini"
               type="success"
               plain
               @click="add()"
               >新增比赛通知</el-button>  
+          </template>
+          <template slot-scope="scope" >
+            <el-button
+              size="mini"
+              type="warning"
+              plain
+              @click="showReportList(scope.row.competition)"
+              >查看已报名名单</el-button>  
           </template>
         </el-table-column>
       </el-table>
@@ -176,7 +184,8 @@
       prev-text="上一页"
       next-text="下一页"
       style="text-align:center;
-            letter-spacing:4px">
+        letter-spacing:4px;
+        margin-top:30px">
       </el-pagination>
     </el-main>
   </el-container>
@@ -541,6 +550,17 @@ export default {
       },
       beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？不可逆操作`);
+      },
+
+      //显示报名成员列表
+      showReportList(data){
+        //更新路由，将竞赛信息带入新路由
+        this.$router.push({
+          path: '/adminHome/reportList',
+          query: {
+            competitionId: data.competitionId
+          }
+        })
       }
     
 

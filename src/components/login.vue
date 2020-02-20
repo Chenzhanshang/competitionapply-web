@@ -10,10 +10,10 @@
           -->
           <el-form  ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="login-form" >
             <el-form-item label="用户名" prop="username">
-              <el-input v-model="ruleForm.username" placeholder="请输入用户名"></el-input>
+              <el-input prefix-icon="el-icon-user" v-model="ruleForm.username" placeholder="请输入用户名"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
-                <el-input type="password" v-model="ruleForm.password" placeholder="请输入密码" autocomplete="off"></el-input>
+                <el-input prefix-icon="el-icon-lock" type="password" v-model="ruleForm.password" placeholder="请输入密码" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="角色">
               <el-radio v-model="ruleForm.role" label="2">学生</el-radio>

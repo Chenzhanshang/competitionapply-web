@@ -31,8 +31,8 @@
             ref="upload"
             :on-exceed="handleExceed"
             :file-list="fileList">
-              <el-button size="small" type="primary">选择文件</el-button>
-              <div slot="tip" class="el-upload__tip">已选文件列表：</div>
+              公告文件：<el-button size="small" type="primary">选择文件</el-button>
+              <div slot="tip">已选文件列表：</div>
             </el-upload>    
             <el-form-item>
               <el-button type="primary" @click="submitForm('ruleForm')" v-show="isAdd">提交</el-button>

@@ -1,5 +1,6 @@
 <template>
     <el-container>
+        <el-main>
         <el-dialog title="获奖名单" :visible.sync="dialogTableVisible" :before-close="closeDialog">
         
         <el-table :data="winList" height = 400>
@@ -11,7 +12,7 @@
         </el-table>
         </el-dialog>
         <el-table
-        :data="tableData"
+        :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         style="width: 100%">
             <el-table-column
             label="序号"
@@ -35,13 +36,13 @@
             </el-table-column>
             <el-table-column align="center">
                 <template slot="header" slot-scope="scope">
-                
-                <el-input
-                v-model="search"
-                size="mini"
-                placeholder="输入竞赛名关键字搜索" 
-                width="50"/>   
-                </template>
+                    <el-input
+                    prefix-icon="el-icon-search"
+                    v-model="search"
+                    size="mini"
+                    placeholder="输入竞赛名关键字搜索" 
+                    width="50"/>   
+                    </template>
                 <template slot-scope="scope">
                     <el-button
                     v-if="!isFile(scope.row.isFile)"
@@ -60,6 +61,21 @@
  
             </el-table-column>
         </el-table>
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 15, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="notificationList.length"
+            prev-text="上一页"
+            next-text="下一页"
+            style="text-align:center;
+                letter-spacing:4px;
+                margin-top:30px">
+            </el-pagination>
+        </el-main>
     </el-container>
 
 </template>
@@ -84,6 +100,12 @@ export default {
     },
     data() {
         return {
+            //当前页
+            currentPage: 1,
+            //每页条数
+            pageSize: 5,
+            //当前行
+            currentRow: null,
             dialogTableVisible: false,
             currentRow: null,
             notificationList: [],
@@ -167,6 +189,15 @@ export default {
                 console.log(res)
             })
 
+        },
+        //监听页数改变
+        handleSizeChange: function(size){
+            this.pageSize = size
+        },
+
+        //监听当前页码
+            handleCurrentChange: function(currentPage){
+            this.currentPage = currentPage
         },
     },
     created(){
