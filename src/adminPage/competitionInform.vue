@@ -309,7 +309,8 @@ export default {
         if(res.data.data.notification.competition.competitionTime != "待定"){
           this.ruleForm.competitionTime = res.data.data.notification.competition.competitionTime
         }
-        this.ruleForm.competitionLevel = res.data.data.notification.competition.competitionLevel
+        //解析比赛级别
+        this.ruleForm.competitionLevel = this.analysisLevel(res.data.data.notification.competition.competitionLevel)
         this.ruleForm.competitionType = res.data.data.notification.competition.competitionType
         this.ruleForm.competitionState = res.data.data.notification.competition.competitionState
         this.ruleForm.notificationState = res.data.data.notification.notificationState
@@ -330,9 +331,7 @@ export default {
         }
         //this.ruleForm.competitionState = this.competition.competitionState
     })
-    .catch((res)=>{
-        console.log(res);
-    })
+    .catch()
       },
 
       //提交添加新比赛通知的表单
@@ -362,6 +361,7 @@ export default {
                   type: 'success',
                   message:res.data.msg
                 });
+                this.getCompetitionList()
               }
               else{
                 this.$message({
@@ -371,8 +371,7 @@ export default {
               }
               this.loading = false
             })
-            .catch((res)=>{
-            })
+            .catch()
           } else {
             this.loading = false
             return false;
@@ -392,6 +391,7 @@ export default {
             notificationId: this.ruleForm.notificationId,
             competitionName: this.ruleForm.competitionName,
             notificationTitle: this.ruleForm.notificationTitle,
+            competitionState:this.ruleForm.competitionState,
             competitionContent: this.ruleForm.competitionContent,
             competitionSite: this.ruleForm.competitionSite,
             competitionType: this.ruleForm.competitionType,
@@ -411,6 +411,7 @@ export default {
                   type: 'success',
                   message:res.data.msg
                 });
+                this.getCompetitionList()
               }
               else{
                 this.$message({
@@ -420,8 +421,7 @@ export default {
               }
               this.loading = false
             })
-            .catch((res)=>{
-            })
+            .catch()
           } else {
             this.loading = false
             return false;
@@ -459,26 +459,22 @@ export default {
           }).then(() => {
             this.axios.get("/notification/deleteByNotificationId", {params:{notificationId: data.notificationId,competitionId: data.competition.competitionId}})
             .then((res)=>{
-              //删除前端数据 
-              this.notificationList.forEach((notification,index) => {
-              if(notification.notificationId == data.notificationId){
-                //删除索引后的一个元素
-                this.notificationList.splice(index,1)
+              if(res.data.status == 1){
+                this.$message({
+                  type: 'success',
+                  message:res.data.msg 
+                });
+                this.getCompetitionList()
               }
-              this.$message({
-              type: 'success',
-              message:res.data.msg
-              
-              });
-              });
+              else{
+                this.$message({
+                  type: 'error',
+                  message:res.data.msg 
+                });
+              }
             })
-            .catch((res)=>{
-
-            })
-
-          }).catch(() => {  
-
-          });
+            .catch()
+          }).catch();
         },
 
       //解析比赛级别
@@ -528,18 +524,21 @@ export default {
         
         this.axios.get("/file/deleteFile", {params:{fileId:file.fileId}})
         .then((res)=>{
-          this.$message({
+          if(res.data.status == 1){
+            this.$message({
               type: 'success',
               message:res.data.msg 
             });
-        })
-        .catch((res)=>{
-          this.$message({
+          }
+          else{
+            this.$message({
               type: 'error',
               message:res.data.msg
-              
             });
+          }
+          
         })
+        .catch()
         console.log(file, fileList);
       },
       handlePreview(file) {
@@ -561,26 +560,22 @@ export default {
             competitionId: data.competitionId
           }
         })
+      },
+
+      //获取比赛通知列表
+      getCompetitionList(){
+        this.axios.get("/notification/findNotificationByType",{params:{notificationType: 0}})
+        .then((res)=>{
+          console.log(res)
+          this.notificationList = res.data.data.notifications
+        })
+        .catch()
       }
     
 
     },
     created(){
-      //查询竞赛通知数据列表
-      this.axios.get("/notification/findNotificationByType",{params:{notificationType: 0}})
-      .then((res)=>{
-        console.log(res)
-        this.notificationList = res.data.data.notifications
-        
-      })
-      .catch((res)=>{
-          this.$message({
-              type: 'error',
-              message:res.data.msg
-            });
-      })
-
-
+      this.getCompetitionList()
       //加载所有比赛类型
       this.axios.get("/notification/findAllType")
       .then((res)=>{
@@ -590,24 +585,18 @@ export default {
           });
 
         })
-        .catch((res)=>{
-          console.log(res.data)
-        })
+        .catch()
 
       //加载管理员学校的所有二级学院列表
       this.axios.get("/notification/findCollege")
       .then((res)=>{
-        console.log(res)
         res.data.data.colleges.forEach(college => {
             var json = {id: college.collegeId, name: college.collegeName}
             this.collegeList.push(json)
           });
-          console.log(this.collegeList)
 
         })
-        .catch((res)=>{
-          console.log(res.data)
-        })
+        .catch()
     }
 
   

@@ -40,7 +40,7 @@
         </el-table-column>
         <el-table-column
         align="center">
-          <template slot="header" slot-scope="scope">
+          <template slot="header" slot-scope="scope" v-if="competition.competitionPeopleSum == 1">
             <el-input
               prefix-icon="el-icon-search"
               v-model="search"
@@ -97,7 +97,7 @@
         </el-table-column>
         <el-table-column
         align="center">
-          <template slot="header" slot-scope="scope">
+          <template slot="header" slot-scope="scope" v-if="competition.competitionPeopleSum != 1">
             <el-input
               prefix-icon="el-icon-search"
               v-model="teamSearch"
@@ -121,7 +121,8 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
+      <el-pagination 
+      v-if="competition.competitionPeopleSum == 1"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
@@ -129,6 +130,22 @@
       :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="userList.length"
+      prev-text="上一页"
+      next-text="下一页"
+      style="text-align:center;
+        letter-spacing:4px;
+        margin-top:30px">
+      </el-pagination>
+      
+      <el-pagination 
+      v-if="competition.competitionPeopleSum != 1"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[5, 10, 15, 20]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="teamList.length"
       prev-text="上一页"
       next-text="下一页"
       style="text-align:center;
@@ -233,7 +250,6 @@ export default {
                     item.name.includes(this.search) ||
                     item.college.university.universityName.includes(this.search) ||
                     item.college.collegeName.includes(this.search) ||
-                    item.period.includes(this.search) ||
                     item.userClassName.includes(this.search)
                 ) {
                     return item;
@@ -379,6 +395,8 @@ export default {
                         type: 'success',
                         message:res.data.msg
                     });
+                    this.getList()
+                    
                 }
                 else{
                     this.$message({
@@ -409,6 +427,7 @@ export default {
                             type: 'success',
                             message:res.data.msg
                         });
+                        this.getList()
                     }
                     else{
                         this.$message({
@@ -449,31 +468,31 @@ export default {
         handleCurrentChange: function(currentPage){
             this.currentPage = currentPage
         },
+        getList(){
+          this.axios.get('competition/findCompetitionById',{params:{competitionId: this.$route.query.competitionId}})
+          .then((res)=>{
+            this.competition = res.data.data.competition
+            if(this.competition.competitionPeopleSum == 1){
+              this.axios.get('competition/getUserReportList',{params:{competitionId: this.competition.competitionId}})
+              .then((res)=>{
+                this.userList = res.data.data.users
+              })
+              .catch()
+            }
+            else{
+              this.axios.get('team/getTeamReportList',{params:{competitionId: this.competition.competitionId}})
+              .then((res=>{
+                this.teamList = res.data.data.teams
+              }))
+              .catch()
+            }
+          })
+          .catch()
+        }
 
     },
     created(){
-        console.log(this.$route.query.competitionId)
-        this.axios.get('competition/findCompetitionById',{params:{competitionId: this.$route.query.competitionId}})
-        .then((res)=>{
-            this.competition = res.data.data.competition
-            if(this.competition.competitionPeopleSum == 1){
-                this.axios.get('competition/getUserReportList',{params:{competitionId: this.competition.competitionId}})
-                .then((res)=>{
-                    this.userList = res.data.data.users
-                })
-                .catch()
-            }
-            else{
-                this.axios.get('team/getTeamReportList',{params:{competitionId: this.competition.competitionId}})
-                .then((res=>{
-                    console.log(res)
-                    this.teamList = res.data.data.teams
-                }))
-                .catch()
-            }
-        })
-        .catch()
-
+      this.getList()
         
     }
   }

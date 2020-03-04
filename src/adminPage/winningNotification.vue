@@ -17,7 +17,7 @@
               <el-option label="填写获奖信息" value="message" :disabled="isTeam"></el-option>
             </el-select>
           </el-form-item>
-          <div v-if="ruleForm.type == 'file'?false:true">
+          <div v-if="ruleForm.type == 'file'?false:true" style="padding-left:28px">
             获奖名单：
             <el-select
             v-model="ruleForm.selectWin"
@@ -266,8 +266,7 @@
             console.log(this.notificationId)
           } 
         })
-        .catch((res)=>{
-        })
+        .catch()
       },
 
       //提交修改
@@ -278,13 +277,14 @@
           notificationId: this.notificationId,
           competition:{competitionId:this.ruleForm.competitionId}})
           .then((res)=>{
-          //保存上传文件
-          this.$refs.upload.submit()
-          this.dialogFormVisible = false
+            if(res.data.status ==1){
+              //保存上传文件
+              this.$refs.upload.submit()
+              this.dialogFormVisible = false
+            }
+          
           })
-          .catch((res)=>{
-            console.log(res)
-          })
+          .catch()
         }
         else if(this.ruleForm.type == "message") {
           this.axios.post("/win/updateWinNotification",{notificationTitle:this.ruleForm.notificationTitle,
@@ -296,9 +296,7 @@
           console.log(res)
           this.dialogFormVisible = false
           })
-          .catch((res)=>{
-            console.log(res)
-          })
+          .catch()
         }
         console.log(this.ruleForm)
         this.$refs[ruleForm].validate((valid) => {
@@ -313,18 +311,21 @@
               //保存上传文件
               this.$refs.upload.submit()
               this.dialogFormVisible = false
+              if(res.data.status == 1){
               this.$message({
                 type: 'success',
-                message:res.data.msg
+                message:res.data.msg 
               });
+              this.getWinList()
+              }
+              else{
+                this.$message({
+                  type: 'error',
+                  message:res.data.msg 
+                });
+              }
             })
-            .catch((res)=>{
-              this.dialogFormVisible = false
-              this.$message({
-                type: 'error',
-                message:res.data.msg            
-              });
-            })
+            .catch()
           } else {
             return false;
           }
@@ -334,27 +335,28 @@
       //删除对话框
       openDeleteWindow(data) {
         console.log(data)
-        this.$confirm('此操作将永久删除该比赛通知及对应比赛内容和文件数据, 是否继续?', '提示', {
+        this.$confirm('此操作将永久删除该比赛获奖通知及对应比赛获奖内容和文件数据, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.axios.get("/win/deleteWinNotification", {params:{notificationId: data.notificationId,competitionId: data.competition.competitionId}})
           .then((res)=>{
-            //删除前端数据 
-            this.winList.forEach((notification,index) => {
-              if(notification.notificationId == data.notificationId){
-                //删除索引后的一个元素
-                this.winList.splice(index,1)
-              }
-            });
+            if(res.data.status == 1){
             this.$message({
-            type: 'success',
-            message:res.data.msg
+              type: 'success',
+              message:res.data.msg 
             });
+            this.getWinList()
+            }
+            else{
+              this.$message({
+                type: 'error',
+                message:res.data.msg 
+              });
+            }
           })
-          .catch((res)=>{
-          })
+          .catch()
         }).catch(() => {  
         });
       },
@@ -388,8 +390,7 @@
           console.log(res)
           this.userList = res.data.data.users
         })
-        .catch((res)=>{
-        })
+        .catch()
       },
 
        //提交表单
@@ -401,11 +402,22 @@
           .then((res)=>{
           //保存上传文件
           this.$refs.upload.submit()
+          if(res.data.status == 1){
+            this.$message({
+              type: 'success',
+              message:res.data.msg 
+            });
+            this.getWinList()
+          }
+          else{
+            this.$message({
+              type: 'error',
+              message:res.data.msg 
+            });
+          }
           this.dialogFormVisible = false
           })
-          .catch((res)=>{
-            console.log(res)
-          })
+          .catch()
         }
         else if(this.ruleForm.type == "message") {
             this.axios.post("/win/insertWinNotification",{notificationTitle:this.ruleForm.notificationTitle,
@@ -413,12 +425,22 @@
             userIds:this.ruleForm.selectWin
           })
           .then((res)=>{
-          console.log(res)
-          this.dialogFormVisible = false
+            if(res.data.status == 1){
+              this.$message({
+                type: 'success',
+                message:res.data.msg 
+              });
+              this.getWinList()
+            }
+            else{
+              this.$message({
+                type: 'error',
+                message:res.data.msg 
+              });
+            }
+            this.dialogFormVisible = false
           })
-          .catch((res)=>{
-            console.log(res)
-          })
+          .catch()
         }
       },
 
@@ -426,17 +448,20 @@
       handleRemove(file, fileList) {
         this.axios.get("/file/deleteFile", {params:{fileId:file.fileId}})
         .then((res)=>{
-          this.$message({
-            type: 'success',
-            message:res.data.msg 
-          });
+          if(res.data.status == 1){
+            this.$message({
+              type: 'success',
+              message:res.data.msg 
+            });
+          }
+          else{
+            this.$message({
+              type: 'error',
+              message:res.data.msg 
+            });
+          }
         })
-        .catch((res)=>{
-          this.$message({
-            type: 'error',
-            message:res.data.msg
-          });
-        })
+        .catch()
         console.log(file, fileList);
       },
 
@@ -461,18 +486,19 @@
         handleCurrentChange: function(currentPage){
         this.currentPage = currentPage
       },
+
+      //查询获奖通知数据列表
+      getWinList(){
+        this.axios.get("/win/findAllWinNotification")
+        .then((res)=>{
+          this.notificationList = res.data.data.notifications
+        })
+        .catch()
+      }
     },
 
     created(){
-      //查询获奖通知数据列表
-      this.axios.get("/win/findAllWinNotification")
-      .then((res)=>{
-        this.notificationList = res.data.data.notifications
-      })
-      .catch((res)=>{
-          console.log(res)
-      })
-
+      this.getWinList()
       //查询所有比赛
       this.axios.get("/competition/findAllCompetition")
       .then((res)=>{

@@ -108,6 +108,7 @@ export default {
                     type: "success",
                     message: res.data.msg
                   });
+                  this.getRecruitList()
                 }
                 else{
                   this.$message({
@@ -117,9 +118,7 @@ export default {
                 }
                 
             })
-            .catch((res)=>{
-                console.log(res)
-            })
+            .catch()
         },
 
         //关闭表单
@@ -136,18 +135,20 @@ export default {
             handleCurrentChange: function(currentPage){
             this.currentPage = currentPage
         },
+        //加载正在招募的队伍列表
+        getRecruitList(){
+          this.axios.get("/recruit/findAllRecruitTeam")
+          .then((res)=>{
+            console.log(res)
+            this.teamList = res.data.data.teams
+          })
+          .catch()
+        }
+        
     },
 
     created(){
-        //加载正在招募的队伍列表
-        this.axios.get("/recruit/findAllRecruitTeam")
-        .then((res)=>{
-            console.log(res)
-            this.teamList = res.data.data.teams
-        })
-        .catch((res)=>{
-
-        })
+        this.getRecruitList()
     }
 }
 </script>

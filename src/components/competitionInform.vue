@@ -42,7 +42,7 @@
                 </el-table-column>
                 <el-table-column
                 property="notificationState"
-                label="状态"
+                label="通知状态"
                 width="90"
                 align="center">
                 </el-table-column>
@@ -162,12 +162,7 @@ export default {
             this.notificationList = res.data.data.notifications
             console.log(this.notificationList)
         })
-        .catch((res)=>{
-            this.$message({
-                type: 'error',
-                message:res.data.msg
-              });
-        })
+        .catch()
     }
   }
 </script>

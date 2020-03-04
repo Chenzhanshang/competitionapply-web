@@ -3,10 +3,15 @@
         <el-header>
         
             <el-menu :router=true :default-active="activeIndex" class="el-menu-demo" active-text-color="#409EFF" mode="horizontal">
-              <el-menu-item index="/adminHome/personalInformation">个人信息</el-menu-item>
               <el-menu-item index="/adminHome/adminCompetitionInform">竞赛通知管理</el-menu-item>
               <el-menu-item index="/adminHome/adminSystemNotice">系统公告管理</el-menu-item>
               <el-menu-item index="/adminHome/adminWinningNotification">获奖通告管理</el-menu-item>
+              
+              <el-submenu index="7">
+                <template slot="title">反馈建议管理</template>
+                <el-menu-item index="/adminHome/advice" >待处理反馈</el-menu-item>
+                <el-menu-item index="/adminHome/disposeAdvice" >已处理反馈</el-menu-item>
+              </el-submenu>
               <el-submenu index="8" style="position:absolute;right:10px">
                 <template slot="title">{{user.userName}}</template>
                 <el-menu-item @click="updatePassword">修改密码</el-menu-item>
@@ -29,10 +34,9 @@
 
     data() {
       return {
-        competitionInform: this.nowRole == '1' ? "/home/competitionInform" : "/home/adminCompetitionInform",
         role: '',
         user: '',
-        activeIndex: '',
+        activeIndex: '/adminHome/adminCompetitionInform',
         index: ''
       };
     },
@@ -47,17 +51,21 @@
             console.log(value)
             this.axios.post("/user/updatePassword",{password: value})
           .then((res)=>{
-            this.$message({
-              type:'success',
-              message:res.data.msg
-            })
+            if(res.data.status){
+              this.$message({
+                type:'success',
+                message:res.data.msg
+              })
+            }
+            else{
+              this.$message({
+                type:'warning',
+                message:"修改密码失败"
+              })
+            }
+            
           })
-          .catch((res)=>{
-            this.$message({
-              type:'warning',
-              message:"修改密码失败"
-            })
-          })
+          .catch()
         })
         .catch(() => {
          });
@@ -67,19 +75,22 @@
             .then((res)=>{
                 console.log(res)
                 if(res.data.status == 1){
-                    this.$message({
-                        type:'success',
-                        message:res.data.msg
-                    })
+                  this.$message({
+                    type:'success',
+                    message:res.data.msg
+                  })
+                  this.$router.push({path:'/'})
                 }
-                this.$router.push({path:'/'})
+                else{
+                  this.$message({
+                    type:'warning',
+                    message:"安全退出失败"
+                  })
+                }
+                
+               
             })
-            .catch((res)=>[
-                this.$message({
-                        type:'warning',
-                        message:"安全退出失败"
-                    })
-            ])
+            .catch()
         },
     },
     created(){
@@ -91,9 +102,9 @@
 
             //this.$router.push("/home/adminHomePagePromote")
         })
-        .catch((res)=>{
-            console.log(res);
-        })
+        .catch()
+        //更新路由
+        this.$router.push('/adminHome/adminCompetitionInform')
     }
 
 

@@ -87,9 +87,7 @@ export default {
 
         this.tableData[8].value = res.data.email;
       })
-      .catch(res => {
-        console.log(res);
-      });
+      .catch();
   }
 };
 </script>

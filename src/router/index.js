@@ -28,6 +28,9 @@ import recruit from '../components/recruit'
 
 import reportList from '../adminPage/reportList'
 
+import advice from '../adminPage/advice'
+
+import disposeAdvice from '../adminPage/disposeAdvice'
 
 Vue.use(VueRouter)
 
@@ -112,7 +115,14 @@ const routes = [
         path:'reportList',
         component:reportList
       },
-      
+      {
+        path:'advice',
+        component:advice
+      },
+      {
+        path:'disposeAdvice',
+        component:disposeAdvice
+      },
     ]
   },
   

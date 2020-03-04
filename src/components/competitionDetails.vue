@@ -34,14 +34,14 @@
                 type="primary"
                 :loading="loading"
                 plain
-                :disabled = "buttonState"
+                :disabled = "buttonState || over"
                 @click="apply()">{{buttonState == false ? "报名" : "已报名"}}</el-button>
                 <el-button
                 size="small"
                 type="primary"
                 :loading="cancelLoding"
                 plain
-                :disabled = "!buttonState"
+                :disabled = "!buttonState || over"
                 @click="cancelApply()">取消报名</el-button>
         </div>
          
@@ -56,6 +56,8 @@ export default {
             competition: '',
             loading: false,
             teamList: [],
+            //竞赛已结束标识
+            over:false,
             team: '',
             teamName: '',
             cancelLoding: false,
@@ -260,6 +262,9 @@ export default {
             this.competition = res.data.data.competition
             if(this.competition.competitionTime == null || this.competition.competitionTime == ''){
                 this.competition.competitionTime = "待定"
+            }
+            if(this.competition.competitionState != 1 ){
+                this.over = true
             }
             console.log(this.competition)
         })

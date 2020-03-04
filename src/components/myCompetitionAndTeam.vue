@@ -45,9 +45,11 @@
             </el-table>
           </div>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')" v-show="isAdd">提交</el-button>
-            <el-button type="primary" @click="submitUpdateForm('ruleForm')" v-show="!isAdd">提交修改</el-button>
-            <el-button @click="closeForm()">取消</el-button>
+            <div style="padding:20px 0px 0px 120px">
+              <el-button type="success" @click="submitForm('ruleForm')" v-show="isAdd" plain>提交</el-button>
+              <el-button type="success" @click="submitUpdateForm('ruleForm')" v-show="!isAdd" plain>提交修改</el-button>
+              <el-button @click="closeForm()">取消</el-button>
+            </div>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -59,7 +61,7 @@
         <el-tab-pane label="我的比赛" name="myCompetition" >
           <el-table :data="CompetitionList" height="600px" stripe style="width: 100%">
             <el-table-column type="index" label="序号" width="50"></el-table-column>
-            <el-table-column prop="competition.competitionName" label="比赛名" width="350"></el-table-column>
+            <el-table-column prop="competition.competitionName" label="比赛名" width="180"></el-table-column>
             <el-table-column prop="competition.competitionType" label="比赛类型"></el-table-column>
             <el-table-column prop="competition.competitionPeopleSum" label="个人赛·组队赛"></el-table-column>
             <el-table-column prop="competition.competitionState" label="比赛状态"></el-table-column>
@@ -437,17 +439,21 @@ export default {
           this.axios
             .get("/team/exitTeam", { params: { teamId: data } })
             .then(res => {
-              this.$message({
-                type: "success",
-                message: res.data.msg
-              });
+              if(res.data.status == 1){
+                this.$message({
+                  type: "success",
+                  message: res.data.msg
+                });
+                this.getJoinTeamList()
+              }
+              else{
+                this.$message({
+                  type: "error",
+                  message: res.data.msg
+                });
+              }
             })
-            .catch(res => {
-              this.$message({
-                type: "error",
-                message: res.data.msg
-              });
-            });
+            .catch()
         })
         .catch(() => {});
     },
@@ -479,6 +485,7 @@ export default {
                   type: "success",
                   message: res.data.msg
                 });
+                this.getMyTeamList();
               }
               else{
                 this.$message({
@@ -514,6 +521,7 @@ export default {
               type: "success",
               message: res.data.msg
             });
+            this.getMyTeamList();
           }
           else{
             this.$message({
@@ -545,17 +553,21 @@ export default {
           this.axios
             .get("/team/deleteTeam", { params: { teamId: data } })
             .then(res => {
-              this.$message({
-                type: "success",
-                message: res.data.msg
-              });
+              if(res.data.status == 1){
+                this.$message({
+                  type: "success",
+                  message: res.data.msg
+                });
+                this.getMyTeamList()
+              }
+              else{
+                this.$message({
+                  type: "error",
+                  message: res.data.msg
+                });
+              }
             })
-            .catch(res => {
-              this.$message({
-                type: "error",
-                message: res.data.msg
-              });
-            });
+            .catch();
         })
         .catch(() => {});
     },
@@ -574,17 +586,22 @@ export default {
               params: { teamId: this.ruleForm.teamId, userId: data }
             })
             .then(res => {
-              this.$message({
-                type: "success",
-               message: res.data.msg
-              });
+              if(res.data.status == 1){
+                this.$message({
+                  type: "success",
+                  message: res.data.msg
+                });
+                this.dialogFormVisible = false
+              }
+              else{
+                this.$message({
+                  type: "error",
+                  message: res.data.msg
+                });
+              }
+              
             })
-            .catch(res => {
-              this.$message({
-                type: "error",
-                message: res.data.msg
-              });
-            });
+            .catch();
         })
         .catch(() => {});
     },
@@ -600,19 +617,22 @@ export default {
               competition: { competitionId: this.ruleForm.competitionId }
             })
             .then(res => {
-              this.dialogFormVisible = false;
-              this.$message({
-                type: "success",
-                message: res.data.msg
-              });
+              if(res.data.status == 1){
+                this.$message({
+                  type: "success",
+                  message: res.data.msg
+                });
+                this.dialogFormVisible = false;
+                this.getMyTeamList()
+              }
+              else{
+                this.$message({
+                  type: "error",
+                  message: res.data.msg
+                });
+              }
             })
-            .catch(res => {
-              console.log(res);
-              this.$message({
-                type: "error",
-                message: res.data.msg
-              });
-            });
+            .catch();
         } else {
           console.log("error submit!!");
           return false;
@@ -631,19 +651,22 @@ export default {
               teamName: this.ruleForm.teamName
             })
             .then(res => {
-              this.dialogFormVisible = false;
-              this.$message({
-                type: "success",
-                message: res.data.msg
-              });
+              if(res.data.status == 1){
+                this.$message({
+                  type: "success",
+                  message: res.data.msg
+                });
+                this.dialogFormVisible = false;
+                this.getMyTeamList()
+              }
+              else{
+                this.$message({
+                  type: "error",
+                  message: res.data.msg
+                });
+              }
             })
-            .catch(res => {
-              console.log(res);
-              this.$message({
-                type: "error",
-                message: res.data.msg
-              });
-            });
+            .catch();
         } else {
           console.log("error submit!!");
           return false;
@@ -712,6 +735,7 @@ export default {
             type: "success",
             message: res.data.msg
           });
+          this.getJoinMyTeamList()
         }
         else{
           this.$message({
@@ -720,9 +744,7 @@ export default {
           });
         }
       })
-      .catch((res)=>{
-
-      })
+      .catch()
     },
 
     //撤销加入队伍申请
@@ -741,6 +763,7 @@ export default {
               type: "success",
               message: res.data.msg
             });
+            this.getMyJoinApplyList()
           }
           else{
             this.$message({
@@ -765,6 +788,7 @@ export default {
             type: "success",
             message: res.data.msg
           });
+          this.getJoinMyTeamList()
         }
         else{
           this.$message({
@@ -797,9 +821,7 @@ export default {
             item.teamState = this.analysisTeamState(item.teamState);
           });
         })
-        .catch(res => {
-          console.log(res);
-        });
+        .catch();
     },
 
     //获取当前用户加入的队伍列表
@@ -812,9 +834,7 @@ export default {
             item.teamState = this.analysisTeamState(item.teamState);
           });
         })
-        .catch(res => {
-          console.log(res);
-        });
+        .catch();
     },
 
     //获取申请加入当前用户的队伍的申请列表
@@ -824,9 +844,7 @@ export default {
           console.log(res)
          this.joinMyTeamList = res.data.data.applies
         })
-        .catch(res => {
-          console.log(res);
-        });
+        .catch();
     },
 
     //获取当前用户已处理的申请列表
@@ -840,9 +858,7 @@ export default {
             item.applyState = this.analysisApplyState(item.applyState);
           });
         })
-        .catch(res => {
-          console.log(res);
-        });
+        .catch();
     },
 
     //获取我正在申请加入队伍的列表
@@ -855,9 +871,7 @@ export default {
             item.applyState = this.analysisApplyState(item.applyState);
           });
         })
-        .catch(res => {
-          console.log(res);
-        });
+        .catch();
     },
 
     //获取我已结束申请加入队伍的列表
@@ -870,9 +884,7 @@ export default {
             item.applyState = this.analysisApplyState(item.applyState);
           });
         })
-        .catch(res => {
-          console.log(res);
-        });
+        .catch();
     },
 
     //选中标签触发

@@ -92,6 +92,7 @@ import SIdentify from '@/components/SIdentify'
         console.log(this.ruleForm.role)
         this.loading = true
         this.$refs[formName].validate((valid) => {
+          this.refreshCode()
           if (valid) {
             this.axios.post("/user/login",{
               userName: this.ruleForm.username,
@@ -123,8 +124,7 @@ import SIdentify from '@/components/SIdentify'
               }
 
             })
-            .catch((res)=>{
-            })
+            .catch()
           } else {
             console.log('error submit!!');
             this.loading = false
@@ -136,6 +136,7 @@ import SIdentify from '@/components/SIdentify'
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+        this.refreshCode()
       },
       
       // 生成随机数

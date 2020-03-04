@@ -134,9 +134,7 @@ export default {
                 }
                 
             })
-            .catch((res)=>{
-
-            })
+            .catch()
         },
 
         //关闭弹窗前进行该操作
@@ -185,9 +183,7 @@ export default {
                 }
 
             })
-            .catch((res)=>{
-                console.log(res)
-            })
+            .catch()
 
         },
         //监听页数改变
@@ -208,9 +204,7 @@ export default {
             this.notificationList = res.data.data.notifications
      
         })
-        .catch((res)=>{
-            console.log(res)
-        })
+        .catch()
     }
   }
 </script>

@@ -116,9 +116,7 @@ export default {
         this.ruleForm.competitionSite = this.competition.competitionSite
         //this.ruleForm.competitionState = this.competition.competitionState
     })
-    .catch((res)=>{
-        console.log(res);
-    })
+    .catch()
 },
 }
 </script>

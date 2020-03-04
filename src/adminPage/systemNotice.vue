@@ -65,12 +65,13 @@
               <el-button @click="downloadFile(file.fileId,file.fileName)" size="mini" >下载</el-button>
             </div>
         </el-card>
-        <div>
-          <el-button type="success" plain @click="update()">修改该公告</el-button>
+        <div style="float:right; padding: 20px 10px 0px 0px">
+          <el-button type="warning" plain @click="handleDelete()">删除</el-button>
         </div>
-        <div>
-          <el-button type="success" plain @click="handleDelete()">删除该公告</el-button>
+        <div style="float:right; padding: 20px 20px 0px 0px">
+          <el-button type="danger" plain @click="update()">修改</el-button>
         </div>
+        
       </el-main>
     </el-container>
   </el-container>
@@ -189,8 +190,9 @@ export default {
               this.$message({
                 type: 'success',
                 message:res.data.msg
-                
               });
+              this.getSystemList()
+              this.notification = ''
             }
             else{
               this.dialogFormVisible = false
@@ -201,8 +203,7 @@ export default {
             }
             
           })
-          .catch((res)=>{
-          })
+          .catch()
         } else {
           return false;
         }
@@ -213,17 +214,23 @@ export default {
     handleDelete(){
       this.axios.get("/notice/deleteNotice",{params:{notificationId:this.notificationId}})
       .then((res)=>{
-        this.$message({
-          type: 'success',
-          message:res.data.msg
-        });
+        if(res.data.status == 1){
+          this.$message({
+            type: 'success',
+            message:res.data.msg
+          });
+          this.getSystemList()
+          this.notification = ''
+        }
+        else{
+          this.$message({
+            type: 'error',
+            message:res.data.msg
+          });
+        }
+        
       })
-      .catch((res)=>{
-        this.$message({
-          type: 'error',
-          message:res.data.msg
-        });
-      })
+      .catch()
     },
 
     //新增系统公告
@@ -238,21 +245,26 @@ export default {
           notificationTitle: this.ruleForm.notificationTitle,
           })
           .then((res)=>{
-            //保存上传文件
-            this.$refs.upload.submit()
-            this.dialogFormVisible = false
-            this.$message({
-              type: 'success',
-              message:res.data.msg
-            });
+            
+            if(res.data.status == 1){
+              //保存上传文件
+              this.$refs.upload.submit()
+              this.dialogFormVisible = false
+              this.$message({
+                type: 'success',
+                message:res.data.msg
+              });
+              this.getSystemList()
+            } 
+            else{
+              this.$message({
+                type: 'error',
+                message:res.data.msg            
+              });
+            }
+            
           })
-          .catch((res)=>{
-            this.dialogFormVisible = false
-            this.$message({
-              type: 'error',
-              message:res.data.msg            
-            });
-          })
+          .catch()
         } else {
           return false;
         }
@@ -289,9 +301,7 @@ export default {
             }
 
           })
-          .catch((res)=>{
-              console.log(res)
-          })
+          .catch()
 
       },
 
@@ -300,18 +310,21 @@ export default {
       
       this.axios.get("/file/deleteFile", {params:{fileId:file.fileId}})
       .then((res)=>{
-        this.$message({
+        if(res.data.status == 1){
+          this.$message({
             type: 'success',
             message:res.data.msg 
           });
-      })
-      .catch((res)=>{
-        this.$message({
+        }
+        else{
+          this.$message({
             type: 'error',
             message:res.data.msg
-            
           });
+        }
+        
       })
+      .catch()
       console.log(file, fileList);
     },
     handlePreview(file) {
@@ -322,17 +335,20 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${ file.name }？不可逆操作`);
-    },   
+    }, 
+    
+    //获取公告列表
+    getSystemList(){
+      this.axios.get("/notice/findAll")
+      .then((res)=>{
+        this.notificationList = res.data.data.notifications
+        console.log(this.notificationList)
+      })
+      .catch()
+    }
   },
   created(){
-    this.axios.get("/notice/findAll")
-    .then((res)=>{
-      this.notificationList = res.data.data.notifications
-      console.log(this.notificationList)
-    })
-    .catch((res)=>{
-      console.log(res)
-    })
+    this.getSystemList()
   }
 }
 </script>

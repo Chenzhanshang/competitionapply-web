@@ -92,9 +92,7 @@
           }
         }
       })
-      .catch((res)=>{
-          console.log(res)
-      })
+      .catch()
     },
   },
 
@@ -104,9 +102,7 @@
       this.notificationList = res.data.data.notifications
       console.log(this.notificationList)
     })
-    .catch((res)=>{
-      console.log(res)
-    })
+    .catch()
   }
 }
 </script>
