@@ -1,12 +1,12 @@
 <template>
   <el-container>
     <el-main>
-      <el-dialog title="获奖-通知信息" :visible.sync="dialogFormVisible" width="60%">
+      <el-dialog title="获奖-通知信息" :visible.sync="dialogFormVisible" width="60%" center>
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="通知标题：" prop="notificationTitle">
             <el-input v-model="ruleForm.notificationTitle"></el-input>
           </el-form-item>
-          <el-form-item label="竞赛名：" prop="competitionId">
+          <el-form-item label="竞赛名称：" prop="competitionId">
             <el-select v-model="ruleForm.competitionId" placeholder="请选择比赛" @change="selectCompetition">
               <el-option v-for="competition in competitionList" :key="competition.competitionId" :label="competition.competitionName" :value="competition.competitionId"></el-option>
             </el-select>
@@ -47,13 +47,15 @@
           ref="upload"
           :on-exceed="handleExceed"
           :file-list="fileList">
-            获奖文件：<el-button size="small" type="primary">选择文件</el-button>
-            <div slot="tip">已选文件列表：</div>
+            <span style="margin-left:15px">公告文件：</span><el-button size="small" id="select-button">选择文件</el-button>
+            <div slot="tip" class="tip">已选文件：</div>
           </el-upload>    
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')" v-show="isAdd">提交</el-button>
-            <el-button type="primary" @click="submitUpdateForm('ruleForm')" v-show="!isAdd">提交修改</el-button>
-            <el-button @click="closeForm()">取消</el-button>
+            <div id="submit-button">
+              <el-button type="primary" @click="submitForm('ruleForm')" v-show="isAdd">提交</el-button>
+              <el-button type="primary" @click="submitUpdateForm('ruleForm')" v-show="!isAdd">提交修改</el-button>
+              <el-button @click="closeForm()">取消</el-button>
+            </div>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -87,6 +89,7 @@
             type="success"
             plain
             @click="addWinList()"
+            style="margin:0 0 3px 0"
             >发布获奖通知</el-button>  
             <el-input
             prefix-icon="el-icon-search"
@@ -514,5 +517,19 @@
   .transfer-footer {
     margin-left: 20px;
     padding: 6px 5px;
+  }
+  #submit-button{
+    text-align: center;
+    margin-right:13% ;
+    margin-top: 20px;
+    
+  }
+
+  .tip{
+    margin: 8px 0 5px 15px;
+  }
+
+  #select-button{
+    margin-left: 16px;
   }
 </style>

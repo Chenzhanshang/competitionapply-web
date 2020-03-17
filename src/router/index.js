@@ -7,14 +7,12 @@ import home from '../components/home'
 import adminHome from '../adminPage/home'
 
 import homePagePromote from '../components/homePagePromote'
-import adminHomePagePromote from '../adminPage/homePagePromote'
 import personalInformation from '../components/personalInformation'
 
 import competitionInform from '../components/competitionInform'
 import adminCompetitionInform from '../adminPage/competitionInform'
 
 import competitionDetails from '../components/competitionDetails'
-import adminCompetitionDetails from '../adminPage/competitionDetails'
 
 import systemNotice from '../components/systemNotice'
 import adminSystemNotice from '../adminPage/systemNotice'
@@ -92,16 +90,8 @@ const routes = [
     component:adminHome,
     children:[
       {
-        path:'adminHomePagePromote',
-        component:adminHomePagePromote
-      },
-      {
         path:'adminCompetitionInform',
         component:adminCompetitionInform
-      },
-      {
-        path:'adminCompetitionDetails',
-        component:adminCompetitionDetails
       },
       {
         path:'adminSystemNotice',

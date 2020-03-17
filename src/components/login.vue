@@ -1,30 +1,32 @@
 <template>
   <el-container>
+    <div class="background">
+        <img :src="imgSrc" width="100%" height="100%" />
+    </div>
     <el-header>
     </el-header>
     <el-main class="main">
       <el-row type="flex" align="middle" justify="center" >
-        <el-col  :xs="18" :sm="14" :md="10" :lg="8" :xl="8"  >
-          <!--
-          <p class="login-title">竞赛报名系统</p>
-          -->
+        <el-col  :xs="18" :sm="14" :md="10" :lg="8" :xl="8"  :pull="1" >
+          
           <el-form  ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="login-form" >
+            <p class="login-title">竞赛报名系统</p>
             <el-form-item label="用户名" prop="username">
               <el-input prefix-icon="el-icon-user" v-model="ruleForm.username" placeholder="请输入用户名"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
                 <el-input prefix-icon="el-icon-lock" type="password" v-model="ruleForm.password" placeholder="请输入密码" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="角色">
+            <el-form-item label="角色" prop="role">
               <el-radio v-model="ruleForm.role" label="2">学生</el-radio>
               <el-radio v-model="ruleForm.role" label="1">管理员</el-radio>
             </el-form-item>
             <el-form-item label="验证码" prop="verifycode">
               <el-row :span="24">
-                <el-col :span="12">
+                <el-col :span="16">
                   <el-input v-model="ruleForm.verifycode" auto-complete="off" placeholder="请输入验证码" size=""></el-input>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
                   <div class="login-code" @click="refreshCode">
                     <!--验证码组件-->
                     <s-identify :identifyCode="identifyCode"></s-identify>
@@ -62,12 +64,17 @@ import SIdentify from '@/components/SIdentify'
       }
       return {
         loading: false,
+        //背景图
+        imgSrc:require('../assets/backgroundImage.jpg'),
+        //当前验证码
         identifyCode:'',
+        //验证码包含随机内容
         identifyCodes:'1234567890',
         ruleForm: {
           password: '',
           username: '',
           role: '2',
+          //表单验证码
           verifycode:'',
         },
         rules: {
@@ -78,7 +85,7 @@ import SIdentify from '@/components/SIdentify'
            {required: true, message: '密码不可为空', trigger: 'blur'}
           ],
           role: [
-           {required: true, message: '请选择角色', trigger: 'blur'}
+           {required: true, message: '请选择角色', trigger: 'change'}
           ],
           verifycode: [
             { required: true, trigger: 'blur', validator: validateVerifycode }
@@ -167,28 +174,41 @@ import SIdentify from '@/components/SIdentify'
 
   .login-form {
     border: 1px solid #DCDFE6;
-    width: 120%;
+    width: 100%;
     height: 100%;
-    margin:  15px 15px;
-    padding: 40px 40px 20px 40px;
-    box-shadow: 0 0 25px #7e8aa0;
+    margin:  8px 15px 15px 15px;
+    padding: 30px 40px 10px 20px;
+    box-shadow: 0 0 10px #7e8aa0;
+    background-color: #FFFFFF;
   }
 
   .login-title {
-    font-size: 40px;
-    letter-spacing: 20px;
+    font-size: 25px;
+    letter-spacing: 30px;
     text-align: center;
-    margin: 0 auto 30px auto;
+    margin: 0px 0px 25px 37px;
     color: #292c31;
   }
   .main{
     margin-top: calc(5vh);
   }
+
   .form-button{
-    margin-right: 17%;
+    margin-right: 15%;
+  }
+
+  .form-button{
+    margin-left: 8%;
   }
 
   .col{
     text-align: center
   }
+
+  .background{
+    width:99%;  
+    height:98%;  /**宽高98-99%，图片铺满屏幕，且不出现滚动条 */
+    z-index:-1;
+    position: absolute;
+    }
 </style>

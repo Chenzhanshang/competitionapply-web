@@ -1,5 +1,6 @@
 <template>
     <el-container>
+        <!-- 头部导航栏 -->
         <el-header>
             <el-menu :router=true :default-active="activeIndex" class="el-menu-demo" active-text-color="#409EFF" mode="horizontal" @select="handleSelect">
               <el-menu-item index="/home/homePagePromote" >首页推广</el-menu-item>
@@ -16,7 +17,7 @@
                 <el-menu-item @click="dialogFormVisible = true">投诉建议</el-menu-item>
               </el-submenu>
 
-            <el-dialog title="请填写投诉建议信息" :visible.sync="dialogFormVisible">
+            <el-dialog title="请填写投诉建议信息" :visible.sync="dialogFormVisible" center>
               <el-form ref="couplBackForm" :rules="rules" :model="couplBackForm" label-width="120px" size="mini">
               <el-form-item label="反馈类型：" prop="type">
                 <el-radio-group v-model="couplBackForm.type" size="small" >

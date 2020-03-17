@@ -2,7 +2,7 @@
   <el-container>
     <el-aside>
       <el-menu >
-          <el-menu-item-group >
+          <el-menu-item-group>
             <el-menu-item v-for="notification in notificationList" :key="notification.notificationId" @click="select(notification.notificationId)">
               {{notification.notificationTitle}}
             </el-menu-item>
@@ -42,7 +42,7 @@
   export default {
     data() {
       return {
-        activeIndex: 0,
+        active:'',
         notificationList: [],
         notification: '',
       }
@@ -101,6 +101,9 @@
     .then((res)=>{
       this.notificationList = res.data.data.notifications
       console.log(this.notificationList)
+      if(res.data.status == 1){
+        this.notification = this.notificationList[0]
+      }
     })
     .catch()
   }

@@ -11,7 +11,7 @@
     </el-aside>
     <el-container>  
       <el-main width:150px v-if="notification != ''">
-        <el-dialog title="公告信息" :visible.sync="dialogFormVisible" width="60%">
+        <el-dialog title="公告信息" :visible.sync="dialogFormVisible" width="60%" center>
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
             <el-form-item label="公告标题：" prop="notificationTitle">
               <el-input v-model="ruleForm.notificationTitle"></el-input>
@@ -31,19 +31,18 @@
             ref="upload"
             :on-exceed="handleExceed"
             :file-list="fileList">
-              公告文件：<el-button size="small" type="primary">选择文件</el-button>
-              <div slot="tip">已选文件列表：</div>
+              <span style="margin-left:15px">公告文件：</span><el-button size="small" id="select-button">选择文件</el-button>
+              <div slot="tip" class="tip">已选文件：</div>
             </el-upload>    
             <el-form-item>
-              <el-button type="primary" @click="submitForm('ruleForm')" v-show="isAdd">提交</el-button>
-              <el-button type="primary" @click="submitUpdateForm('ruleForm')" v-show="!isAdd">提交修改</el-button>
-              <el-button @click="closeForm()">取消</el-button>
+              <div id="submit-button">
+                <el-button type="primary" @click="submitUpdateForm('ruleForm')" >提交修改</el-button>
+                <el-button @click="closeForm()">取消</el-button>
+              </div>
             </el-form-item>
           </el-form>
         </el-dialog>
-        <div style="text-align:right">
-          <el-button type="success" plain @click="add()">新增公告</el-button>
-        </div>
+        
         <h3 style="text-align:center">{{notification.notificationTitle}}</h3>
         <div style="text-align:center">
           发布时间：
@@ -54,22 +53,21 @@
         </div>
         <el-divider></el-divider>
         <div>
-          {{this.notification.notificationContent}}
+          公告内容：{{this.notification.notificationContent}}
         </div>
         <el-divider v-if="notification.files.length != 0"></el-divider>
-        <div class="comp" v-if="notification.files.length != 0">附件：</div>
+        <div class="comp" v-if="notification.files.length != 0">公告附件：</div>
         <el-card class="box-card" v-if="notification.files.length != 0">
-            <div v-for="(file,index) in this.notification.files" :key="file.fileId" class="text file">
-              文件{{index+1}}:
+            <div v-for="(file) in this.notification.files" :key="file.fileId" class="text file">
               <el-link  target="_blank">{{file.fileName}}</el-link>
-              <el-button @click="downloadFile(file.fileId,file.fileName)" size="mini" >下载</el-button>
+              <el-button @click="downloadFile(file.fileId,file.fileName)" size="mini" id="download">下载</el-button>
             </div>
         </el-card>
         <div style="float:right; padding: 20px 10px 0px 0px">
-          <el-button type="warning" plain @click="handleDelete()">删除</el-button>
+          <el-button type="danger" plain @click="handleDelete()" size="small">删除</el-button>
         </div>
         <div style="float:right; padding: 20px 20px 0px 0px">
-          <el-button type="danger" plain @click="update()">修改</el-button>
+          <el-button type="warning" plain @click="update()" size="small">修改</el-button>
         </div>
         
       </el-main>
@@ -86,8 +84,6 @@ export default {
       notification: '',
       //控制表单显示
       dialogFormVisible: false,
-      //是否为添加操作
-      isAdd: false,
       //当前的公告id
       notificationId: '',
       ruleForm:{
@@ -133,22 +129,11 @@ export default {
       this.dialogFormVisible = false
     },
 
-    //新增公告表单回显控制
-    add(){
-      this.dialogFormVisible = true
-      this.isAdd = true
-      //清空原有文件列表
-      this.fileList = []
-      this.ruleForm.notificationTitle = ''
-      this.ruleForm.notificationContent = ''
-    },
-
     //修改公告表单控制
     update(){
     //清空原有文件列表
     this.fileList = []
     this.dialogFormVisible = true
-    this.isAdd = false
     try{
       this.notificationList.forEach(item=>{
         if(item.notificationId === this.notificationId){
@@ -233,43 +218,6 @@ export default {
       .catch()
     },
 
-    //新增系统公告
-    //ruleForm参数需要进行校验时必须，否则this.$refs[ruleForm].validate((valid)报空指针
-    submitForm(ruleForm){
-      console.log(this.ruleForm)
-      this.$refs[ruleForm].validate((valid) => {
-        if (valid) {
-          //保存表单的比赛，通知，文件信息
-          this.axios.post("/notice/insertNotice",{
-          notificationContent: this.ruleForm.notificationContent,
-          notificationTitle: this.ruleForm.notificationTitle,
-          })
-          .then((res)=>{
-            
-            if(res.data.status == 1){
-              //保存上传文件
-              this.$refs.upload.submit()
-              this.dialogFormVisible = false
-              this.$message({
-                type: 'success',
-                message:res.data.msg
-              });
-              this.getSystemList()
-            } 
-            else{
-              this.$message({
-                type: 'error',
-                message:res.data.msg            
-              });
-            }
-            
-          })
-          .catch()
-        } else {
-          return false;
-        }
-      });
-    },
 
     //下载文件
       downloadFile(fileId,fileName){
@@ -305,7 +253,7 @@ export default {
 
       },
 
-      //上传文件相关方法
+    //上传文件相关方法
     handleRemove(file, fileList) {
       
       this.axios.get("/file/deleteFile", {params:{fileId:file.fileId}})
@@ -343,6 +291,9 @@ export default {
       .then((res)=>{
         this.notificationList = res.data.data.notifications
         console.log(this.notificationList)
+        if(res.data.status == 1){
+          this.notification = this.notificationList[0]
+        }
       })
       .catch()
     }
@@ -354,8 +305,27 @@ export default {
 </script>
 
 <style>
-  
+  .box-card{
+    margin-top: 15px;
+  }
   .el-aside {
     color: #333;
+  }
+  #download{
+    margin-left: 10px;
+  }
+  #submit-button{
+    text-align: center;
+    margin-right:13% ;
+    margin-top: 20px;
+    
+  }
+
+  .tip{
+    margin: 8px 0 5px 15px;
+  }
+
+  #select-button{
+    margin-left: 16px;
   }
 </style>

@@ -222,9 +222,7 @@ export default {
                 }
 
             })
-            .catch((res)=>{
-                console.log(res)
-            })
+            .catch()
 
         },
     },

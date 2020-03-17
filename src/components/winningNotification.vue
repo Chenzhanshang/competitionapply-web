@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-main>
-        <el-dialog title="获奖名单" :visible.sync="dialogTableVisible" :before-close="closeDialog">
+        <el-dialog title="获奖名单" :visible.sync="dialogTableVisible" :before-close="closeDialog" center>
         
         <el-table :data="winList" height = 400>
             <el-table-column property="winRanking" label="名次" ></el-table-column>

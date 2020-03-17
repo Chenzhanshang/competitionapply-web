@@ -1,7 +1,7 @@
 <template>
     <el-container>
       <el-main>
-        <el-dialog title="申请信息" :visible.sync="dialogFormVisible">
+        <el-dialog title="申请信息" :visible.sync="dialogFormVisible" center>
           <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
             <el-form-item label="队伍名：" prop="teamName" >
               <el-input v-model="ruleForm.teamName" disabled></el-input>

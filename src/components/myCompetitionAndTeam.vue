@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-main>
-      <el-dialog title="队伍信息" :visible.sync="dialogFormVisible" width="60%">
+      <el-dialog title="队伍信息" :visible.sync="dialogFormVisible" width="60%" center>
         <el-form
           :model="ruleForm"
           :rules="rules"

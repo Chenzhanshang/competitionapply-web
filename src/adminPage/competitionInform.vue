@@ -1,12 +1,12 @@
 <template>
   <el-container>
     <el-main>
-      <el-dialog title="比赛-通知信息" :visible.sync="dialogFormVisible" width="60%">
+      <el-dialog title="比赛-通知信息" :visible.sync="dialogFormVisible" width="60%" center>
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="通知标题：" prop="notificationTitle">
             <el-input v-model="ruleForm.notificationTitle"></el-input>
           </el-form-item>
-          <el-form-item label="竞赛名：" prop="competitionName">
+          <el-form-item label="竞赛名称：" prop="competitionName">
             <el-input v-model="ruleForm.competitionName"></el-input>
           </el-form-item>
           <el-form-item label="竞赛内容：" prop="competitionContent">
@@ -62,7 +62,6 @@
               <el-option v-for="types in competitionTypes" :key="types.id" :label="types.name" :value="types.name"></el-option>
             </el-select>
           </el-form-item>
-          <!-- name:后端接收时的参数名 -->
           <el-upload
           :action="'http://localhost:8999/competition/file/uploadFile/'"
           name="multipartFiles" 
@@ -74,13 +73,15 @@
           ref="upload"
           :on-exceed="handleExceed"
           :file-list="fileList">
-            比赛文件：<el-button size="small" type="primary">选择文件</el-button>
-            <div slot="tip">已选文件列表：</div>
+            <span style="margin-left:15px">公告文件：</span><el-button size="small" id="select-button">选择文件</el-button>
+            <div slot="tip" class="tip">已选文件：</div>
           </el-upload>    
           <el-form-item style="margin-top:20px">
-            <el-button type="primary" :loading="loading" @click="submitForm('ruleForm')" v-show="isAdd">提交</el-button>
-            <el-button type="primary" :loading="loading" @click="submitUpdateForm('ruleForm')" v-show="!isAdd">提交修改</el-button>
-            <el-button @click="closeForm()">取消</el-button>
+            <div id="submit-button">
+              <el-button type="primary" :loading="loading" @click="submitForm('ruleForm')" v-show="isAdd">提交</el-button>
+              <el-button type="primary" :loading="loading" @click="submitUpdateForm('ruleForm')" v-show="!isAdd">提交修改</el-button>
+              <el-button @click="closeForm()">取消</el-button>
+            </div>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -474,7 +475,8 @@ export default {
               }
             })
             .catch()
-          }).catch();
+          }).catch(() => {  
+        });
         },
 
       //解析比赛级别
@@ -603,3 +605,20 @@ export default {
 
   }
 </script>
+
+<style>
+  #submit-button{
+    text-align: center;
+    margin-right:13% ;
+    margin-top: 20px;
+    
+  }
+
+  .tip{
+    margin: 8px 0 5px 15px;
+  }
+
+  #select-button{
+    margin-left: 16px;
+  }
+</style>
