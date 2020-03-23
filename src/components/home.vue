@@ -62,7 +62,7 @@
     <el-main>
         <router-view></router-view>
     </el-main>
-
+    <div id="footer" ><span>作者：CZS</span><p>QQ:642125256</p><span>e-mail:642125256@qq.com</span></div>
 </el-container>
 
 </template>
@@ -292,3 +292,19 @@ import SIdentify from '@/components/SIdentify'
 
   
 </script>
+<style>
+  #footer {
+    height: 70px;
+    padding-top: 10px;
+    line-height: 11px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background: #F5F6F5;
+    color: #282928;
+    font-family: Arial;
+    font-size: 12px;
+    letter-spacing: 1px;
+    }
+</style>

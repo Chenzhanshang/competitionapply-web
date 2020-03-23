@@ -56,6 +56,7 @@
       <el-tabs
         :tab-position="'left'"
         @tab-click="handleClick"
+        value="myCompetition"
         style="height: 600px;"
       >
         <el-tab-pane label="我的比赛" name="myCompetition" >
@@ -930,6 +931,11 @@ export default {
         this.teamCompetitionList = res.data.data.competitions;
       })
       .catch(res => {});
+      //获取我的比赛列表(默认界面)
+      this.getMyCompetitionList()
   }
+
+  
+  
 };
 </script>

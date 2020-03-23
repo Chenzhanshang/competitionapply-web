@@ -38,6 +38,34 @@ Vue.filter('dateFormart',function(date,formart ='yyyy-MM-dd HH:mm:ss'){
 
 })
 
+//界面加载时判断是否已登录，通过type=login控制是否校验登录
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+  const type = to.meta.type
+  // 判断该路由是否需要登录权限
+  if (type === 'login') {
+    axios.get('/user/isLogin')
+    .then((res)=>{
+      if(res.data.status == 1001){
+        //在main.js直接使用element的$message组件
+        Vue.prototype.$message({
+          type: "error",
+          message: res.data.msg
+        });
+        next('/login')
+      }
+      else{
+        next()
+      }
+    })
+    .catch()
+  } else {
+    next()  // 确保一定要有next()被调用
+  }
+})
+
 new Vue({
   router,
   render: h => h(App),

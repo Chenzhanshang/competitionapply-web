@@ -41,44 +41,84 @@ const routes = [
   {
     name:'/login',
     path:'/login',
-    component:login
+    component:login,
+    meta: {
+      title: '登录',
+      type: '' // 是否需要判断是否登录,非login不需要判断
+    }
   },
   {
     name:'home',
     path:'/home',
     component:home,
+    meta: {
+      title: '登录',
+      type: 'login'  // 是否需要判断是否登录,login表示需要判断
+    },
     children:[
       {
         path:'homePagePromote',
-        component:homePagePromote
+        component:homePagePromote,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       {
         path:'personalInformation',
-        component:personalInformation
+        component:personalInformation,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       {
         path:'competitionInform',
-        component:competitionInform
+        component:competitionInform,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       {
         path:'competitionDetails',
-        component:competitionDetails
+        component:competitionDetails,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       {
         path:'systemNotice',
-        component:systemNotice
+        component:systemNotice,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       {
         path:'winningNotification',
-        component:winningNotification
+        component:winningNotification,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       {
         path:'myCompetitionAndTeam',
-        component:myCompetitionAndTeam
+        component:myCompetitionAndTeam,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       {
         path:'recruit',
-        component:recruit
+        component:recruit,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       
     ]
@@ -88,30 +128,58 @@ const routes = [
     name:'adminHome',
     path:'/adminHome',
     component:adminHome,
+    meta: {
+      title: '登录',
+      type: 'login' 
+    },
     children:[
       {
         path:'adminCompetitionInform',
-        component:adminCompetitionInform
+        component:adminCompetitionInform,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       {
         path:'adminSystemNotice',
-        component:adminSystemNotice
+        component:adminSystemNotice,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       {
         path:'adminWinningNotification',
-        component:adminWinningNotification
+        component:adminWinningNotification,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       {
         path:'reportList',
-        component:reportList
+        component:reportList,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       {
         path:'advice',
-        component:advice
+        component:advice,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
       {
         path:'disposeAdvice',
-        component:disposeAdvice
+        component:disposeAdvice,
+        meta: {
+          title: '登录',
+          type: 'login' 
+        }
       },
     ]
   },

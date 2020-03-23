@@ -9,7 +9,7 @@
       <el-row type="flex" align="middle" justify="center" >
         <el-col  :xs="18" :sm="14" :md="10" :lg="8" :xl="8"  :pull="1" >
           
-          <el-form  ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="login-form" >
+          <el-form  ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" class="login-form" >
             <p class="login-title">竞赛报名系统</p>
             <el-form-item label="用户名" prop="username">
               <el-input prefix-icon="el-icon-user" v-model="ruleForm.username" placeholder="请输入用户名"></el-input>
@@ -23,10 +23,10 @@
             </el-form-item>
             <el-form-item label="验证码" prop="verifycode">
               <el-row :span="24">
-                <el-col :span="16">
+                <el-col :span="15">
                   <el-input v-model="ruleForm.verifycode" auto-complete="off" placeholder="请输入验证码" size=""></el-input>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="9">
                   <div class="login-code" @click="refreshCode">
                     <!--验证码组件-->
                     <s-identify :identifyCode="identifyCode"></s-identify>
@@ -35,7 +35,7 @@
               </el-row>
             </el-form-item>
             <el-form-item class="form-item-button">
-              <el-button type="primary" :loading="loading" @click="submitForm('ruleForm')" class="form-button">{{loading==false?'登录':'登录中'}}</el-button>
+              <el-button type="success" :loading="loading" @click="submitForm('ruleForm')" class="form-button">{{loading==false?'登录':'登录中'}}</el-button>
               <el-button @click="resetForm('ruleForm')" class="form-button">重置</el-button>
             </el-form-item>
           </el-form>
@@ -51,10 +51,12 @@ import SIdentify from '@/components/SIdentify'
     data() {
       // 验证码自定义验证规则
       const validateVerifycode = (rule, value, callback) => {
+
         if (value === '') {
           callback(new Error('请输入验证码'))
         } 
-        else if (value !== this.identifyCode) {
+        //不区分大小写比较
+        else if (value.toLowerCase() !== this.identifyCode.toLowerCase()) {
           console.log('validateVerifycode:', value)
           callback(new Error('验证码不正确!'))
         } 
@@ -69,7 +71,7 @@ import SIdentify from '@/components/SIdentify'
         //当前验证码
         identifyCode:'',
         //验证码包含随机内容
-        identifyCodes:'1234567890',
+        identifyCodes:'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
         ruleForm: {
           password: '',
           username: '',
@@ -170,35 +172,32 @@ import SIdentify from '@/components/SIdentify'
   }
 </script>
 
-<style scoped>
+<style>
+  
 
   .login-form {
-    border: 1px solid #DCDFE6;
     width: 100%;
     height: 100%;
     margin:  8px 15px 15px 15px;
     padding: 30px 40px 10px 20px;
-    box-shadow: 0 0 10px #7e8aa0;
-    background-color: #FFFFFF;
   }
 
   .login-title {
     font-size: 25px;
-    letter-spacing: 30px;
     text-align: center;
     margin: 0px 0px 25px 37px;
-    color: #292c31;
+    color: white;
   }
   .main{
     margin-top: calc(5vh);
+    
   }
 
-  .form-button{
-    margin-right: 15%;
-  }
+  
 
-  .form-button{
-    margin-left: 8%;
+
+  .login-code{
+    margin-top: 4px;
   }
 
   .col{
@@ -211,4 +210,29 @@ import SIdentify from '@/components/SIdentify'
     z-index:-1;
     position: absolute;
     }
+
+
+    .el-radio__label{color:white}
+
+     .login-form .el-form-item label:after {
+        content: "";
+        display: inline-block;
+        width: 100%;
+    }
+
+    .login-form .el-form-item__label {
+        text-align: justify;
+        height: 50px;
+        color:white
+    }
+
+    .login-form .el-form-item.is-required .el-form-item__label:before {
+        content: none !important;
+    }
+
+    .login-form .form-button{
+    margin-right: 15%;
+    margin-left: 13%;
+  }
+
 </style>
