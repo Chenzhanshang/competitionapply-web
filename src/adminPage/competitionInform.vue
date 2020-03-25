@@ -337,7 +337,6 @@ export default {
 
       //提交添加新比赛通知的表单
       submitForm(ruleForm){
-        console.log(this.ruleForm)
         this.loading = true
         this.$refs[ruleForm].validate((valid) => {
           if (valid) {
