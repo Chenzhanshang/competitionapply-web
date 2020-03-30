@@ -1,7 +1,7 @@
  <template>
     <el-container direction="vertical" >
         <div class="comp">
-            竞赛名：{{competition.competitionName}}
+            竞赛名称：{{competition.competitionName}}
         </div>
         <div class="comp">
             竞赛内容：{{competition.competitionContent}}
@@ -15,12 +15,12 @@
         <div class="comp">
             竞赛状态：{{competition.competitionState==1  ?'进行中':'已结束'}}
         </div>
-        <div class="comp">竞赛文件列表：</div>
+        <div class="comp">文件列表：</div>
         <el-card class="box-card">
             <div v-for="(file,index) in this.competition.files" :key="file.fileId" class="text file">
                 文件{{index+1}}:
                 <el-link  target="_blank">{{file.fileName}}</el-link>
-                <el-button @click="downloadFile(file.fileId,file.fileName)" size="mini" >下载</el-button>
+                <el-button @click="downloadFile(file.fileId,file.fileName)" size="mini" style="margin-left:10px" icon="el-icon-download" >下载</el-button>
             </div>
         </el-card>
         <!--@click.native绑定select点击事件 -->
@@ -35,11 +35,13 @@
                 :loading="loading"
                 plain
                 :disabled = "buttonState || over"
+                icon="el-icon-circle-plus"
                 @click="apply()">{{buttonState == false ? "报名" : "已报名"}}</el-button>
                 <el-button
                 size="small"
-                type="primary"
+                type="danger"
                 :loading="cancelLoding"
+                icon="el-icon-remove"
                 plain
                 :disabled = "!buttonState || over"
                 @click="cancelApply()">取消报名</el-button>
@@ -273,19 +275,20 @@ export default {
 
 <style scoped>
     .comp{
-        margin-top: 30px;
-        
+        margin-top: 20px;
+        padding: 0 0 15px 20px;
     }
 
     .text {
-    font-size: 14px;
+        font-size: 14px;
     }
-    
+
     .file {
-    padding: 8px 0;
+        padding: 8px 0 0 0px;
     }
 
     .box-card {
-    width: 100%;
+        width: 90%;
+        margin-left: 40px;
     }
 </style>

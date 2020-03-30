@@ -52,7 +52,7 @@ const routes = [
     path:'/home',
     component:home,
     meta: {
-      title: '登录',
+      title: '首页',
       type: 'login'  // 是否需要判断是否登录,login表示需要判断
     },
     children:[
@@ -60,7 +60,7 @@ const routes = [
         path:'homePagePromote',
         component:homePagePromote,
         meta: {
-          title: '登录',
+          title: '宣传信息',
           type: 'login' 
         }
       },
@@ -68,7 +68,7 @@ const routes = [
         path:'personalInformation',
         component:personalInformation,
         meta: {
-          title: '登录',
+          title: '个人信息',
           type: 'login' 
         }
       },
@@ -76,7 +76,7 @@ const routes = [
         path:'competitionInform',
         component:competitionInform,
         meta: {
-          title: '登录',
+          title: '竞赛通知',
           type: 'login' 
         }
       },
@@ -84,7 +84,7 @@ const routes = [
         path:'competitionDetails',
         component:competitionDetails,
         meta: {
-          title: '登录',
+          title: '竞赛详情',
           type: 'login' 
         }
       },
@@ -92,7 +92,7 @@ const routes = [
         path:'systemNotice',
         component:systemNotice,
         meta: {
-          title: '登录',
+          title: '系统公告',
           type: 'login' 
         }
       },
@@ -100,7 +100,7 @@ const routes = [
         path:'winningNotification',
         component:winningNotification,
         meta: {
-          title: '登录',
+          title: '获奖通知',
           type: 'login' 
         }
       },
@@ -108,7 +108,7 @@ const routes = [
         path:'myCompetitionAndTeam',
         component:myCompetitionAndTeam,
         meta: {
-          title: '登录',
+          title: '管理队伍',
           type: 'login' 
         }
       },
@@ -116,7 +116,7 @@ const routes = [
         path:'recruit',
         component:recruit,
         meta: {
-          title: '登录',
+          title: '招募信息',
           type: 'login' 
         }
       },
@@ -129,7 +129,7 @@ const routes = [
     path:'/adminHome',
     component:adminHome,
     meta: {
-      title: '登录',
+      title: '管理员首页',
       type: 'login' 
     },
     children:[
@@ -137,7 +137,7 @@ const routes = [
         path:'adminCompetitionInform',
         component:adminCompetitionInform,
         meta: {
-          title: '登录',
+          title: '竞赛通知',
           type: 'login' 
         }
       },
@@ -145,7 +145,7 @@ const routes = [
         path:'adminSystemNotice',
         component:adminSystemNotice,
         meta: {
-          title: '登录',
+          title: '系统公告',
           type: 'login' 
         }
       },
@@ -153,7 +153,7 @@ const routes = [
         path:'adminWinningNotification',
         component:adminWinningNotification,
         meta: {
-          title: '登录',
+          title: '获奖通知',
           type: 'login' 
         }
       },
@@ -161,7 +161,7 @@ const routes = [
         path:'reportList',
         component:reportList,
         meta: {
-          title: '登录',
+          title: '报名列表',
           type: 'login' 
         }
       },
@@ -169,7 +169,7 @@ const routes = [
         path:'advice',
         component:advice,
         meta: {
-          title: '登录',
+          title: '反馈建议',
           type: 'login' 
         }
       },
@@ -177,7 +177,7 @@ const routes = [
         path:'disposeAdvice',
         component:disposeAdvice,
         meta: {
-          title: '登录',
+          title: '反馈建议',
           type: 'login' 
         }
       },

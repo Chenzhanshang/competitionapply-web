@@ -1,7 +1,7 @@
 <template> 
   <el-container>
     <el-aside>
-      <el-menu >
+      <el-menu style="height:550px">
           <el-menu-item-group>
             <el-menu-item v-for="notification in notificationList" :key="notification.notificationId" @click="select(notification.notificationId)">
               {{notification.notificationTitle}}
@@ -26,10 +26,10 @@
         <el-divider v-if="notification.files.length != 0"></el-divider>
         <div class="comp" v-if="notification.files.length != 0">附件：</div>
         <el-card class="box-card" v-if="notification.files.length != 0">
-            <div v-for="(file,index) in this.notification.files" :key="file.fileId" class="text file">
+            <div v-for="(file,index) in this.notification.files" :key="file.fileId" style="padding:10px">
               文件{{index+1}}:
               <el-link  target="_blank">{{file.fileName}}</el-link>
-              <el-button @click="downloadFile(file.fileId,file.fileName)" size="mini" >下载</el-button>
+              <el-button @click="downloadFile(file.fileId,file.fileName)" icon="el-icon-download" size="mini" style="margin-left:10px" >下载</el-button>
             </div>
         </el-card>
       </el-main>

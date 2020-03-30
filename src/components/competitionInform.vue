@@ -3,6 +3,8 @@
         <el-main>
             <el-table
             :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            stripe 
+            :height="tableHeight"
             style="width: 100%">
                 <el-table-column
                 label="序号"
@@ -59,6 +61,7 @@
                         <el-button
                         size="small"
                         type="primary"
+                        icon="el-icon-more"
                         plain
                         @click="particulars(scope.row.competition)">查看详情</el-button>
                     </template>
@@ -108,10 +111,11 @@ export default {
             currentPage: 1,
             //每页条数
             pageSize: 5,
+            //表格高度,行高55.6px,乘以size行加1行表头，默认默认55.3 * 6
+            tableHeight:55.3 * 6 ,
             //当前行
             currentRow: null,
             search: '',
-            currentRow: null,
             notificationList: []
         }
     },
@@ -146,6 +150,12 @@ export default {
         },
         //监听页数改变
         handleSizeChange: function(size){
+            if(size <= this.notificationList.length){
+                this.tableHeight = 55.6 * (size + 1)
+            }
+            else{
+                this.tableHeight = 55.6 * (this.notificationList.length +1)
+            }
             this.pageSize = size
         },
 

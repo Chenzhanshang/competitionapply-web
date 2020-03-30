@@ -10,7 +10,7 @@
         <el-col  :xs="18" :sm="14" :md="10" :lg="8" :xl="8"  :pull="1" >
           
           <el-form  ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" class="login-form" >
-            <p class="login-title">竞赛报名系统</p>
+            <p class="login-title">竞赛管理系统</p>
             <el-form-item label="用户名" prop="username">
               <el-input prefix-icon="el-icon-user" v-model="ruleForm.username" placeholder="请输入用户名"></el-input>
             </el-form-item>
@@ -67,7 +67,7 @@ import SIdentify from '@/components/SIdentify'
       return {
         loading: false,
         //背景图
-        imgSrc:require('../assets/backgroundImage.jpg'),
+        imgSrc:require('../assets/bgImage.jpg'),
         //当前验证码
         identifyCode:'',
         //验证码包含随机内容
@@ -174,23 +174,31 @@ import SIdentify from '@/components/SIdentify'
 
 <style>
   
-
+  .login-form {
+    width: 100%;
+    height: 100%;
+    padding: 5% 20% 5% 20%;
+    box-shadow: 0 0 10px #7e8aa0;
+    background-color: #A3ECFD;
+  }
+  /*
   .login-form {
     width: 100%;
     height: 100%;
     margin:  8px 15px 15px 15px;
     padding: 30px 40px 10px 20px;
   }
+  */
 
   .login-title {
     font-size: 25px;
     text-align: center;
-    margin: 0px 0px 25px 37px;
-    color: white;
+    margin: 0px 0px 5% 1%;
+    color: black;
   }
   .main{
-    margin-top: calc(5vh);
-    
+    margin-top: 2%;
+    margin-right: 7%;
   }
 
   
@@ -212,7 +220,7 @@ import SIdentify from '@/components/SIdentify'
     }
 
 
-    .el-radio__label{color:white}
+    .login-form .el-radio__label{color:black}
 
      .login-form .el-form-item label:after {
         content: "";
@@ -223,7 +231,7 @@ import SIdentify from '@/components/SIdentify'
     .login-form .el-form-item__label {
         text-align: justify;
         height: 50px;
-        color:white
+        color:black
     }
 
     .login-form .el-form-item.is-required .el-form-item__label:before {
@@ -231,8 +239,8 @@ import SIdentify from '@/components/SIdentify'
     }
 
     .login-form .form-button{
-    margin-right: 15%;
-    margin-left: 13%;
+    margin-right: 8%;
+    margin-left: 8%;
   }
 
 </style>

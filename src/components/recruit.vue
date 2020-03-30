@@ -15,22 +15,23 @@
             </el-form-item>
           </el-form>
         </el-dialog>
-        <el-table :data="teamListTB.slice((currentPage-1)*pageSize,currentPage*pageSize)" stripe style="width: 100%">
+        <el-table :data="teamListTB.slice((currentPage-1)*pageSize,currentPage*pageSize)" stripe :height="tableHeight" style="width: 100%">
           <el-table-column type="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="teamName" label="队伍"></el-table-column>
           <el-table-column prop="captain.name" label="队长"></el-table-column>
           <el-table-column prop="teamHeadcount" label="当前人数"></el-table-column>
           <el-table-column prop="competition.competitionName" label="参与比赛"></el-table-column>
           <el-table-column prop="teamContent" label="队伍宣言"></el-table-column>
-          <el-table-column align="right">
+          <el-table-column align="center">
             <template slot="header" slot-scope="scope">
               <el-input prefix-icon="el-icon-search" v-model="search" size="mini" placeholder="输入关键字搜索" />
             </template>
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                type="primary"
+                type="success"
                 plain
+                icon="el-icon-circle-plus"
                 @click="applyForm(scope.row)"
               >申请加入</el-button>
             </template>
@@ -74,6 +75,8 @@ export default {
             pageSize: 5,
             //当前行
             currentRow: null,
+            //表格高度,行高55.6px,乘以size行加1行表头，默认默认55.3 * 6
+            tableHeight:55.3 * 6 ,
             teamList: [],
             search: '',
             ruleForm: {
@@ -128,6 +131,12 @@ export default {
 
         //监听页数改变
         handleSizeChange: function(size){
+            if(size <= this.notificationList.length){
+              this.tableHeight = 55.6 * (size + 1)
+            }
+            else{
+              this.tableHeight = 55.6 * (this.notificationList.length +1)
+            }
             this.pageSize = size
         },
 

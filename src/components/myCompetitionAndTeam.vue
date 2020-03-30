@@ -32,7 +32,7 @@
               <el-table-column label="姓名" prop="name"></el-table-column>
               <el-table-column label="学院" prop="college.collegeName"></el-table-column>
               <el-table-column label="班级" prop="userClassName"></el-table-column>
-              <el-table-column align="right" label="操作">
+              <el-table-column align="center" label="操作" >
                 <template slot-scope="scope">
                   <el-button
                     size="mini"
@@ -57,7 +57,7 @@
         :tab-position="'left'"
         @tab-click="handleClick"
         value="myCompetition"
-        style="height: 600px;"
+        style="height: 500px;"
       >
         <el-tab-pane label="我的比赛" name="myCompetition" >
           <el-table :data="CompetitionList" height="600px" stripe style="width: 100%">
@@ -72,7 +72,7 @@
                 {{scope.row.date==null?new Date():scope.row.date | dateFormart}}
               </template>
             </el-table-column>
-            <el-table-column align="right">
+            <el-table-column align="center">
               <template slot="header" slot-scope="scope">
                 <el-input prefix-icon="el-icon-search" v-model="search1" size="mini" placeholder="输入关键字搜索" />
               </template>
@@ -81,6 +81,7 @@
                   size="mini"
                   type="primary"
                   plain
+                  icon="el-icon-more"
                   @click="particulars(scope.row.competition)"
                 >比赛详情</el-button>
               </template>
@@ -99,14 +100,15 @@
                 {{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
               </template>
             </el-table-column>
-            <el-table-column align="right">
+            <el-table-column align="center">
               <template slot="header" slot-scope="scope">
                 <el-input prefix-icon="el-icon-search" v-model="search5" size="mini" placeholder="输入关键字搜索" />
               </template>
               <template slot-scope="scope">
                 <el-button
                   size="mini"
-                  type="primary"
+                  type="danger"
+                  icon="el-icon-error"
                   plain
                   @click="cancelApply(scope.row)"
                 >撤销申请</el-button>
@@ -120,12 +122,12 @@
             <el-table-column prop="teamName" label="队伍名"></el-table-column>
             <el-table-column prop="competition.competitionName" label="所属比赛"></el-table-column>
             <el-table-column prop="teamState" label="队伍状态"></el-table-column>
-            <el-table-column align="right">
+            <el-table-column align="center">
               <template slot="header" slot-scope="scope">
                 <el-input prefix-icon="el-icon-search" v-model="search2" size="mini" placeholder="输入关键字搜索" />
               </template>
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" plain @click="openExitTeam(scope.row.teamId)">退出队伍</el-button>
+                <el-button size="mini" type="danger" icon="el-icon-remove" plain @click="openExitTeam(scope.row.teamId)">退出队伍</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -138,20 +140,20 @@
             <el-table-column prop="competition.competitionName" label="所属比赛"></el-table-column>
             <el-table-column prop="teamHeadcount" label="当前人数"></el-table-column>
             <el-table-column prop="teamState" label="队伍状态"></el-table-column>
-            <el-table-column align="right" width="350">
+            <el-table-column align="center" width="370">
               <template slot="header" slot-scope="scope">
                 <el-input prefix-icon="el-icon-search" v-model="search3" size="mini" placeholder="输入关键字搜索" />
               </template>
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" plain @click="updateMyTeam(scope.row)">管理</el-button>
-                <el-button size="mini" type="primary" plain :disabled="isManchu(scope.row)" @click="recruitUser(scope.row)">招募</el-button>
-                <el-button size="mini" type="primary" plain :disabled="isRecruiting(scope.row)" @click="cancelRecruit(scope.row)">取消招募</el-button>
-                <el-button size="mini" type="primary" plain @click="openDeleteTeam(scope.row.teamId)">解散队伍</el-button>
+                <el-button size="mini" type="primary" icon="el-icon-s-tools" plain @click="updateMyTeam(scope.row)">管理</el-button>
+                <el-button size="mini" type="primary" icon="el-icon-circle-plus" plain :disabled="isManchu(scope.row)" @click="recruitUser(scope.row)">招募</el-button>
+                <el-button size="mini" type="primary" icon="el-icon-error" plain :disabled="isRecruiting(scope.row)" @click="cancelRecruit(scope.row)">取消招募</el-button>
+                <el-button size="mini" type="danger" icon="el-icon-remove" plain @click="openDeleteTeam(scope.row.teamId)">解散</el-button>
               </template>
             </el-table-column>
             <el-table-column>
               <template slot="header">
-                <el-button size="mini" type="success" plain @click="createTeam()">创建队伍</el-button>
+                <el-button size="mini" type="success" icon="el-icon-circle-plus" plain @click="createTeam()">创建队伍</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -169,13 +171,13 @@
               </template>
             </el-table-column>
             <el-table-column prop="user.name" label="申请人姓名"></el-table-column>
-            <el-table-column align="right">
+            <el-table-column align="center">
               <template slot="header" slot-scope="scope">
                 <el-input prefix-icon="el-icon-search" v-model="search4" size="mini" placeholder="输入关键字搜索" />
               </template>
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" plain @click="pass(scope.row)">通过</el-button>
-                <el-button size="mini" type="primary" plain @click="refuse(scope.row)">拒绝</el-button>
+                <el-button size="mini" type="success" icon="el-icon-success" plain @click="pass(scope.row)">通过</el-button>
+                <el-button size="mini" type="danger" icon="el-icon-error" plain @click="refuse(scope.row)">拒绝</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -194,7 +196,7 @@
             </el-table-column>
             <el-table-column prop="user.name" label="申请人姓名"></el-table-column>
             <el-table-column prop="applyState" label="处理结果"></el-table-column>
-            <el-table-column align="right">
+            <el-table-column align="center">
               <template slot="header" slot-scope="scope">
                 <el-input prefix-icon="el-icon-search" v-model="search4" size="mini" placeholder="输入关键字搜索" />
               </template>
@@ -220,7 +222,7 @@
                 {{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
               </template>
             </el-table-column>
-            <el-table-column align="right">
+            <el-table-column align="center">
               <template slot="header" slot-scope="scope">
                 <el-input prefix-icon="el-icon-search" v-model="search6" size="mini" placeholder="输入关键字搜索" />
               </template>

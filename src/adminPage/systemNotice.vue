@@ -21,7 +21,7 @@
             </el-form-item>
             <!-- name:后端接收时的参数名 -->
             <el-upload
-            :action="'http://localhost:8999/competition/file/uploadNoticeFile/'"
+            :action="this.$global.uploadFileUrl"
             name="multipartFiles" 
             :auto-upload=false
             :on-preview="handlePreview"
@@ -31,7 +31,7 @@
             ref="upload"
             :on-exceed="handleExceed"
             :file-list="fileList">
-              <span style="margin-left:15px">公告文件：</span><el-button size="small" id="select-button">选择文件</el-button>
+              <span style="margin-left:15px">公告文件：</span><el-button size="small" type="primary" icon="el-icon-upload2" id="select-button">选择文件</el-button>
               <div slot="tip" class="tip">已选文件：</div>
             </el-upload>    
             <el-form-item>
@@ -58,16 +58,16 @@
         <el-divider v-if="notification.files.length != 0"></el-divider>
         <div class="comp" v-if="notification.files.length != 0">公告附件：</div>
         <el-card class="box-card" v-if="notification.files.length != 0">
-            <div v-for="(file) in this.notification.files" :key="file.fileId" class="text file">
+            <div v-for="(file) in this.notification.files" :key="file.fileId" style="padding:10px">
               <el-link  target="_blank">{{file.fileName}}</el-link>
-              <el-button @click="downloadFile(file.fileId,file.fileName)" size="mini" id="download">下载</el-button>
+              <el-button @click="downloadFile(file.fileId,file.fileName)" size="mini" icon="el-icon-download" id="download">下载</el-button>
             </div>
         </el-card>
         <div style="float:right; padding: 20px 10px 0px 0px">
-          <el-button type="danger" plain @click="handleDelete()" size="small">删除</el-button>
+          <el-button type="danger" plain @click="handleDelete()" icon="el-icon-remove" size="small">删除</el-button>
         </div>
         <div style="float:right; padding: 20px 20px 0px 0px">
-          <el-button type="warning" plain @click="update()" size="small">修改</el-button>
+          <el-button type="warning" plain @click="update()" icon="el-icon-s-tools" size="small">修改</el-button>
         </div>
         
       </el-main>

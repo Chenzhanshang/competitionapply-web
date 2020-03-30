@@ -2,6 +2,7 @@
     <el-container>
         <!-- 头部导航栏 -->
         <el-header>
+          <div class="menu">
             <el-menu :router=true :default-active="activeIndex" class="el-menu-demo" active-text-color="#409EFF" mode="horizontal" @select="handleSelect">
               <el-menu-item index="/home/homePagePromote" >首页推广</el-menu-item>
               <el-menu-item index="/home/competitionInform">竞赛通知</el-menu-item>
@@ -10,23 +11,24 @@
               <el-menu-item index="/home/winningNotification">获奖通告</el-menu-item>
               <el-menu-item index="/home/systemNotice">系统公告</el-menu-item>
               <el-submenu index="8" style="position:absolute;right:10px">
-                <template slot="title">{{user.userName}}</template>
+                <template slot="title"><i class="el-icon-s-custom"></i><span>{{user.userName}}</span></template>
                 <el-menu-item @click="updatePassword">修改密码</el-menu-item>
                 <el-menu-item @click="logout">注销登录</el-menu-item>
                 <el-menu-item @click="table = true">个人信息</el-menu-item>
                 <el-menu-item @click="dialogFormVisible = true">投诉建议</el-menu-item>
               </el-submenu>
-
-            <el-dialog title="请填写投诉建议信息" :visible.sync="dialogFormVisible" center>
+            </el-menu>
+          </div>
+         <el-dialog title="请填写投诉建议信息" :visible.sync="dialogFormVisible" center>
               <el-form ref="couplBackForm" :rules="rules" :model="couplBackForm" label-width="120px" size="mini">
               <el-form-item label="反馈类型：" prop="type">
                 <el-radio-group v-model="couplBackForm.type" size="small" >
-                  <el-radio border label="投诉"></el-radio>
-                  <el-radio border label="建议"></el-radio>
+                  <el-radio border label="投诉">投诉</el-radio>
+                  <el-radio border label="建议">建议</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="反馈内容：" prop="content" >
-                <el-input v-model="couplBackForm.content"></el-input>
+                <el-input v-model="couplBackForm.content" placeholder="请输入反馈内容"></el-input>
               </el-form-item>
               <el-form-item label="验证码：" prop="verifycode">
               <el-row :span="24">
@@ -41,12 +43,12 @@
                 </el-col>
               </el-row>
             </el-form-item>
-              <el-form-item size="large" style="text-align:center;padding-right:120px">
-                <el-button type="primary" @click="onSubmit('couplBackForm')">提交</el-button>
+              <el-form-item size="large" style="margin:20px 0 0 20%;">
+                  <el-button type="primary" @click="onSubmit('couplBackForm')">提交</el-button>
               </el-form-item>
             </el-form>
-            </el-dialog>
-            </el-menu>
+          </el-dialog>
+            
             <!--个人信息抽屉 direction，抽屉打开的方向-->
             <el-drawer
             title="个人信息"
@@ -58,11 +60,12 @@
               <el-table-column prop="value" label></el-table-column>
             </el-table>
           </el-drawer>
-        </el-header>
+      </el-header>
+        
     <el-main>
         <router-view></router-view>
     </el-main>
-    <div id="footer" ><span>作者：CZS</span><p>QQ:642125256</p><span>e-mail:642125256@qq.com</span></div>
+    <div id="footer" ><span>作者：CZS, QQ:642125256, e-mail:642125256@qq.com</span></div>
 </el-container>
 
 </template>
@@ -218,6 +221,9 @@ import SIdentify from '@/components/SIdentify'
           .then((res)=>{
             if(res.data.status == 1){
               this.dialogFormVisible = false
+              this.couplBackForm.type = ''
+              this.couplBackForm.content = ''
+              this.couplBackForm.verifycode = ''
               this.$message({
                 type: 'success',
                 message:res.data.msg 
@@ -294,9 +300,8 @@ import SIdentify from '@/components/SIdentify'
 </script>
 <style>
   #footer {
-    height: 70px;
-    padding-top: 10px;
-    line-height: 11px;
+    height: 20px;
+    padding-top: 2px;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -306,5 +311,9 @@ import SIdentify from '@/components/SIdentify'
     font-family: Arial;
     font-size: 12px;
     letter-spacing: 1px;
+    }
+
+    .menu{
+      padding-top: 10px;
     }
 </style>

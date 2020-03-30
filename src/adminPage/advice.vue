@@ -3,6 +3,7 @@
     <el-main>
       <el-table
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+      :height="tableHeight"
       style="width: 100%">
         <el-table-column
         label="序号"
@@ -51,6 +52,7 @@
           <template slot-scope="scope">
             <el-button
             size="small"
+            icon="el-icon-success"
             type="primary"
             plain
             @click="dispose(scope.row)"
@@ -98,6 +100,8 @@
         pageSize: 5,
         //当前行
         currentRow: null,
+        //表格高度,行高52.4px,乘以size行加1行表头，默认默认52.3 * 6   (由于导航栏有下拉，与用户界面表格高度可能有细微偏差)
+        tableHeight:52.3 * 6 ,
         adviceList:[],
         search:''
       }
@@ -133,6 +137,12 @@
 
       //监听页数改变
       handleSizeChange: function(size){
+        if(size <= this.notificationList.length){
+          this.tableHeight = 52.4 * (size + 1)
+        }
+        else{
+          this.tableHeight = 52.4 * (this.notificationList.length +1)
+        }
         this.pageSize = size
       },
 

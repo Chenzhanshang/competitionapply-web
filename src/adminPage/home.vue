@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-header>
-        
+          <div class="menu">
             <el-menu :router=true :default-active="activeIndex" class="el-menu-demo" active-text-color="#409EFF" mode="horizontal">
               <el-menu-item index="/adminHome/adminCompetitionInform">竞赛通知管理</el-menu-item>
               <el-menu-item index="/adminHome/adminWinningNotification">获奖通告管理</el-menu-item>
@@ -18,12 +18,13 @@
                 <el-menu-item index="/adminHome/disposeAdvice" >已处理反馈</el-menu-item>
               </el-submenu>
               <el-submenu index="8" style="position:absolute;right:10px">
-                <template slot="title">{{user.userName}}</template>
+                <template slot="title"><i class="el-icon-s-custom"></i><span>{{user.userName}}</span></template>
                 <el-menu-item @click="updatePassword">修改密码</el-menu-item>
                 <el-menu-item @click="logout">注销登录</el-menu-item>
               </el-submenu>
 
             </el-menu>
+          </div>
         </el-header>
         <el-dialog title="公告信息" :visible.sync="newSystemNotice" width="60%" center>
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -35,7 +36,7 @@
             </el-form-item>
             <!-- name:后端接收时的参数名 -->
             <el-upload
-            :action="'http://localhost:8999/competition/file/uploadNoticeFile/'"
+            :action="this.$global.uploadFileUrl"
             name="multipartFiles" 
             :auto-upload=false
             :on-preview="handlePreview"
@@ -44,7 +45,7 @@
             ref="upload"
             :on-exceed="handleExceed"
             :file-list="fileList">
-              <span style="margin-left:15px">公告文件：</span><el-button size="small" id="select-button">选择文件</el-button>
+              <span style="margin-left:15px">公告文件：</span><el-button size="small" type="primary" icon="el-icon-upload2" id="select-button">选择文件</el-button>
               <div slot="tip" class="tip">已选文件：</div>
             </el-upload>    
             <el-form-item>
@@ -59,7 +60,7 @@
         <router-view></router-view>
     </el-main>
 
-    <div id="footer" ><span>作者：CZS</span><p>QQ:642125256</p><span>e-mail:642125256@qq.com</span></div>
+    <div id="footer" ><span>作者：CZS, QQ:642125256, e-mail:642125256@qq.com</span></div>
 
 </el-container>
 
@@ -226,9 +227,8 @@
 
 <style>
   #footer {
-    height: 70px;
-    padding-top: 10px;
-    line-height: 11px;
+    height: 20px;
+    padding-top: 2px;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -254,4 +254,7 @@
   #select-button{
     margin-left: 16px;
   }
+  .menu{
+      padding-top: 10px;
+    }
 </style>

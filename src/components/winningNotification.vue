@@ -3,7 +3,7 @@
         <el-main>
         <el-dialog title="获奖名单" :visible.sync="dialogTableVisible" :before-close="closeDialog" center>
         
-        <el-table :data="winList" height = 400>
+        <el-table :data="winList" height=400>
             <el-table-column property="winRanking" label="名次" ></el-table-column>
             <el-table-column property="competition.competitionName" label="比赛名" ></el-table-column>
             <el-table-column property="user.name" label="姓名"></el-table-column>
@@ -13,6 +13,7 @@
         </el-dialog>
         <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+        :height="tableHeight"
         style="width: 100%">
             <el-table-column
             label="序号"
@@ -48,6 +49,7 @@
                     v-if="!isFile(scope.row.isFile)"
                     size="small"
                     type="primary"
+                    icon="el-icon-more"
                     plain
                     @click="loadWinList(scope.row.competition.competitionId)">查看获奖名单</el-button>
 
@@ -55,8 +57,9 @@
                     v-if="isFile(scope.row.isFile)"
                     size="small"
                     type="primary"
+                    icon="el-icon-download"
                     plain
-                    @click="downloadFile(scope.row.files[0].fileId,scope.row.files[0].fileName)">下载获奖名单文件</el-button>
+                    @click="downloadFile(scope.row.files[0].fileId,scope.row.files[0].fileName)">下载获奖文件</el-button>
                 </template>
  
             </el-table-column>
@@ -106,11 +109,14 @@ export default {
             pageSize: 5,
             //当前行
             currentRow: null,
+            //表格高度,行高55.6px,乘以size行加1行表头，默认默认55.3 * 6
+            tableHeight:55.3 * 6 ,
             dialogTableVisible: false,
             currentRow: null,
             notificationList: [],
             search: '',
             hasWinLevel: false,
+            tableHight:400,
             winList: []
         }
     },
@@ -188,6 +194,12 @@ export default {
         },
         //监听页数改变
         handleSizeChange: function(size){
+            if(size <= this.notificationList.length){
+                this.tableHeight = 55.6 * (size + 1)
+            }
+            else{
+                 this.tableHeight = 55.6 * (this.notificationList.length +1)
+            }
             this.pageSize = size
         },
 

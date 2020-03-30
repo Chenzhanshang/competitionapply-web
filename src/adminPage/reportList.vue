@@ -2,6 +2,10 @@
   <el-container>
     <el-main>
         <h3 style="text-align:center">{{competition.competitionName}}已报名列表</h3>
+        <div style="text-align:center"><el-button type="success" @click="exportData" icon="el-icon-download" size="small">
+        导出数据
+      </el-button>
+      </div>
       <el-table
       v-if="competition.competitionPeopleSum == 1"
       :data="userTable.slice((currentPage-1)*pageSize,currentPage*pageSize)"
@@ -166,7 +170,7 @@
         </el-table>
     </el-drawer>
 
-
+    
     <!--队伍成员详细信息抽屉-->
     <el-drawer
     title="队伍成员信息"
@@ -359,6 +363,16 @@ export default {
                 this.moreUserMsg[8].value = res.data.email;
             })
             .catch()
+        },
+
+        //导出excel表格
+        exportData() {
+          if(this.competition.competitionPeopleSum == 1){
+            window.open(this.$global.exportUserList, '_parent');
+          }
+          else{
+            window.open(this.$global.exportTeamList, '_parent');
+          }
         },
 
         teamMemberMore(data){

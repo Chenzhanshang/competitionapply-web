@@ -63,7 +63,7 @@
             </el-select>
           </el-form-item>
           <el-upload
-          :action="'http://localhost:8999/competition/file/uploadFile/'"
+          :action="this.$global.uploadFileUrl"
           name="multipartFiles" 
           :auto-upload=false
           :on-preview="handlePreview"
@@ -73,7 +73,7 @@
           ref="upload"
           :on-exceed="handleExceed"
           :file-list="fileList">
-            <span style="margin-left:15px">公告文件：</span><el-button size="small" id="select-button">选择文件</el-button>
+            <span style="margin-left:15px">公告文件：</span><el-button size="small" type="primary" icon="el-icon-upload2" id="select-button">选择文件</el-button>
             <div slot="tip" class="tip">已选文件：</div>
           </el-upload>    
           <el-form-item style="margin-top:20px">
@@ -87,6 +87,7 @@
       </el-dialog>
       <el-table
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+      :height="tableHeight"
       style="width: 100%">
         <el-table-column
         label="序号"
@@ -102,6 +103,7 @@
         <el-table-column
         property="competition.competitionType"
         label="竞赛类型"
+        width="120"
         align="center">
         </el-table-column>
         <el-table-column
@@ -113,6 +115,7 @@
         <el-table-column
         property="competition.competitionLevel"
         label="竞赛等级"
+        width="120"
         align="center">
         </el-table-column>
         <el-table-column
@@ -138,18 +141,20 @@
               v-model="search"
               size="mini"
               placeholder="输入关键字搜索" 
-              width="50"/>   
+              width="120"/>   
           </template>
           <template slot-scope="scope" >
             <el-button
               size="mini"
               type="warning"
+              icon="el-icon-s-tools"
               plain
               @click="update(scope.row.notificationId)"
               >修改</el-button>
             <el-button
               size="mini"
               type="danger"
+              icon="el-icon-remove"
               plain
               @click="openDeleteWindow(scope.row)"
             >删除</el-button>    
@@ -160,6 +165,7 @@
             <el-button
               size="mini"
               type="success"
+              icon="el-icon-circle-plus"
               plain
               @click="add()"
               >新增比赛通知</el-button>  
@@ -167,10 +173,11 @@
           <template slot-scope="scope" >
             <el-button
               size="mini"
-              type="warning"
+              icon="el-icon-more"
+              type="primary"
               plain
               @click="showReportList(scope.row.competition)"
-              >查看已报名名单</el-button>  
+              >查看报名名单</el-button>  
           </template>
         </el-table-column>
       </el-table>
@@ -230,6 +237,8 @@ export default {
         loading: false,
         //通知列表
         notificationList: [],
+        //表格高度,行高52.4px,乘以size行加1行表头，默认默认52.3 * 6   (由于导航栏有下拉，与用户界面表格高度可能有细微偏差)
+        tableHeight:52.3 * 6 ,
         search: '',
         competitionId: '',
         competitionTypes: [],
@@ -506,6 +515,12 @@ export default {
 
       //监听页数改变
         handleSizeChange: function(size){
+          if(size <= this.notificationList.length){
+              this.tableHeight = 52.4 * (size + 1)
+          }
+          else{
+              this.tableHeight = 52.4 * (this.notificationList.length +1)
+          }
           this.pageSize = size
 
         },

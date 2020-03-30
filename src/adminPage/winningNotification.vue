@@ -37,7 +37,7 @@
           <!-- name:后端接收时的参数名 -->
           <el-upload
           v-if="ruleForm.type == 'file'?true:false"
-          :action="'http://localhost:8999/competition/file/uploadNoticeFile/'"
+          :action="this.$global.uploadFileUrl"
           name="multipartFiles" 
           :auto-upload=false
           :on-preview="handlePreview"
@@ -47,7 +47,7 @@
           ref="upload"
           :on-exceed="handleExceed"
           :file-list="fileList">
-            <span style="margin-left:15px">公告文件：</span><el-button size="small" id="select-button">选择文件</el-button>
+            <span style="margin-left:15px">公告文件：</span><el-button size="small" type="primary" icon="el-icon-upload2" id="select-button">选择文件</el-button>
             <div slot="tip" class="tip">已选文件：</div>
           </el-upload>    
           <el-form-item>
@@ -61,6 +61,7 @@
       </el-dialog>
       <el-table
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+      :height="tableHeight"
       style="width: 100%">
         <el-table-column
         label="序号"
@@ -82,36 +83,41 @@
             {{scope.row.notificationTime==null?new Date():scope.row.notificationTime | dateFormart}}
           </template>
         </el-table-column>
-        <el-table-column align="center">
+        <el-table-column align="center" >
           <template slot="header" slot-scope="scope">
-            <el-button
-            size="mini"
-            type="success"
-            plain
-            @click="addWinList()"
-            style="margin:0 0 3px 0"
-            >发布获奖通知</el-button>  
             <el-input
             prefix-icon="el-icon-search"
             v-model="search"
             size="mini"
-            placeholder="输入通知关键字搜索" 
-            width="50"/>   
+            placeholder="输入通知关键字搜索" />   
           </template>
           <template slot-scope="scope">
             <el-button
             size="small"
-            type="primary"
+            type="warning"
+            icon="el-icon-s-tools"
             plain
             @click="update(scope.row)"
-            >编辑</el-button>
-
+            >修改</el-button>
             <el-button
             size="mini"
             type="danger"
+            icon="el-icon-remove"
             plain
             @click="openDeleteWindow(scope.row)"
             >删除</el-button>    
+          </template>
+        </el-table-column>
+        <el-table-column label="" width="100">
+          <template slot="header" slot-scope="scope">
+            <el-button
+              size="mini"
+              type="success"
+              icon="el-icon-circle-plus"
+              plain
+              @click="addWinList()"
+              style="margin:0 0 3px 0"
+              >发布</el-button>  
           </template>
         </el-table-column>
       </el-table>
@@ -155,6 +161,8 @@
         currentRow: null,
         //暂存通知Id供修改通知时使用
         notificationId: '',
+        //表格高度,行高52.4px,乘以size行加1行表头，默认默认52.3 * 6   (由于导航栏有下拉，与用户界面表格高度可能有细微偏差)
+        tableHeight:52.3 * 6 ,
         isAdd: true,
         dialogFormVisible:false,
         ruleForm:{
@@ -482,6 +490,12 @@
 
       //监听页数改变
       handleSizeChange: function(size){
+        if(size <= this.notificationList.length){
+          this.tableHeight = 52.4 * (size + 1)
+        }
+        else{
+          this.tableHeight = 52.4 * (this.notificationList.length +1)
+        }
         this.pageSize = size
       },
 
