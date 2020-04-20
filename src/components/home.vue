@@ -1,13 +1,19 @@
-<template>
+<template >
     <el-container>
         <!-- 头部导航栏 -->
         <el-header>
           <div class="menu">
-            <el-menu :router=true :default-active="activeIndex" class="el-menu-demo" active-text-color="#409EFF" mode="horizontal" @select="handleSelect">
+            <el-menu 
+            :router=true :default-active="activeIndex"
+             background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+            class="el-menu-demo" 
+             mode="horizontal" @select="handleSelect">
               <el-menu-item index="/home/homePagePromote" >首页推广</el-menu-item>
               <el-menu-item index="/home/competitionInform">竞赛通知</el-menu-item>
               <el-menu-item index="/home/myCompetitionAndTeam">我的比赛·队伍</el-menu-item>
-              <el-menu-item index="/home/recruit">组队·招募(原竞赛交流)</el-menu-item>
+              <el-menu-item index="/home/recruit">组队·招募</el-menu-item>
               <el-menu-item index="/home/winningNotification">获奖通告</el-menu-item>
               <el-menu-item index="/home/systemNotice">系统公告</el-menu-item>
               <el-submenu index="8" style="position:absolute;right:10px">
@@ -62,8 +68,8 @@
           </el-drawer>
       </el-header>
         
-    <el-main>
-        <router-view></router-view>
+    <el-main id="main">
+        <router-view ></router-view>
     </el-main>
     <div id="footer" ><span>作者：CZS, QQ:642125256, e-mail:642125256@qq.com</span></div>
 </el-container>
@@ -315,5 +321,7 @@ import SIdentify from '@/components/SIdentify'
 
     .menu{
       padding-top: 10px;
+      margin-bottom: 100px;
     }
+
 </style>

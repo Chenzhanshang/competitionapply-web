@@ -87,6 +87,8 @@
       </el-dialog>
       <el-table
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+      :header-cell-style="{background:'#DCDFE6'}"
+      border
       :height="tableHeight"
       style="width: 100%">
         <el-table-column
@@ -238,7 +240,7 @@ export default {
         //通知列表
         notificationList: [],
         //表格高度,行高52.4px,乘以size行加1行表头，默认默认52.3 * 6   (由于导航栏有下拉，与用户界面表格高度可能有细微偏差)
-        tableHeight:52.3 * 6 ,
+        tableHeight:52.8 * 6 ,
         search: '',
         competitionId: '',
         competitionTypes: [],

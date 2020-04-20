@@ -29,7 +29,9 @@
                 <el-col :span="9">
                   <div class="login-code" @click="refreshCode">
                     <!--验证码组件-->
-                    <s-identify :identifyCode="identifyCode"></s-identify>
+                    <el-tooltip  content="点击切换"  placement="top" effect="light">
+                      <s-identify :identifyCode="identifyCode"></s-identify>
+                    </el-tooltip>
                   </div>
                 </el-col>
               </el-row>
@@ -181,14 +183,6 @@ import SIdentify from '@/components/SIdentify'
     box-shadow: 0 0 10px #7e8aa0;
     background-color: #A3ECFD;
   }
-  /*
-  .login-form {
-    width: 100%;
-    height: 100%;
-    margin:  8px 15px 15px 15px;
-    padding: 30px 40px 10px 20px;
-  }
-  */
 
   .login-title {
     font-size: 25px;

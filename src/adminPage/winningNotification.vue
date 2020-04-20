@@ -37,7 +37,7 @@
           <!-- name:后端接收时的参数名 -->
           <el-upload
           v-if="ruleForm.type == 'file'?true:false"
-          :action="this.$global.uploadFileUrl"
+          :action="this.$global.uploadNoticeFileUrl"
           name="multipartFiles" 
           :auto-upload=false
           :on-preview="handlePreview"
@@ -60,6 +60,8 @@
         </el-form>
       </el-dialog>
       <el-table
+      :header-cell-style="{background:'#DCDFE6'}"
+      border
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       :height="tableHeight"
       style="width: 100%">
@@ -241,7 +243,7 @@
         this.axios.get("/win/findWinForm",{params:{notificationId: data.notificationId,competitionId: data.competition.competitionId}})
         .then((res)=>{
           console.log(res)
-          if(res.data.data.userCompetitions != null && res.data.data.userCompetitions.length > 0){
+         // if(res.data.data.userCompetitions != null && res.data.data.userCompetitions.length > 0){
             this.notificationId = data.notificationId
             try{
               this.notificationList.forEach(item=>{
@@ -254,8 +256,7 @@
             }
             catch{
             }
-            this.ruleForm.competitionId = res.data.data.userCompetitions[0].competition.competitionId
-
+            
             //判断为文件获奖信息还是录入的数据获奖信息
             if(res.data.data.files != null && res.data.data.files.length > 0){
               this.ruleForm.type = "file"
@@ -265,6 +266,7 @@
               });
             }
             else{
+              this.ruleForm.competitionId = res.data.data.userCompetitions[0].competition.competitionId
               this.ruleForm.type = "message"
               //加载选手名单
               this.selectCompetition()
@@ -275,7 +277,7 @@
               })
             }
             console.log(this.notificationId)
-          } 
+         //} 
         })
         .catch()
       },

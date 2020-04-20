@@ -3,7 +3,7 @@
         <el-main>
         <el-dialog title="获奖名单" :visible.sync="dialogTableVisible" :before-close="closeDialog" center>
         
-        <el-table :data="winList" height=400>
+        <el-table :data="winList" height=400 >
             <el-table-column property="winRanking" label="名次" ></el-table-column>
             <el-table-column property="competition.competitionName" label="比赛名" ></el-table-column>
             <el-table-column property="user.name" label="姓名"></el-table-column>
@@ -14,6 +14,8 @@
         <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         :height="tableHeight"
+        :header-cell-style="{background:'#DCDFE6'}"
+        border
         style="width: 100%">
             <el-table-column
             label="序号"
@@ -32,7 +34,7 @@
             align="center">
                 <template slot-scope="scope">
                     <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-                    {{scope.row.notificationTime==null?new Date():scope.row.notificationTime | dateFormart}}
+                    <i class="el-icon-time"></i>{{scope.row.notificationTime==null?new Date():scope.row.notificationTime | dateFormart}}
                 </template>
             </el-table-column>
             <el-table-column align="center">

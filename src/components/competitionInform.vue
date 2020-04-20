@@ -1,9 +1,10 @@
 <template>
-    <el-container>
+    <el-container >
         <el-main>
             <el-table
             :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-            stripe 
+            :header-cell-style="{background:'#DCDFE6'}"
+            border
             :height="tableHeight"
             style="width: 100%">
                 <el-table-column
@@ -39,7 +40,7 @@
                 align="center">
                     <template slot-scope="scope">
                         <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-                        {{scope.row.notificationTime==null? new Date() : scope.row.notificationTime | dateFormart}}
+                        <i class="el-icon-time"></i>{{scope.row.notificationTime==null? new Date() : scope.row.notificationTime | dateFormart}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -112,7 +113,7 @@ export default {
             //每页条数
             pageSize: 5,
             //表格高度,行高55.6px,乘以size行加1行表头，默认默认55.3 * 6
-            tableHeight:55.3 * 6 ,
+            tableHeight:56.2 * 6 ,
             //当前行
             currentRow: null,
             search: '',

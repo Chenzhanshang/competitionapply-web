@@ -28,15 +28,16 @@
           <div v-if="!isAdd">
             成员管理：
             <el-table :data="myTeamUserList">
-              <el-table-column type="index" label="序号" width="50"></el-table-column>
-              <el-table-column label="姓名" prop="name"></el-table-column>
-              <el-table-column label="学院" prop="college.collegeName"></el-table-column>
-              <el-table-column label="班级" prop="userClassName"></el-table-column>
+              <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+              <el-table-column label="姓名" prop="name" align="center"></el-table-column>
+              <el-table-column label="学院" prop="college.collegeName" align="center"></el-table-column>
+              <el-table-column label="班级" prop="userClassName" align="center"></el-table-column>
               <el-table-column align="center" label="操作" >
                 <template slot-scope="scope">
                   <el-button
                     size="mini"
-                    type="primary"
+                    type="danger"
+                    icon="el-icon-remove"
                     plain
                     @click="openDeleteTeamUser(scope.row.userId)"
                   >删除</el-button>
@@ -58,18 +59,19 @@
         @tab-click="handleClick"
         value="myCompetition"
         style="height: 500px;"
+        type="border-card"
       >
         <el-tab-pane label="我的比赛" name="myCompetition" >
           <el-table :data="CompetitionList" height="600px" stripe style="width: 100%">
-            <el-table-column type="index" label="序号" width="50"></el-table-column>
-            <el-table-column prop="competition.competitionName" label="比赛名" width="180"></el-table-column>
-            <el-table-column prop="competition.competitionType" label="比赛类型"></el-table-column>
-            <el-table-column prop="competition.competitionPeopleSum" label="个人赛·组队赛"></el-table-column>
-            <el-table-column prop="competition.competitionState" label="比赛状态"></el-table-column>
-            <el-table-column label="报名时间">
+            <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+            <el-table-column prop="competition.competitionName" label="比赛名" width="180" align="center"></el-table-column>
+            <el-table-column prop="competition.competitionType" label="比赛类型" align="center"></el-table-column>
+            <el-table-column prop="competition.competitionPeopleSum" label="个人赛·组队赛" align="center"></el-table-column>
+            <el-table-column prop="competition.competitionState" label="比赛状态" align="center"></el-table-column>
+            <el-table-column label="报名时间" align="center">
               <template slot-scope="scope">
                 <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-                {{scope.row.date==null?new Date():scope.row.date | dateFormart}}
+                <i class="el-icon-time"></i>{{scope.row.date==null?new Date():scope.row.date | dateFormart}}
               </template>
             </el-table-column>
             <el-table-column align="center">
@@ -90,14 +92,14 @@
         </el-tab-pane>
         <el-tab-pane label="我的申请" name="myApply">
           <el-table :data="myJoinApplyList1" height="600px" stripe style="width: 100%">
-            <el-table-column type="index" label="序号" width="50"></el-table-column>
-            <el-table-column prop="team.teamName" label="队伍名"></el-table-column>
-            <el-table-column prop="team.competition.competitionName" label="所属比赛"></el-table-column>
-            <el-table-column prop="applyState" label="申请状态"></el-table-column>
-            <el-table-column prop="applyTime" label="申请时间">
+            <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+            <el-table-column prop="team.teamName" label="队伍名" align="center"></el-table-column>
+            <el-table-column prop="team.competition.competitionName" label="所属比赛" align="center"></el-table-column>
+            <el-table-column prop="applyState" label="申请状态" align="center"></el-table-column>
+            <el-table-column prop="applyTime" label="申请时间" align="center">
               <template slot-scope="scope">
                 <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-                {{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
+                <i class="el-icon-time"></i>{{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
               </template>
             </el-table-column>
             <el-table-column align="center">
@@ -118,10 +120,10 @@
         </el-tab-pane>
         <el-tab-pane label="我加入的队伍" name="myJoinTeam">
           <el-table :data="joinTeamList1" height="600px" stripe style="width: 100%">
-            <el-table-column type="index" label="序号" width="50"></el-table-column>
-            <el-table-column prop="teamName" label="队伍名"></el-table-column>
-            <el-table-column prop="competition.competitionName" label="所属比赛"></el-table-column>
-            <el-table-column prop="teamState" label="队伍状态"></el-table-column>
+            <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+            <el-table-column prop="teamName" label="队伍名" align="center"></el-table-column>
+            <el-table-column prop="competition.competitionName" label="所属比赛" align="center"></el-table-column>
+            <el-table-column prop="teamState" label="队伍状态" align="center"></el-table-column>
             <el-table-column align="center">
               <template slot="header" slot-scope="scope">
                 <el-input prefix-icon="el-icon-search" v-model="search2" size="mini" placeholder="输入关键字搜索" />
@@ -135,11 +137,11 @@
 
         <el-tab-pane label="我创建的队伍" name="myCreateTeam">
           <el-table :data="myTeamList1" height="600px" stripe style="width: 100%">
-            <el-table-column type="index" label="序号" width="50"></el-table-column>
-            <el-table-column prop="teamName" label="队伍名"></el-table-column>
-            <el-table-column prop="competition.competitionName" label="所属比赛"></el-table-column>
-            <el-table-column prop="teamHeadcount" label="当前人数"></el-table-column>
-            <el-table-column prop="teamState" label="队伍状态"></el-table-column>
+            <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+            <el-table-column prop="teamName" label="队伍名" align="center"></el-table-column>
+            <el-table-column prop="competition.competitionName" label="所属比赛" align="center"></el-table-column>
+            <el-table-column prop="teamHeadcount" label="当前人数" align="center"></el-table-column>
+            <el-table-column prop="teamState" label="队伍状态" align="center"></el-table-column>
             <el-table-column align="center" width="370">
               <template slot="header" slot-scope="scope">
                 <el-input prefix-icon="el-icon-search" v-model="search3" size="mini" placeholder="输入关键字搜索" />
@@ -148,7 +150,7 @@
                 <el-button size="mini" type="primary" icon="el-icon-s-tools" plain @click="updateMyTeam(scope.row)">管理</el-button>
                 <el-button size="mini" type="primary" icon="el-icon-circle-plus" plain :disabled="isManchu(scope.row)" @click="recruitUser(scope.row)">招募</el-button>
                 <el-button size="mini" type="primary" icon="el-icon-error" plain :disabled="isRecruiting(scope.row)" @click="cancelRecruit(scope.row)">取消招募</el-button>
-                <el-button size="mini" type="danger" icon="el-icon-remove" plain @click="openDeleteTeam(scope.row.teamId)">解散</el-button>
+                <el-button size="mini" type="danger" icon="el-icon-delete-solid" plain @click="openDeleteTeam(scope.row.teamId)">解散</el-button>
               </template>
             </el-table-column>
             <el-table-column>
@@ -161,16 +163,16 @@
 
         <el-tab-pane label="加入我的申请" name="joinMyApply">
           <el-table :data="joinMyTeamList1" height="600px" stripe style="width: 100%">
-            <el-table-column type="index" label="序号" width="50"></el-table-column>
-            <el-table-column prop="team.teamName" label="队伍名"></el-table-column>
-            <el-table-column prop="team.competition.competitionName" label="所属比赛"></el-table-column>
-            <el-table-column prop="applyTime" label="申请时间">
+            <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+            <el-table-column prop="team.teamName" label="队伍名" align="center"></el-table-column>
+            <el-table-column prop="team.competition.competitionName" label="所属比赛" align="center"></el-table-column>
+            <el-table-column prop="applyTime" label="申请时间" align="center">
               <template slot-scope="scope">
                 <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-                {{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
+                <i class="el-icon-time"></i>{{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
               </template>
             </el-table-column>
-            <el-table-column prop="user.name" label="申请人姓名"></el-table-column>
+            <el-table-column prop="user.name" label="申请人姓名" align="center"></el-table-column>
             <el-table-column align="center">
               <template slot="header" slot-scope="scope">
                 <el-input prefix-icon="el-icon-search" v-model="search4" size="mini" placeholder="输入关键字搜索" />
@@ -185,17 +187,17 @@
 
         <el-tab-pane label="我的处理记录" name="myDispose">
           <el-table :data="myDisposeList1" height="600px" stripe style="width: 100%">
-            <el-table-column type="index" label="序号" width="50"></el-table-column>
-            <el-table-column prop="team.teamName" label="队伍名"></el-table-column>
-            <el-table-column prop="team.competition.competitionName" label="所属比赛"></el-table-column>
-            <el-table-column prop="applyTime" label="申请时间">
+            <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+            <el-table-column prop="team.teamName" label="队伍名" align="center"></el-table-column>
+            <el-table-column prop="team.competition.competitionName" label="所属比赛" align="center"></el-table-column>
+            <el-table-column prop="applyTime" label="申请时间" align="center">
               <template slot-scope="scope">
                 <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-                {{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
+                <i class="el-icon-time"></i>{{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
               </template>
             </el-table-column>
-            <el-table-column prop="user.name" label="申请人姓名"></el-table-column>
-            <el-table-column prop="applyState" label="处理结果"></el-table-column>
+            <el-table-column prop="user.name" label="申请人姓名" align="center"></el-table-column>
+            <el-table-column prop="applyState" label="处理结果" align="center"></el-table-column>
             <el-table-column align="center">
               <template slot="header" slot-scope="scope">
                 <el-input prefix-icon="el-icon-search" v-model="search4" size="mini" placeholder="输入关键字搜索" />
@@ -206,20 +208,20 @@
 
         <el-tab-pane label="我的申请历史" name="myApplyHistory">
           <el-table :data="historyJoinApplyList1" height="600px" stripe style="width: 100%">
-            <el-table-column type="index" label="序号" width="50"></el-table-column>
-            <el-table-column prop="team.teamName" label="队伍名"></el-table-column>
-            <el-table-column prop="team.competition.competitionName" label="所属比赛"></el-table-column>
-            <el-table-column prop="applyState" label="申请状态"></el-table-column>
-            <el-table-column prop="applyTime" label="申请时间">
+            <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+            <el-table-column prop="team.teamName" label="队伍名" align="center"></el-table-column>
+            <el-table-column prop="team.competition.competitionName" label="所属比赛" align="center"></el-table-column>
+            <el-table-column prop="applyState" label="申请状态" align="center"></el-table-column>
+            <el-table-column prop="applyTime" label="申请时间" align="center">
               <template slot-scope="scope">
                 <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-                {{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
+                <i class="el-icon-time"></i>{{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
               </template>
             </el-table-column>
-            <el-table-column prop="applyTime" label="处理时间">
+            <el-table-column prop="applyTime" label="处理时间" align="center">
               <template slot-scope="scope">
                 <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-                {{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
+                <i class="el-icon-time"></i>{{scope.row.applyTime==null?new Date():scope.row.applyTime | dateFormart}}
               </template>
             </el-table-column>
             <el-table-column align="center">

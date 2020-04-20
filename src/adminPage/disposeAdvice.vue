@@ -2,6 +2,8 @@
   <el-container>
     <el-main>
       <el-table
+      :header-cell-style="{background:'#DCDFE6'}"
+      border
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%">
         <el-table-column

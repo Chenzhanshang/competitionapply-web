@@ -15,13 +15,27 @@
             </el-form-item>
           </el-form>
         </el-dialog>
-        <el-table :data="teamListTB.slice((currentPage-1)*pageSize,currentPage*pageSize)" stripe :height="tableHeight" style="width: 100%">
-          <el-table-column type="index" label="序号" width="50"></el-table-column>
-          <el-table-column prop="teamName" label="队伍"></el-table-column>
-          <el-table-column prop="captain.name" label="队长"></el-table-column>
-          <el-table-column prop="teamHeadcount" label="当前人数"></el-table-column>
-          <el-table-column prop="competition.competitionName" label="参与比赛"></el-table-column>
-          <el-table-column prop="teamContent" label="队伍宣言"></el-table-column>
+        <el-table :data="teamListTB.slice((currentPage-1)*pageSize,currentPage*pageSize)" 
+          :header-cell-style="{background:'#DCDFE6'}"
+          border
+          :height="tableHeight" style="width: 100%">
+          <el-table-column type="index" label="序号" width="70" align="center"></el-table-column>
+          <el-table-column prop="teamName" label="队伍" align="center"></el-table-column>
+          <el-table-column  label="队长" align="center">
+            <template slot-scope="scope">
+              <el-popover trigger="hover" placement="top">
+                <p>电话: {{ scope.row.captain.phone }}</p>
+                <p>邮箱: {{ scope.row.captain.email }}</p>
+                <div slot="reference" class="name-wrapper">
+                  <el-tag size="medium">{{ scope.row.captain.name }}</el-tag>
+                </div>
+              </el-popover>
+            </template>
+
+          </el-table-column>
+          <el-table-column prop="teamHeadcount" label="当前人数" align="center"></el-table-column>
+          <el-table-column prop="competition.competitionName" label="参与比赛" align="center"></el-table-column>
+          <el-table-column prop="teamContent" label="队伍宣言" align="center"></el-table-column>
           <el-table-column align="center">
             <template slot="header" slot-scope="scope">
               <el-input prefix-icon="el-icon-search" v-model="search" size="mini" placeholder="输入关键字搜索" />

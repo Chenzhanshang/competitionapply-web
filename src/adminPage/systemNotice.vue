@@ -2,9 +2,10 @@
   <el-container>
     <el-aside>
       <el-menu >
-          <el-menu-item-group >
-            <el-menu-item v-for="notification in notificationList" :key="notification.notificationId" @click="select(notification.notificationId)">
-              {{notification.notificationTitle}}
+          <el-menu-item-group>
+            <el-menu-item v-for="(notification,index) in notificationList" :key="notification.notificationId" @click="select(notification.notificationId)">
+              <el-badge value="新" class="item" type="danger" v-if="index == 0">{{notification.notificationTitle}}</el-badge>
+              <span v-if="index != 0">{{notification.notificationTitle}}</span>
             </el-menu-item>
           </el-menu-item-group>
       </el-menu>

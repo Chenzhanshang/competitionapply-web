@@ -7,6 +7,8 @@
       </el-button>
       </div>
       <el-table
+      :header-cell-style="{background:'#DCDFE6'}"
+      border
       v-if="competition.competitionPeopleSum == 1"
       :data="userTable.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%">
@@ -70,6 +72,8 @@
       </el-table>
 
       <el-table
+      :header-cell-style="{background:'#DCDFE6'}"
+      border
       v-if="competition.competitionPeopleSum != 1"
       :data="teamTable.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%">
@@ -178,6 +182,8 @@
     direction="rtl"
     size="75%">
     <el-table
+        :header-cell-style="{background:'#DCDFE6'}"
+        border
         :data="userListMsg"
         style="width: 100%">
             <el-table-column
@@ -234,7 +240,7 @@
         title="详细信息"
         :append-to-body="true"
         :visible.sync="innerDrawer">
-        <el-table :data="moreUserMsg">
+        <el-table :data="moreUserMsg" >
             <el-table-column prop="key" label align="center"></el-table-column>
             <el-table-column prop="value" label></el-table-column>
         </el-table>

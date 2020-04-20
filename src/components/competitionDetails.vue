@@ -10,19 +10,21 @@
             竞赛地点：{{competition.competitionSite}}
         </div>
         <div class="comp">
-            竞赛时间：{{competition.competitionTime}}
+            竞赛时间：<i class="el-icon-time"></i>{{competition.competitionTime}}
         </div>
         <div class="comp">
             竞赛状态：{{competition.competitionState==1  ?'进行中':'已结束'}}
         </div>
-        <div class="comp">文件列表：</div>
-        <el-card class="box-card">
-            <div v-for="(file,index) in this.competition.files" :key="file.fileId" class="text file">
-                文件{{index+1}}:
-                <el-link  target="_blank">{{file.fileName}}</el-link>
-                <el-button @click="downloadFile(file.fileId,file.fileName)" size="mini" style="margin-left:10px" icon="el-icon-download" >下载</el-button>
-            </div>
-        </el-card>
+        <div v-if="competition.files.length != 0">
+            <div class="comp">文件列表：</div>
+            <el-card class="box-card">
+                <div v-for="(file,index) in this.competition.files" :key="file.fileId" class="text file">
+                    文件{{index+1}}:
+                    <el-link  target="_blank">{{file.fileName}}</el-link>
+                    <el-button @click="downloadFile(file.fileId,file.fileName)" size="mini" style="margin-left:10px" icon="el-icon-download" >下载</el-button>
+                </div>
+            </el-card>
+        </div>
         <!--@click.native绑定select点击事件 -->
         <div class="comp" v-if="competition.competitionPeopleSum != 1">报名队伍：</div>
         <el-select v-model="teamName" :rules="rules" placeholder="请选择队伍" @click.native="onClick" @change="handleChange" v-if="competition.competitionPeopleSum != 1">

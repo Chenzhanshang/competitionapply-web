@@ -2,7 +2,11 @@
     <el-container>
         <el-header>
           <div class="menu">
-            <el-menu :router=true :default-active="activeIndex" class="el-menu-demo" active-text-color="#409EFF" mode="horizontal">
+            <el-menu :router=true :default-active="activeIndex" class="el-menu-demo" 
+             background-color="#545c64"
+             text-color="#fff"
+             active-text-color="#ffd04b"
+             mode="horizontal">
               <el-menu-item index="/adminHome/adminCompetitionInform">竞赛通知管理</el-menu-item>
               <el-menu-item index="/adminHome/adminWinningNotification">获奖通告管理</el-menu-item>
               <el-submenu index="3">
@@ -13,9 +17,9 @@
               
               
               <el-submenu index="7">
-                <template slot="title">反馈建议管理</template>
-                <el-menu-item index="/adminHome/advice" >待处理反馈</el-menu-item>
-                <el-menu-item index="/adminHome/disposeAdvice" >已处理反馈</el-menu-item>
+                <template slot="title">投诉建议管理</template>
+                <el-menu-item index="/adminHome/advice" >待处理</el-menu-item>
+                <el-menu-item index="/adminHome/disposeAdvice" >已处理</el-menu-item>
               </el-submenu>
               <el-submenu index="8" style="position:absolute;right:10px">
                 <template slot="title"><i class="el-icon-s-custom"></i><span>{{user.userName}}</span></template>
@@ -36,7 +40,7 @@
             </el-form-item>
             <!-- name:后端接收时的参数名 -->
             <el-upload
-            :action="this.$global.uploadFileUrl"
+            :action="this.$global.uploadNoticeFileUrl"
             name="multipartFiles" 
             :auto-upload=false
             :on-preview="handlePreview"
