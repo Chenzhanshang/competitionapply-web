@@ -49,7 +49,7 @@
           发布时间：
           <template>
             <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-            {{notification.notificationTime==null?new Date():notification.notificationTime | dateFormart}}
+            <i class="el-icon-time"></i>{{notification.notificationTime==null?new Date():notification.notificationTime | dateFormart}}
           </template>
         </div>
         <el-divider></el-divider>

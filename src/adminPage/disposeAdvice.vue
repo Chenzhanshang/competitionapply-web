@@ -19,11 +19,11 @@
         </el-table-column>
         <el-table-column
         property="adviceDate"
-        label="时间"
+        label="处理时间"
         align="center">
           <template slot-scope="scope">
             <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-            {{scope.row.adviceDate==null?new Date():scope.row.adviceDate | dateFormart}}
+            <i class="el-icon-time"></i>{{scope.row.adviceDate==null?new Date():scope.row.adviceDate | dateFormart}}
           </template>
         </el-table-column>
         <el-table-column

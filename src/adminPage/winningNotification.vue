@@ -43,7 +43,7 @@
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :before-remove="beforeRemove"
-          :limit="3"
+          :limit="1"
           ref="upload"
           :on-exceed="handleExceed"
           :file-list="fileList">
@@ -82,7 +82,7 @@
         align="center">
           <template slot-scope="scope">
             <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
-            {{scope.row.notificationTime==null?new Date():scope.row.notificationTime | dateFormart}}
+            <i class="el-icon-time"></i>{{scope.row.notificationTime==null?new Date():scope.row.notificationTime | dateFormart}}
           </template>
         </el-table-column>
         <el-table-column align="center" >
@@ -249,6 +249,7 @@
               this.notificationList.forEach(item=>{
                 if(item.notificationId == data.notificationId){
                   this.ruleForm.notificationTitle = item.notificationTitle
+                  this.ruleForm.competitionId = item.competition.competitionId
                   //已找到对应数据，抛异常跳出循环
                   throw new Error("已找到通知标题对应数据")
                 }
@@ -258,7 +259,7 @@
             }
             
             //判断为文件获奖信息还是录入的数据获奖信息
-            if(res.data.data.files != null && res.data.data.files.length > 0){
+            if(res.data.status == 2){
               this.ruleForm.type = "file"
               res.data.data.files.forEach(file => {
                 var json = {name: file.fileName, url: file.filePath, fileId: file.fileId}
@@ -266,7 +267,6 @@
               });
             }
             else{
-              this.ruleForm.competitionId = res.data.data.userCompetitions[0].competition.competitionId
               this.ruleForm.type = "message"
               //加载选手名单
               this.selectCompetition()
@@ -483,7 +483,7 @@
       },
 
       handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+        this.$message.warning(`当前限制选择 1 个文件，当前文件数量已达上限`);
       },
 
       beforeRemove(file, fileList) {
