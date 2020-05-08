@@ -19,7 +19,7 @@
         </el-table-column>
         <el-table-column
         property="adviceDate"
-        label="处理时间"
+        label="反馈时间"
         align="center">
           <template slot-scope="scope">
             <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->

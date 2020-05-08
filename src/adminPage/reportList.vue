@@ -2,7 +2,7 @@
   <el-container>
     <el-main>
         <h3 style="text-align:center">{{competition.competitionName}}已报名列表</h3>
-        <div style="text-align:center"><el-button type="success" @click="exportData" icon="el-icon-download" size="small">
+        <div style="text-align:center; "><el-button type="success" @click="exportData" icon="el-icon-download" size="small">
         导出数据
       </el-button>
       </div>

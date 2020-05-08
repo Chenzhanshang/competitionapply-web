@@ -300,7 +300,7 @@ export default {
     }
   },
   created(){
-    this.getSystemList()
+    this.getSystemList();
   }
 }
 </script>
