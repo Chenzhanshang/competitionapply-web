@@ -20,6 +20,7 @@
         <el-table-column
         property="adviceDate"
         label="反馈时间"
+        width="180px"
         align="center">
           <template slot-scope="scope">
             <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->
@@ -29,6 +30,7 @@
         <el-table-column
         property="disposeTime"
         label="处理时间"
+        width="180px"
         align="center">
           <template slot-scope="scope">
             <!-- 使用自定义的全局vue过滤器，具体见main.js中 -->

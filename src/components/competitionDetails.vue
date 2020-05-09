@@ -15,7 +15,7 @@
         <div class="comp">
             竞赛状态：{{competition.competitionState==1  ?'进行中':'已结束'}}
         </div>
-        <div v-if="competition.files.length != 0">
+        <div v-if="competition.files != ''">
             <div class="comp">文件列表：</div>
             <el-card class="box-card">
                 <div v-for="(file,index) in this.competition.files" :key="file.fileId" class="text file">
@@ -256,7 +256,7 @@ export default {
             }).catch()
         }
 
-        //页面加载调用方法,查询个人信息封装至res
+        //页面加载调用方法,查询比赛信息
         this.axios.get("/competition/findCompetitionById",{params:{competitionId:this.$route.query.competition.competitionId}})
         .then((res)=>{
             console.log(res)

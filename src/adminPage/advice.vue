@@ -5,7 +5,6 @@
       :header-cell-style="{background:'#DCDFE6'}"
       border
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-      :height="tableHeight"
       style="width: 100%">
         <el-table-column
         label="序号"
@@ -102,8 +101,6 @@
         pageSize: 5,
         //当前行
         currentRow: null,
-        //表格高度,行高52.4px,乘以size行加1行表头，默认默认52.3 * 6   (由于导航栏有下拉，与用户界面表格高度可能有细微偏差)
-        tableHeight:56.2 * 6 ,
         adviceList:[],
         search:''
       }
@@ -139,12 +136,6 @@
 
       //监听页数改变
       handleSizeChange: function(size){
-        if(size <= this.adviceList.length){
-          this.tableHeight = 56.2 * (size + 1)
-        }
-        else{
-          this.tableHeight = 56.2 * (this.adviceList.length +1)
-        }
         this.pageSize = size
       },
 

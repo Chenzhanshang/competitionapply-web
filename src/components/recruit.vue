@@ -18,7 +18,7 @@
         <el-table :data="teamListTB.slice((currentPage-1)*pageSize,currentPage*pageSize)" 
           :header-cell-style="{background:'#DCDFE6'}"
           border
-          :height="tableHeight" style="width: 100%">
+          style="width: 100%">
           <el-table-column type="index" label="序号" width="70" align="center"></el-table-column>
           <el-table-column prop="teamName" label="队伍" align="center"></el-table-column>
           <el-table-column  label="队长" align="center">
@@ -89,8 +89,6 @@ export default {
             pageSize: 5,
             //当前行
             currentRow: null,
-            //表格高度,行高55.6px,乘以size行加1行表头，默认默认55.3 * 6
-            tableHeight:55.3 * 6 ,
             teamList: [],
             search: '',
             ruleForm: {
@@ -145,12 +143,6 @@ export default {
 
         //监听页数改变
         handleSizeChange: function(size){
-            if(size <= this.notificationList.length){
-              this.tableHeight = 55.6 * (size + 1)
-            }
-            else{
-              this.tableHeight = 55.6 * (this.notificationList.length +1)
-            }
             this.pageSize = size
         },
 

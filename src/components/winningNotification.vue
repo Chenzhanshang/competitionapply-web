@@ -13,7 +13,6 @@
         </el-dialog>
         <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-        :height="tableHeight"
         :header-cell-style="{background:'#DCDFE6'}"
         border
         style="width: 100%">
@@ -111,8 +110,6 @@ export default {
             pageSize: 5,
             //当前行
             currentRow: null,
-            //表格高度,行高55.6px,乘以size行加1行表头，默认默认55.3 * 6
-            tableHeight:55.3 * 6 ,
             dialogTableVisible: false,
             currentRow: null,
             notificationList: [],
@@ -196,12 +193,6 @@ export default {
         },
         //监听页数改变
         handleSizeChange: function(size){
-            if(size <= this.notificationList.length){
-                this.tableHeight = 55.6 * (size + 1)
-            }
-            else{
-                 this.tableHeight = 55.6 * (this.notificationList.length +1)
-            }
             this.pageSize = size
         },
 
