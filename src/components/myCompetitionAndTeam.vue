@@ -58,11 +58,11 @@
         :tab-position="'left'"
         @tab-click="handleClick"
         value="myCompetition"
-        style="height: 500px;"
+        style="height: 580px;"
         type="border-card"
       >
         <el-tab-pane label="我的比赛" name="myCompetition" >
-          <el-table :data="CompetitionList" height="600px" stripe style="width: 100%">
+          <el-table :data="CompetitionList" max-height="600px" stripe style="width: 100%">
             <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
             <el-table-column prop="competition.competitionName" label="比赛名" width="180" align="center"></el-table-column>
             <el-table-column prop="competition.competitionType" label="比赛类型" align="center"></el-table-column>

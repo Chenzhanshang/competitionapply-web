@@ -5,7 +5,7 @@
             :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             :header-cell-style="{background:'#DCDFE6'}"
             border
-            style="width: 100%">
+            style="width: 100%;">
                 <el-table-column
                 label="序号"
                 type="index"
@@ -71,7 +71,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[5, 10, 15, 20]"
+            :page-sizes="[7, 15, 30, 100]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="notificationList.length"
@@ -110,7 +110,7 @@ export default {
             //当前页
             currentPage: 1,
             //每页条数
-            pageSize: 5,
+            pageSize: 7,
             //当前行
             currentRow: null,
             search: '',
@@ -157,6 +157,7 @@ export default {
         },
     },
     created(){
+         
         //查询竞赛通知数据列表
         this.axios.get("/notification/findNotificationByType")
         .then((res)=>{
@@ -168,3 +169,10 @@ export default {
     }
   }
 </script>
+<style >
+
+  /* 使表格背景透明 */
+ .el-table th, .el-table tr {
+    background-color: transparent;
+ }
+</style>

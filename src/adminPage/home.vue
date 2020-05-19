@@ -7,6 +7,7 @@
              text-color="#fff"
              active-text-color="#ffd04b"
              mode="horizontal">
+             <el-menu-item index="/adminHome/statistics">统计分析</el-menu-item>
               <el-menu-item index="/adminHome/adminCompetitionInform">竞赛通知管理</el-menu-item>
               <el-menu-item index="/adminHome/adminWinningNotification">获奖通告管理</el-menu-item>
               <el-submenu index="3">
@@ -79,7 +80,7 @@
         newSystemNotice:false,
         role: '',
         user: '',
-        activeIndex: '/adminHome/adminCompetitionInform',
+        activeIndex: '/adminHome/statistics',
         index: '',
         ruleForm:{
         notificationTitle: '',
@@ -218,7 +219,7 @@
         })
         .catch()
         //更新路由
-        this.$router.push('/adminHome/adminCompetitionInform')
+        this.$router.push('/adminHome/statistics')
     }
 
 

@@ -30,6 +30,9 @@ import advice from '../adminPage/advice'
 
 import disposeAdvice from '../adminPage/disposeAdvice'
 
+import userStatistics from '../components/statistics'
+import statistics from '../adminPage/statistics'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -61,6 +64,14 @@ const routes = [
         component:homePagePromote,
         meta: {
           title: '宣传信息',
+          type: 'login' 
+        }
+      },
+      {
+        path:'userStatistics',
+        component:userStatistics,
+        meta: {
+          title: '统计分析',
           type: 'login' 
         }
       },
@@ -178,6 +189,14 @@ const routes = [
         component:disposeAdvice,
         meta: {
           title: '反馈建议',
+          type: 'login' 
+        }
+      },
+      {
+        path:'statistics',
+        component:statistics,
+        meta: {
+          title: '统计分析',
           type: 'login' 
         }
       },

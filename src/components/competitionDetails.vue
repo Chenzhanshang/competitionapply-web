@@ -1,5 +1,8 @@
  <template>
     <el-container direction="vertical" >
+        <div class="background">
+            <img :src="imgSrc" width="100%" height="100%" />
+        </div>
         <div class="comp">
             竞赛名称：{{competition.competitionName}}
         </div>
@@ -27,7 +30,7 @@
         </div>
         <!--@click.native绑定select点击事件 -->
         <div class="comp" v-if="competition.competitionPeopleSum != 1">报名队伍：</div>
-        <el-select v-model="teamName" :rules="rules" placeholder="请选择队伍" @click.native="onClick" @change="handleChange" v-if="competition.competitionPeopleSum != 1">
+        <el-select style="margin-left:20px;width:90%; webkit-appearance: none;" v-model="teamName" :rules="rules" placeholder="请选择队伍" @click.native="onClick" @change="handleChange" v-if="competition.competitionPeopleSum != 1">
             <el-option v-for="team in teamList" :key="team.teamId" :label="team.teamName" :value="team"></el-option>
         </el-select>
         <div class="comp">
@@ -48,7 +51,6 @@
                 :disabled = "!buttonState || over"
                 @click="cancelApply()">取消报名</el-button>
         </div>
-         
         
     </el-container>
 </template>
@@ -57,6 +59,8 @@
 export default {
     data() {
         return {
+            //背景图
+            imgSrc:require('../assets/bgImage3.jpg'),
             competition: '',
             loading: false,
             teamList: [],
@@ -291,6 +295,14 @@ export default {
 
     .box-card {
         width: 90%;
-        margin-left: 40px;
+        margin-left: 20px;
+        background: none;
+    }
+
+    .background{
+    width:96.2%;  
+    height:80%;  /**宽高98-99%，图片铺满屏幕，且不出现滚动条 */
+    z-index:-1;
+    position: absolute;
     }
 </style>

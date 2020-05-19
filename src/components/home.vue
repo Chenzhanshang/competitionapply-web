@@ -16,6 +16,7 @@
               <el-menu-item index="/home/recruit">组队·招募</el-menu-item>
               <el-menu-item index="/home/winningNotification">获奖通告</el-menu-item>
               <el-menu-item index="/home/systemNotice">系统公告</el-menu-item>
+              <el-menu-item index="/home/userStatistics">统计分析</el-menu-item>
               <el-submenu index="8" style="position:absolute;right:10px">
                 <template slot="title"><i class="el-icon-s-custom"></i><span>{{user.userName}}</span></template>
                 <el-menu-item @click="updatePassword">修改密码</el-menu-item>

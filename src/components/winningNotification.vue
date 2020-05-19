@@ -27,7 +27,12 @@
             label="标题"
             align="center">
             </el-table-column>
-             <el-table-column
+            <el-table-column
+            property="competition.competitionName"
+            label="竞赛名"
+            align="center">
+            </el-table-column>
+            <el-table-column
             property="notificationTime"
             label="发布时间"
             align="center">
@@ -69,7 +74,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[5, 10, 15, 20]"
+            :page-sizes="[7, 15, 30, 100]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="notificationList.length"
@@ -107,7 +112,7 @@ export default {
             //当前页
             currentPage: 1,
             //每页条数
-            pageSize: 5,
+            pageSize: 7,
             //当前行
             currentRow: null,
             dialogTableVisible: false,
@@ -213,3 +218,9 @@ export default {
     }
   }
 </script>
+<style >
+ /* 使表格背景透明 */
+.el-table th, .el-table tr {
+    background-color: transparent;
+}
+</style>

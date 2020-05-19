@@ -1,7 +1,7 @@
 <template> 
   <el-container>
     <el-aside>
-      <el-menu >
+      <el-menu style="height:570px">
           <el-menu-item-group>
             <el-menu-item v-for="(notification,index) in notificationList" :key="notification.notificationId" @click="select(notification.notificationId)">
               <el-badge value="新" class="item" type="danger" v-if="index == 0">{{notification.notificationTitle}}</el-badge>
@@ -10,7 +10,7 @@
           </el-menu-item-group>
       </el-menu>
     </el-aside>
-    <el-container>  
+    <el-container style="box-shadow: 0 0 5px #7e8aa0;margin-left:1%;height:570px">  
       <el-main width:150px v-if="notification != ''">
         <el-dialog title="公告信息" :visible.sync="dialogFormVisible" width="60%" center>
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -53,8 +53,8 @@
           </template>
         </div>
         <el-divider></el-divider>
-        <div>
-          公告内容：{{this.notification.notificationContent}}
+        <div style="height:170px">
+          <span>{{this.notification.notificationContent}}</span>
         </div>
         <el-divider v-if="notification.files.length != 0"></el-divider>
         <div class="comp" v-if="notification.files.length != 0">公告附件：</div>

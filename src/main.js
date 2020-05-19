@@ -4,6 +4,9 @@ import router from './router'
 //导入全局变量
 import global from './Global.js'
 Vue.prototype.$global = global;
+//导入图表组件
+import VCharts from 'v-charts'
+Vue.use(VCharts)
 //导入elementUI
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'

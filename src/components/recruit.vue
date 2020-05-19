@@ -55,7 +55,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-sizes="[5, 10, 15, 20]"
+          :page-sizes="[7, 15, 30, 100]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="teamList.length"
@@ -86,7 +86,7 @@ export default {
             //当前页
             currentPage: 1,
             //每页条数
-            pageSize: 5,
+            pageSize: 7,
             //当前行
             currentRow: null,
             teamList: [],
